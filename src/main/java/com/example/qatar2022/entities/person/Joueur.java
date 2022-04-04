@@ -1,5 +1,6 @@
 package com.example.qatar2022.entities.person;
 
+
 import com.example.qatar2022.entities.Equipe;
 import lombok.Data;
 
@@ -10,12 +11,13 @@ import java.io.Serializable;
 
 @Entity
 @Data
-@Table(name="staff")
-public class Staff extends Personne implements Serializable  {
+@Table(name="Joueur")
+public class Joueur extends Personne implements Serializable {
 
     @ManyToOne
-    private Equipe team;
+    private Equipe equipe;
 
-    private String fonction;
+    private Boolean poste;
 
+    private String blessure;
 }

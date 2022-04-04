@@ -1,21 +1,26 @@
 package com.example.qatar2022.entities;
 
 
+
+
+import com.sun.istack.NotNull;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Data
 
-public class Image {
+@Table(name="image")
+public class Image implements Serializable {
 
     @Id
     @GeneratedValue
     private Long id;
+
+
+
 
     private String nom;
     private String type;

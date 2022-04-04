@@ -4,24 +4,26 @@ package com.example.qatar2022.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Data
-public class Match {
+@Table(name="partie")
+public class Partie implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long idMatch;
+    private Long idPartie;
 
     @ManyToOne
-    private Team team1;
+    private Equipe eq1;
 
     @ManyToOne
-    private Team team2;
+    private Equipe  eq2;
 
     @ManyToOne
-    private Stadium stadium;
+    private Stade stade;
 
     private int scoreEq1;
 
