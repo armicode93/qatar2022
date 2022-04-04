@@ -20,10 +20,13 @@ public class Personne implements Serializable {
 
     @NotNull
     private String nom;
+
     @NotNull
     private String prenom;
+
     @NotNull
     private int age;
+
     @NotNull
     private Date dateNaiss;
 

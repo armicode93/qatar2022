@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class Staff extends Personne implements Serializable  {
 
     @ManyToOne
-    private Equipe team;
+    private Equipe equipe;
 
     private String fonction;
 
