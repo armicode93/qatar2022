@@ -10,8 +10,6 @@ import java.util.List;
 
 public interface StaffRepository extends JpaRepository<Staff,Long> {
 
-    Staff findById(long id);
-
     List<Staff> findByEquipe(Equipe equipe);
 
     List<Staff> findByFonction (String fonction);

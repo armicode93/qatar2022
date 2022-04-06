@@ -13,5 +13,7 @@ public interface StadeRepository extends JpaRepository<Stade,Long> {
 
     List<Stade> findByNomStade(String nomStade);
 
+    List <Stade> findByCapacite(long capacite);
+
     List<Stade> findByTown(String town);
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PartieRepository extends JpaRepository<Partie, Long> {
 
-    Partie findById(long id);
+    Partie findById(long idPartie);
 
     List <Partie> findByDate(Date date);
 
