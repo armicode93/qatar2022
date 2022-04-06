@@ -15,7 +15,7 @@ public class PartieService {
     @Autowired
     private PartieRepository partieRepository ;
 
-    public List<Partie> getAllPartie()
+    public List<Partie> getAllParties()
     {
         List<Partie> parties = new ArrayList<>();
 

@@ -16,7 +16,7 @@ public class StadeService {
     @Autowired
     private StadeRepository stadeRepository;
 
-    public List<Stade> getAllStade()
+    public List<Stade> getAllStades()
     {
         List<Stade> stades = new ArrayList<>();
 

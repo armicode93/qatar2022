@@ -15,11 +15,11 @@ public class PersonneService {
     @Autowired
     private PersonneRepository personneRepository;
 
-    public List<Personne> getAllPersonne()
+    public List<Personne> getAllPersonnes()
     {
         List<Personne> personnes = new ArrayList<>();
 
-         personneRepository.findAll().forEach(null);
+         personneRepository.findAll().forEach(personnes::add);
 
          return personnes;
 

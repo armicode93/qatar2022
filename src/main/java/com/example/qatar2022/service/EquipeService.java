@@ -15,7 +15,7 @@ public class EquipeService {
     private EquipeRepository equipeRepository;
 
 
-    public List<Equipe> getAllEquipe()
+    public List<Equipe> getAllEquipes()
     {
         List<Equipe> equipes = new ArrayList<>();
 

@@ -16,7 +16,7 @@ public class SpectateurService {
     @Autowired
     SpectateurRepository  spectateurRepository;
 
-    public List <Spectateur> getAllSpectateur()
+    public List <Spectateur> getAllSpectateurs()
     {
         List <Spectateur> spectateurs = new ArrayList<>();
 

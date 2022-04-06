@@ -15,7 +15,7 @@ public class ImageService {
     private ImageRepository imageRepository;
 
 
-    public List<Image> getAllImage()
+    public List<Image> getAllImages()
     {
         List<Image> images = new ArrayList<>();
 
