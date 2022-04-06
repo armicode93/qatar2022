@@ -11,7 +11,8 @@ public interface JoueurRepository extends JpaRepository<Joueur,Long> {
 
     Joueur findByEquipe(Equipe equipe);
 
-    List<Joueur> findByPoste(String poste);
+    List <Joueur> findByPoste(String poste);
+
 
 
 }

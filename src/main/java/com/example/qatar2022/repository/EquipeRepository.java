@@ -8,7 +8,7 @@ import java.util.List;
 public interface EquipeRepository extends JpaRepository<Equipe,Long> {
 
     Equipe findById(long id);
-    Equipe findByPays(String pays);
+    List <Equipe> findByPays(String pays);
 
 
 

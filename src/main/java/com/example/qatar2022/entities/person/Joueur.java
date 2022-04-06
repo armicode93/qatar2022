@@ -17,7 +17,7 @@ public class Joueur extends Personne implements Serializable {
     @ManyToOne
     private Equipe equipe;
 
-    private Boolean poste;
+    private String  poste;
 
-    private String blessure;
+    private Boolean blessure;
 }
