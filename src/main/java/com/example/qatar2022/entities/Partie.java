@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,10 +36,10 @@ public class Partie implements Serializable {
     @OneToMany
     private List <Goal> goal = new ArrayList<>();
 
-    /*@ManyToOne
-    private Tour tours ;
+    @ManyToOne
+    private Tour tour ;
 
-     */
+
 
 
 
@@ -48,16 +49,16 @@ public class Partie implements Serializable {
 
     private Date date;
 
-    private Time time;
+    private Long time;
 
     private String arbitre_principal;
 
-    private Time totalTime;
+    private Long totalTime;
 
     private String prolongation;
 
     private Double prix;
 
-    private String tours;
+
 
 }

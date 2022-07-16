@@ -25,7 +25,7 @@ public class Personne implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long idPersonne;
+    private Long cin;
 
 
     private String nom;
@@ -38,23 +38,10 @@ public class Personne implements Serializable {
     private Date dateNaiss;
 
 
-    private String username ;
 
-
-    private String password;
-
-
-    private String role;
-
-
-    private String email;
-
-
-    private Long gsm;
 
    @ManyToOne(fetch = FetchType.EAGER)
     private Image image;
 
-   @OneToMany
-   private List<Reservation> reservation = new ArrayList<>();
+
 }

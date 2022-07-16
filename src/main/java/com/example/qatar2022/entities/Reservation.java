@@ -2,6 +2,7 @@ package com.example.qatar2022.entities;
 
 
 import com.example.qatar2022.entities.person.Personne;
+import com.example.qatar2022.entities.person.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,7 +33,7 @@ public class Reservation {
     private Boolean paye;
 
     @ManyToOne
-    private Personne personne;
+    private User user;
 
     @ManyToMany
     private List<Partie> partie = new ArrayList<>() ;
