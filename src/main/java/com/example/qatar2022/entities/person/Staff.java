@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Entity
 @Data
-@Table(name ="staff")
+
 @Setter
 @Getter
 @AllArgsConstructor

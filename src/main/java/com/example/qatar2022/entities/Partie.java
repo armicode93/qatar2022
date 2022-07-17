@@ -39,6 +39,9 @@ public class Partie implements Serializable {
     @ManyToOne
     private Tour tour ;
 
+    @ManyToMany
+    private List <Poste> poste = new ArrayList<>();
+
 
 
 

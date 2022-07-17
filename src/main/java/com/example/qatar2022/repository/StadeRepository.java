@@ -11,9 +11,9 @@ public interface StadeRepository extends JpaRepository<Stade,Long> {
 
     Stade findById(long idStade);
 
-    List<Stade> findByNomStade(String nomStade);
+    Stade findByNomStade(String nomStade);
 
-    List <Stade> findByCapacite(long capacite);
+    Stade findByCapacite(long capacite);
 
 
 }

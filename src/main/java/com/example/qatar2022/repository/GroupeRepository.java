@@ -1,19 +1,17 @@
 package com.example.qatar2022.repository;
 
 import com.example.qatar2022.entities.Equipe;
+import com.example.qatar2022.entities.Groupe;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface EquipeRepository extends JpaRepository<Equipe,Long> {
+public interface GroupeRepository extends JpaRepository<Groupe,Long> {
 
-    Equipe findById(long idEquipe);
-    Equipe findByPays(String pays);
-    Equipe findByNom(String nom);
-
-
-
+    Groupe findById(String idGroupe);
+    Groupe findByNom(String nom);
+    List<Equipe> findByGroupe( Groupe groupe);
 
 }

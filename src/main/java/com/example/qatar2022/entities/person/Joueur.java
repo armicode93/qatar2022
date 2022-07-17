@@ -4,6 +4,7 @@ package com.example.qatar2022.entities.person;
 import com.example.qatar2022.entities.Equipe;
 import com.example.qatar2022.entities.Goal;
 import com.example.qatar2022.entities.Partie;
+import com.example.qatar2022.entities.Poste;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,11 +15,12 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "joueur")
+
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+
 
 public class Joueur extends Personne implements Serializable {
 
@@ -32,6 +34,8 @@ public class Joueur extends Personne implements Serializable {
 
     @OneToMany
     private List <Goal> goal = new ArrayList<>();
+    @ManyToMany
+    private List <Poste> poste = new ArrayList<>();
 
     private Boolean blessure;
 }
