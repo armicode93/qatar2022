@@ -25,7 +25,7 @@ public class User extends Personne implements Serializable {
     private String password;
 
 
-    private String role;
+    private Role role;
 
 
     private String email;

@@ -10,7 +10,9 @@ import java.util.List;
 @Repository
 public interface PersonneRepository extends JpaRepository<Personne,Long> {
 
-    Personne findByCin(long cin);
+  List <Joueur> findAllPersonne(Long cin);
+
+    Personne findByCin(Long cin);
 
     List<Joueur> findByNom(String nom);
 

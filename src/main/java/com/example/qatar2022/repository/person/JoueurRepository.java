@@ -11,9 +11,11 @@ import java.util.List;
 @Repository
 public interface JoueurRepository extends JpaRepository<Joueur,Long> {
 
-    Joueur findByEquipe(Equipe equipe);
 
-   List <Poste> findByPoste(Poste poste);
+
+   List <Poste> findAllByPoste(Poste poste);
+
+   List<Joueur> findAllByEquipe_IdEquipe(Long idEquipe);
 
 
 
