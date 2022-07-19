@@ -69,6 +69,7 @@ public class UserController {
             return ResponseEntity.badRequest().body("Empty Request Body");
         }
 
+        //
         Optional<User> user = userRepository.findById(userBody.getCin());
         Optional<User> user2= Optional.ofNullable(userRepository.findByUsername(userBody.getUsername()));
 
@@ -80,36 +81,65 @@ public class UserController {
 
                 }
 
-                Optional <User> role = userRepository.getRole();
-                List<Role> role = userBody.getRole();
-                role.add(Role.ROLE_CLIENT);
-                personneBody.setRole(role);
-                Personne createPersonne = personneRepository.save(personneBody);
+                List <Role> role = userBody.getRole();
+
+                role.add(Role.ROLE_ADMIN);
+                userBody.setRole(role);
+                Personne createPersonne = userRepository.save(userBody);
 
 
                 return ResponseEntity.ok(createPersonne);
 
-              */
+
             }
         }
         return ResponseEntity.badRequest().body("CIN/Username exist");
     }
 
-}
 
-    /*@DeleteMapping("/{username}")
-    public ResponseEntity deleteUser(@PathVariable(name = "username")String username)
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity deleteUser(@PathVariable(name = "userId")Long userId)
     {
+        if (userId == null)
+        {
+            ResponseEntity.badRequest().body("Empty parameter");
+        }
+        Optional <User> user = userRepository.findById(userId);
+
+        if(user.isPresent())
+        {
+            userRepository.deleteById(userId);
+            return ResponseEntity.ok().body(user);
+        }
+        return ResponseEntity.notFound().build();
 
     }
 
     @PutMapping("/")
-    public ResponseEntity updateUsername(@RequestBody User usernameBody)
+    public ResponseEntity updateUser(@RequestBody User userBody)
     {
-        return ;
+        if(userBody == null)
+        {
+            return ResponseEntity.badRequest().body("Empty Request Body");
+
+        }
+
+        Optional <User> user = userRepository.findById(userBody.getCin());
+
+        if(user.isPresent())
+        {
+                List<Role> role = userBody.getRole();
+
+                userBody.setRole(role);
+                User createUser = userRepository.save(userBody);
+                return ResponseEntity.ok(createUser);
+        }
+        return ResponseEntity.notFound().build();
+
     }
 
-     */
+
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();

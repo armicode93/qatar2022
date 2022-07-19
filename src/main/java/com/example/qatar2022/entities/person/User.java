@@ -3,9 +3,7 @@ package com.example.qatar2022.entities.person;
 import com.example.qatar2022.entities.Reservation;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +22,8 @@ public class User extends Personne implements Serializable {
 
     private String password;
 
-
-    private Role role;
+    @ElementCollection(fetch = FetchType.EAGER) //
+    List <Role> role;
 
 
     private String email;
@@ -35,4 +33,8 @@ public class User extends Personne implements Serializable {
 
     @OneToMany
     private List<Reservation> reservation = new ArrayList<>();
+
+
+
+
 }
