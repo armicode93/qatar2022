@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation,Long> {
 
-    Reservation findByCodeReservation(Long codeReservation);
+    Reservation findByCodeReservation(long codeReservation);
     List<User> findByUser(User user);
     Reservation findByDateAchat(Date dateAchat);
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersonneService {
@@ -26,7 +27,7 @@ public class PersonneService {
 
     public Personne getPersonne (Long cin)
     {
-        return personneRepository.findByCin(cin);
+        return personneRepository.findById(cin).orElse(null);
     }
 
     public void addPersonne(Personne personne)
@@ -44,5 +45,7 @@ public class PersonneService {
         personneRepository.deleteById(cin);
 
     }
+
+
 
 }

@@ -2,50 +2,48 @@ package com.example.qatar2022.controllers.Personne;
 
 
 import com.example.qatar2022.entities.person.Personne;
-import com.example.qatar2022.repository.person.PersonneRepository;
-import org.hibernate.annotations.UpdateTimestamp;
+import com.example.qatar2022.service.person.PersonneService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
+
 
 @RestController
 @RequestMapping("v1/Personne")
 @CrossOrigin(origins = "*")
 public class PersonneController {
 
-    private final PersonneRepository personneRepository;
+    private final PersonneService personneService;
 
-    public PersonneController(PersonneRepository personneRepository) {
-        this.personneRepository = personneRepository;
+    public PersonneController(PersonneService personneService) {
+        this.personneService = personneService;
     }
 
 
     @GetMapping("/")
-    public ResponseEntity findAll(){return ResponseEntity.ok(personneRepository.findAll());
+    public ResponseEntity findAll(){return ResponseEntity.ok(personneService.getAllPersonne());
 
     }
-
-    @GetMapping("/personne/{cin}")
-    public ResponseEntity findAll(@PathVariable(name = "cin") Long cin)
-    {
-        return ResponseEntity.ok(personneRepository.findAllPersonne(cin));
-    }
-    public ResponseEntity findJoueurById(@PathVariable(name = "cin") Long cin)
-    {
-        if(cin == null){
+    //
+     @GetMapping("/{PersonneId}")
+    public ResponseEntity findPersonneById(@PathVariable(name = "PersonneId") Long personneId){
+        if(personneId==null){
             return ResponseEntity.badRequest().body("Empty parameter");
         }
+       Personne personne = personneService.getPersonne(personneId);
 
-        Optional<Personne> personne = personneRepository.findById(cin);
-
-        if(personne.isPresent()){
+        if(personne != null){
             return ResponseEntity.ok(personne);
-        } else {
-            return ResponseEntity.notFound().build();
+        }else{
+            return  ResponseEntity.notFound().build();
         }
     }
 
-    @PostMapping("/")
+
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/Inscription")
+
     public ResponseEntity createPersonne(@RequestBody Personne personneBody)
     {
         if (personneBody == null)
@@ -53,11 +51,11 @@ public class PersonneController {
             return ResponseEntity.badRequest().body(("Empty Request Body"));
         }
 
-        Optional<Personne> personne = personneRepository.findById(personneBody.getCin());
+        Optional <Personne> personne = personneService.findById(personneBody.getCin());
 
         if(!personne.isPresent())
         {
-            Personne createPersonne = personneRepository.save((personneBody));
+            Personne createPersonne = personneService.save(personneBody);
             return ResponseEntity.ok(createPersonne);
         }
         else {
@@ -65,15 +63,15 @@ public class PersonneController {
         }
     }
 
-    @DeleteMapping("/{personneCin}")
-    public ResponseEntity deletePersonne(@PathVariable(name = "personneCin") Long personneCin)
+    @DeleteMapping("/{personneId}")
+    public ResponseEntity deletePersonne(@PathVariable(name = "personneid") Long personneid)
     {
         if(personneCin == null)
         {
             return ResponseEntity.badRequest().body("Empty parameter");
         }
 
-        Optional<Personne> personne = personneRepository.findById(personneCin);
+        Optional<Personne> personne = personneService.findById(personneid);
 
         if(personne.isPresent())
         {
@@ -92,7 +90,7 @@ public class PersonneController {
             return ResponseEntity.badRequest().body("Empty Request Body");
         }
 
-        Optional <Personne> personne = personneRepository.findById(personneBody.getCin());
+        Optional <Personne> personne = personneService.findById(personneBody.getCin());
 
         if (personne.isPresent()){
             Personne createPersonne = personneRepository.save(personneBody);
@@ -100,4 +98,8 @@ public class PersonneController {
         }
         return ResponseEntity.notFound().build();
     }
+
+
 }
+
+
