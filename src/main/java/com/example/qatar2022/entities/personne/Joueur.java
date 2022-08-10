@@ -1,10 +1,9 @@
-package com.example.qatar2022.entities.person;
+package com.example.qatar2022.entities.personne;
 
 
 import com.example.qatar2022.entities.Equipe;
 import com.example.qatar2022.entities.Goal;
 import com.example.qatar2022.entities.Partie;
-import com.example.qatar2022.entities.Poste;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,26 +15,43 @@ import java.util.List;
 @Entity
 @Data
 
+
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@DiscriminatorValue("joueur")
+
 
 
 public class Joueur extends Personne implements Serializable {
 
     @ManyToOne
+    @JoinColumn(name="equipe_id_equipe")
     private Equipe equipe;
     
 
-    @ManyToMany
+   /* @ManyToone
     @JoinColumn(name = "idPartie")
     private List<Partie> partie;
 
-    @OneToMany
+    */
+
+
+  /*  @OneToMany(mappedBy = "joueur")
     private List <Goal> goal = new ArrayList<>();
-    @ManyToMany
-    private List <Poste> poste = new ArrayList<>();
+
+   */
+
+
+   /* @ManyToMany
+    @JoinTable(name = "poste")
+    private List <Partie> partie = new ArrayList<>();
+
+    */
+
+
+
 
     private Boolean blessure;
 }

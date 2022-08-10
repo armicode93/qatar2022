@@ -19,5 +19,6 @@ public class Ticket {
     private Long codeTicket;
 
     @ManyToOne
+    @JoinColumn(name="reservation_code_reservation")
     private Reservation reservation;
 }

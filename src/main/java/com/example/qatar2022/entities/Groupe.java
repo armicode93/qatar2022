@@ -22,6 +22,8 @@ public class Groupe {
 
     private String nomGroupe ;
 
-    @OneToMany
+    /*@OneToMany(mappedBy = "groupe")
     private List<Equipe> equipe = new ArrayList<>();
+
+     */
 }

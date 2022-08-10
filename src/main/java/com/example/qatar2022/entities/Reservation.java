@@ -1,12 +1,10 @@
 package com.example.qatar2022.entities;
 
 
-import com.example.qatar2022.entities.person.Personne;
-import com.example.qatar2022.entities.person.User;
+import com.example.qatar2022.entities.personne.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,17 +26,18 @@ public class Reservation {
 
     private Date dateAchat;
 
-    private Time timeAchat;
 
     private Boolean paye;
 
     @ManyToOne
+    @JoinColumn(name="user_cin")
     private User user;
 
-    @ManyToMany
-    private List<Partie> partie = new ArrayList<>() ;
+    @ManyToOne
+    @JoinColumn(name="partie_id_partie")
+    private Partie partie ;
 
-    @OneToMany
+    @OneToMany(mappedBy = "reservation")
     private List <Ticket> ticket = new ArrayList<>();
 
 

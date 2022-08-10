@@ -1,8 +1,8 @@
 package com.example.qatar2022.entities;
 
 
-import com.example.qatar2022.entities.person.Joueur;
-import com.example.qatar2022.entities.person.Staff;
+import com.example.qatar2022.entities.personne.Joueur;
+import com.example.qatar2022.entities.personne.Staff;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,6 +22,8 @@ public class Equipe implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
+
+
     private Long idEquipe;
 
 
@@ -36,17 +38,27 @@ public class Equipe implements Serializable {
    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
    private Image drapeau;
 
-   @OneToMany
+   @OneToMany(mappedBy="equipe", cascade = CascadeType.ALL)
     private List<Staff> staff = new ArrayList<>();
 
-   @ManyToOne
-    private Groupe groupe ;
 
-   @OneToMany
+
+   @ManyToOne
+   @JoinColumn(name = "groupe_id_groupe")
+   private Groupe groupe ;
+
+
+   @OneToMany(mappedBy="equipe")
     private List <Joueur> joueur = new ArrayList<>();
 
-   @ManyToMany
+
+
+
+   @OneToMany
+
     private List <Partie> partie = new ArrayList<>();
+
+
 
 
 

@@ -23,7 +23,10 @@ public class Type {
 
     private String typeBut;
 
-    @OneToMany
+
+    @OneToMany(mappedBy = "type")
     private List <Goal> goal = new ArrayList<>();
+
+
 
 }

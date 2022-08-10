@@ -23,8 +23,12 @@ public class Stade implements Serializable {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long idStade;
 
-    @OneToMany
+
+    @OneToMany(mappedBy="stade")
+
     private List<Partie> partie = new ArrayList<>();
+
+
 
     @NotNull
     private String nomStade;

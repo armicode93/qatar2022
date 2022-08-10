@@ -1,13 +1,12 @@
 package com.example.qatar2022.entities;
 
 
-import com.example.qatar2022.entities.person.Joueur;
+import com.example.qatar2022.entities.personne.Joueur;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,25 +21,39 @@ public class Partie implements Serializable {
     private Long idPartie;
 
     @ManyToOne
+
+
     private Equipe eq1;
 
     @ManyToOne
+
     private Equipe  eq2;
 
     @ManyToOne
+    @JoinColumn(name="stade_id_stade")
     private Stade stade;
 
-    @ManyToMany
+   /* @ManyToMany
     private List<Joueur> joueur = new ArrayList<>();
 
-    @OneToMany
+    */
+
+    @OneToMany(mappedBy="partie")
     private List <Goal> goal = new ArrayList<>();
 
     @ManyToOne
+    @JoinColumn(name="tour_id_tour")
     private Tour tour ;
 
-    @ManyToMany
-    private List <Poste> poste = new ArrayList<>();
+   /*@ManyToMany(mappedBy = "partie")
+   private List <Joueur> joueur = new ArrayList<>();
+
+    */
+
+   @OneToMany(mappedBy = "partie")
+   private List<Reservation> reservation = new ArrayList<>();
+
+
 
 
 
@@ -50,9 +63,8 @@ public class Partie implements Serializable {
 
     private int scoreEq2;
 
-    private Date date;
+    private Date dateTime;
 
-    private Long time;
 
     private String arbitre_principal;
 

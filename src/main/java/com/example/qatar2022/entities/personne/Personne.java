@@ -1,25 +1,28 @@
-package com.example.qatar2022.entities.person;
+package com.example.qatar2022.entities.personne;
 
 
 import com.example.qatar2022.entities.Image;
-import com.example.qatar2022.entities.Reservation;
-import com.sun.istack.NotNull;
 import lombok.*;
+import org.hibernate.annotations.DiscriminatorOptions;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
-@Table(name="personne")
+
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@DiscriminatorColumn(name="personne_type",
+        discriminatorType = DiscriminatorType.STRING)
+
+
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+
 
 public class Personne implements Serializable {
 

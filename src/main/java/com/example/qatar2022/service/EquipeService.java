@@ -12,27 +12,49 @@ import java.util.List;
 @Service
 public class EquipeService {
 
+    private final EquipeRepository equipeRepository;
+
+
+
     @Autowired
-    private EquipeRepository equipeRepository;
-
-    public List<Equipe> getAllEquipe()
-    {
-        List<Equipe> equipe = new ArrayList<>();
-        equipeRepository.findAll().forEach(equipe::add);
-        return  equipe;
-
+    public EquipeService(EquipeRepository equipeRepository) {
+        this.equipeRepository = equipeRepository;
     }
 
-    public void addEquipe(Equipe equipe)
-    {
+
+    public List<Equipe> getAllEquipe() {
+        List<Equipe> equipes = new ArrayList<>();
+
+        equipeRepository.findAll().forEach(equipes::add);
+        return equipes;
+    }
+
+    public Equipe getEquipeById(Long idEquipe) {
+        return equipeRepository.findById(idEquipe).orElse(null);
+    }
+
+    public void addEquipe(Equipe equipe) {
         equipeRepository.save(equipe);
+
     }
-    public void updateEquipe(Long idEquipe, Equipe equipe)
-    {
-        equipeRepository.save(equipe);
-    }
-    public void deleteEquipe(Long idEquipe)
-    {
+
+
+
+    public void deleteEquipe(Long idEquipe) {
+        boolean exists = equipeRepository.existsById(idEquipe);
+        if (!exists) {
+            throw new IllegalStateException("Not exists");
+        }
         equipeRepository.deleteById(idEquipe);
     }
+
+    public Equipe updateEquipe(Long idEquipe, Equipe equipe)
+    {
+        equipeRepository.save(equipe);
+
+
+        return equipe;
+    }
+
+
 }

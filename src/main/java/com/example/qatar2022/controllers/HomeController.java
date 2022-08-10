@@ -1,16 +1,25 @@
-package com.example.qatar2022.controllers;
 
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
-//annotation pour cree API restFul
+/*@RestController
+@RequestMapping("/home")
+annotation pour cree API restFul
 public class HomeController {
+    private final AhmedService ahmedService;
 
-    @RequestMapping("/")
+    public HomeController(AhmedService ahmedService) {
+        this.ahmedService = ahmedService;
+    }
+
+    @GetMapping
     public String HomeController()
     {
-        return "Welcome Back";
+        return ahmedService.test();
+    }
+
+    @PostMapping("try")
+    public ResponseEntity<String> createController(@RequestBody String controller)
+    {
+        return ResponseEntity.ok(controller);
     }
 }
+
+ */

@@ -1,14 +1,11 @@
 package com.example.qatar2022.entities;
 
-import com.example.qatar2022.entities.person.Joueur;
+import com.example.qatar2022.entities.personne.Joueur;
 import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
 import lombok.Data;
-
-import java.sql.Time;
-import java.util.Date;
 
 @Entity
 @Data
@@ -25,7 +22,7 @@ public class Goal{
     private Long idGoal;
 
     @NotNull
-    private Time time;
+    private Long time;
 
 
 
@@ -35,9 +32,11 @@ public class Goal{
 
 
     @ManyToOne
+    @JoinColumn(name="partie_id_partie")
     private Partie partie;
 
     @ManyToOne
+    @JoinColumn(name="type_id_type")
     private Type type;
     
 

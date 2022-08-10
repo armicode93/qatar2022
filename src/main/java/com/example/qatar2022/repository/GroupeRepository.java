@@ -1,3 +1,4 @@
+
 package com.example.qatar2022.repository;
 
 import com.example.qatar2022.entities.Equipe;
@@ -9,9 +10,5 @@ import java.util.List;
 
 @Repository
 public interface GroupeRepository extends JpaRepository<Groupe,Long> {
-
-    Groupe findById(String idGroupe);
-    Groupe findByNom(String nom);
-    List<Equipe> findByGroupe( Groupe groupe);
 
 }
