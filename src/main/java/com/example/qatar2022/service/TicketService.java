@@ -1,0 +1,54 @@
+package com.example.qatar2022.service;
+
+
+import com.example.qatar2022.entities.Ticket;
+import com.example.qatar2022.repository.TicketRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class TicketService {
+
+    private final TicketRepository ticketRepository;
+
+
+    public TicketService(TicketRepository ticketRepository) {
+        this.ticketRepository = ticketRepository;
+    }
+
+    public List<Ticket> getAllTicket()
+    {
+        List <Ticket> tickets = new ArrayList<>();
+
+        ticketRepository.findAll().forEach(tickets::add);
+        return tickets;
+    }
+
+    public Ticket getTicketById(Long codeTicket)
+    {
+        return ticketRepository.findById(codeTicket).orElse(null);
+    }
+
+    public void addTicket(Ticket ticket)
+    {
+        ticketRepository.save(ticket);
+    }
+    public void deleteTicket(Long codeTicket)
+    {
+        boolean exists = ticketRepository.existsById(codeTicket);
+        if(!exists)
+        {
+            throw  new IllegalStateException("Not exists");
+        }
+        ticketRepository.deleteById(codeTicket);
+    }
+
+    public Ticket updateTicket(Long codeTicket, Ticket ticket)
+    {
+        ticketRepository.save(ticket);
+
+        return ticket;
+    }
+}

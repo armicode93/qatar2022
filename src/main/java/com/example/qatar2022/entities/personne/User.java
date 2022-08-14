@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@DiscriminatorValue("user  ")
+@DiscriminatorValue("user")
 
 public class User extends Personne implements Serializable {
 

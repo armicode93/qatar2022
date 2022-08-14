@@ -7,6 +7,8 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,8 +52,10 @@ public class Partie implements Serializable {
 
     */
 
-   @OneToMany(mappedBy = "partie")
+  /* @OneToMany(mappedBy = "partie")
    private List<Reservation> reservation = new ArrayList<>();
+
+   */
 
 
 
@@ -66,9 +70,10 @@ public class Partie implements Serializable {
     private Date dateTime;
 
 
+
     private String arbitre_principal;
 
-    private Long totalTime;
+    private String totalTime;
 
     private String prolongation;
 

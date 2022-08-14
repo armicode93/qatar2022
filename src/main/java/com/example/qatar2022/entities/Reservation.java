@@ -5,6 +5,8 @@ import com.example.qatar2022.entities.personne.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +29,7 @@ public class Reservation {
     private Date dateAchat;
 
 
+
     private Boolean paye;
 
     @ManyToOne
@@ -37,8 +40,11 @@ public class Reservation {
     @JoinColumn(name="partie_id_partie")
     private Partie partie ;
 
+    /*
     @OneToMany(mappedBy = "reservation")
     private List <Ticket> ticket = new ArrayList<>();
+
+     */
 
 
 }
