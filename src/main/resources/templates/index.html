@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap core CSS -->
+     <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+      <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
+      <link href="../static/css/index/index/index.css" th:href="@{/css/index/index.css}" rel="stylesheet" />
+
+      <title>Header fragment</title>
+  </head>
+<body >
+
+
+<!-- Navbar -->
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+              <img src="/images/logo/fifaLogo.png" alt="" width="80" height="40">
+          </a>
+
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                  <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="#">Home</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#">Inscription</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#">Connexion</a>
+                  </li>
+              </ul>
+          </div>
+
+      </div>
+  </nav>
+</header>
+
+
+<!-- Carousel
+<div class="container" style="">
+    <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img  style="height:350px; width:500px;" src="images/logo/wordCup.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img  style="height:350px; width:400px;" src="images/stadium/stade2.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img   style="height:350px; width:400px;" src="images/stadium/stade3.jpg" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+-->
+
+
+<table class="table table-equipe" th:unless="${#lists.isEmpty(equipes)} ">
+    <thead>
+<tr>
+        <th scope="col">#</th>
+        <th  scope="col">Pays</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+    <tr th:each="equipe: ${equipes} ">
+
+        <th scope="row" th:text="${equipe.idEquipe}"></th>
+
+        <td  valign="middle"  th:text="${equipe.pays}" >Equipe</td>
+        <td valign="middle" align="center">
+        <img  th:src="@{${'v1/image/display/' + equipe.drapeau.id}}" width="100"
+              ></td>
+
+    </tr>
+
+
+
+    </tr>
+
+
+    </tbody>
+</table>
+
+
+
+
+<div th:unless="${#lists.isEmpty(parties)} ">
+    <thead>
+    <tr>
+        <th scope="col" class="header-align-center">Calendrier des matchs</th>
+    </tr>
+
+
+
+
+<div class="total">
+    <div th:each="partie: ${parties} ">
+        <div>
+            <table  class="full-width-table"  aria-label="Elements">
+                <!-- Id Column -->
+
+                    <th class ="mat-header-cell " scope="col" ></th>
+                    <td class="mat-cell" >
+
+                        <div class="container h-100">
+                            <div class="row justify-content-center align-self-center">
+                                <img height="32px" th:src="@{${'v1/image/display/' + partie.eq1.drapeau.id}}">
+                            </div>
+                            <div class="row justify-content-center align-items-center">
+                                <p class="text-uppercase font-weight-bold">
+
+                                   <div th:text="${partie.eq1.pays}">
+
+                                </p>
+                            </div>
+                        </div>
+                        </div>  <!-- -->
+                    </td>
+
+
+
+        <!-- Partie -->
+
+                <td>
+                    <div class="container h-100">
+                <div class="row justify-content-center align-items-center font-weight-bold">
+           <div class ="col-sm">
+
+               <div th:text="${partie.scoreEq1}"> </div>
+
+           </div>
+           <div class="col-sm">
+               :
+           </div>
+
+           <div class="col-sm">
+               <div th:text="${partie.scoreEq2}"></div>
+           </div>
+       </div>
+
+
+
+      <!-- Tours -->
+       <div class="row justify-content-center align-items-center ">
+
+           <div class="tour">
+               <div  th:text="${partie.tour.nomTour}"></div>
+           </div>
+
+
+
+           <!-- Stade -->
+           <div class="tour ">
+               <div class="col-sm text-muted" style="font-size: small;">
+                   <div th:text="${partie.stade.nomStade}"></div>
+               </div>
+           </div>
+
+           <div class="tour">
+               <div class="col-sm text-muted" style="font-size: small;">
+                   <div th:text="${partie.dateTime}"></div>
+
+               </div>
+                    </div>
+                    </div>
+                    </div>
+
+
+
+
+                        <!-- EQ2 -->
+
+                <th></th>
+                <td mat-cell *matCellDef="let row">
+
+                    <div class="container h-100">
+                        <div class="row justify-content-center align-items-center">
+                            <img height="32px" th:src="@{${'v1/image/display/' + partie.eq2.drapeau.id}}">
+                        </div>
+                        <div class="row justify-content-center align-items-center">
+                            <p class="text-uppercase font-weight-bold">
+
+                            <div th:text="${partie.eq2.pays}">
+
+                                </p>
+                            </div>
+                        </div>
+                    </div></td>
+
+
+
+
+</table>
+</div>
+
+    </div>
+
+   </td>
+</div>
+    </thead>
+
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script> src="https://code.jquery.com/jquery-3.6.1.js"</script>
+
+</div>
+
+</body>
+
+
+
+
+</html>
+

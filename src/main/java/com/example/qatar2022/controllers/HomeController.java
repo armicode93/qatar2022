@@ -1,25 +1,30 @@
+package com.example.qatar2022.controllers;
 
-/*@RestController
-@RequestMapping("/home")
-annotation pour cree API restFul
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
 public class HomeController {
-    private final AhmedService ahmedService;
 
-    public HomeController(AhmedService ahmedService) {
-        this.ahmedService = ahmedService;
+    @GetMapping("/login")
+    public String login(Model model) {
+
+        return "login";
     }
 
-    @GetMapping
-    public String HomeController()
-    {
-        return ahmedService.test();
+    /*@GetMapping("/")
+    public String home() {
+        return "index";
     }
 
-    @PostMapping("try")
-    public ResponseEntity<String> createController(@RequestBody String controller)
-    {
-        return ResponseEntity.ok(controller);
+     */
+
+
+
+    @GetMapping("/4003")
+    public String accessDenied() {
+        return "403";
     }
 }
 
- */

@@ -22,8 +22,11 @@ public class Tour {
     private String nomTour;
 
 
+    /*
     @OneToMany(mappedBy = "tour")
     private List<Partie> partie = new ArrayList<>();
+
+     */
 
 
 }

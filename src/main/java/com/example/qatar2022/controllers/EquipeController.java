@@ -2,31 +2,54 @@ package com.example.qatar2022.controllers;
 
 
 import com.example.qatar2022.entities.Equipe;
+import com.example.qatar2022.entities.Image;
+import com.example.qatar2022.entities.Partie;
 import com.example.qatar2022.service.EquipeService;
+import com.example.qatar2022.service.ImageService;
+import com.example.qatar2022.service.PartieService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/v1/Equipe")
-@CrossOrigin(origins = "*")
+@Controller
+//@RequestMapping("/v1/Equipe")
+//@CrossOrigin(origins = "*")
+
+
+//@CrossOrigin(origins = "*") //we execute a cross origin http request when it requests a resource that has a different origin, becouse front end running on 4200,end backend 8081
 
 public class EquipeController {
 
     private final EquipeService equipeService;
+    private final ImageService imageService;
+    private final PartieService partieService;
 
-    public EquipeController(EquipeService equipeService) {
+    public EquipeController(EquipeService equipeService, ImageService imageService, PartieService partieService) {
         this.equipeService =  equipeService;
+        this.imageService = imageService;
+        this.partieService = partieService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity findAll()
+   @GetMapping("/")
+    public String index(Model model)
     {
-        return ResponseEntity.ok(equipeService.getAllEquipe());
+        List<Equipe> equipes = equipeService.getAllEquipe();
+        List<Image> images = imageService.getAllImage();
+        List<Partie> parties = partieService.getAllPartie();
+
+        model.addAttribute("parties", parties);
+        model.addAttribute("equipes",equipes);
+        model.addAttribute("images",images);
+        model.addAttribute("title","Liste des equipe");
+
+        return "index";
     }
+
+
 
     @GetMapping("/{idEquipe}")
     public ResponseEntity findEquipeById(@PathVariable(name = "idEquipe") Long idEquipe)
@@ -36,8 +59,6 @@ public class EquipeController {
         }
 
         Optional<Equipe> equipes = Optional.ofNullable(equipeService.getEquipeById(idEquipe));
-
-
 
 
 

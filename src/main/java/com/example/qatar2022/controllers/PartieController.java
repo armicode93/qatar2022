@@ -1,12 +1,15 @@
 package com.example.qatar2022.controllers;
 
 
-import com.example.qatar2022.entities.Equipe;
+import com.example.qatar2022.entities.Image;
 import com.example.qatar2022.entities.Partie;
+import com.example.qatar2022.service.ImageService;
 import com.example.qatar2022.service.PartieService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -15,16 +18,25 @@ import java.util.Optional;
 public class PartieController {
 
     private final PartieService partieService;
+    private final ImageService imageService;
 
-    public PartieController(PartieService partieService) {
+    public PartieController(PartieService partieService, ImageService imageService) {
         this.partieService = partieService;
+        this.imageService = imageService;
     }
 
 
     @GetMapping("/")
-    public ResponseEntity findAll()
+    public String index(Model model)
     {
-        return ResponseEntity.ok(partieService.getAllPartie());
+        List<Partie> parties = partieService.getAllPartie();
+        List <Image> images = imageService.getAllImage();
+
+        model.addAttribute("parties", parties);
+        model.addAttribute("images", images);
+        model.addAttribute("title","Liste des matches");
+
+        return "index";
     }
 
     @GetMapping("/{idPartie}")

@@ -38,8 +38,11 @@ public class Equipe implements Serializable {
    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
    private Image drapeau;
 
+   /*
    @OneToMany(mappedBy="equipe", cascade = CascadeType.ALL)
     private List<Staff> staff = new ArrayList<>();
+
+    */
 
 
 
@@ -48,15 +51,21 @@ public class Equipe implements Serializable {
    private Groupe groupe ;
 
 
+   /*
    @OneToMany(mappedBy="equipe")
     private List <Joueur> joueur = new ArrayList<>();
 
+    */
 
 
 
+
+    /*
    @OneToMany
 
     private List <Partie> partie = new ArrayList<>();
+
+     */
 
 
 

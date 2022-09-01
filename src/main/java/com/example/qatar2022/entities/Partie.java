@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,8 +41,11 @@ public class Partie implements Serializable {
 
     */
 
+    /*
     @OneToMany(mappedBy="partie")
     private List <Goal> goal = new ArrayList<>();
+
+     */
 
     @ManyToOne
     @JoinColumn(name="tour_id_tour")
@@ -59,15 +63,11 @@ public class Partie implements Serializable {
 
 
 
-
-
-
-
     private int scoreEq1;
 
     private int scoreEq2;
 
-    private Date dateTime;
+    private LocalDateTime dateTime;
 
 
 

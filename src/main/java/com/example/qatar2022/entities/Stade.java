@@ -24,9 +24,13 @@ public class Stade implements Serializable {
     private Long idStade;
 
 
+    /*
+
     @OneToMany(mappedBy="stade")
 
     private List<Partie> partie = new ArrayList<>();
+
+     */
 
 
 

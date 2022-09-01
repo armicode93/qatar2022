@@ -7,6 +7,9 @@ import lombok.*;
 import javax.persistence.*;
 import lombok.Data;
 
+
+import java.time.LocalTime;
+
 @Entity
 @Data
 @Table (name="goal")
@@ -22,7 +25,7 @@ public class Goal{
     private Long idGoal;
 
     @NotNull
-    private Long time;
+    private LocalTime time;
 
 
 

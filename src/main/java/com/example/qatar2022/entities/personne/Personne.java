@@ -7,6 +7,7 @@ import org.hibernate.annotations.DiscriminatorOptions;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -38,7 +39,7 @@ public class Personne implements Serializable {
 
 
 
-    private Date dateNaiss;
+    private LocalDate dateNaiss;
 
 
 

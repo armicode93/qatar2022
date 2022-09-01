@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +27,7 @@ public class Reservation {
 
     private Double prixTotal;
 
-    private Date dateAchat;
+    private LocalDateTime dateAchat;
 
 
 

@@ -75,7 +75,7 @@ public class GroupeController {
     {
         if(groupeBody == null)
         {
-            return ResponseEntity.badRequest().body("Empty Reuest body");
+            return ResponseEntity.badRequest().body("Empty Reqest body");
         }
         Optional<Groupe> groupes = Optional.ofNullable(groupeService.getGroupeById(groupeBody.getIdGroupe()));
 

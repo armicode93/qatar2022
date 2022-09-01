@@ -4,6 +4,7 @@ import com.example.qatar2022.entities.personne.Joueur;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 
 
 @Data
@@ -19,9 +20,9 @@ public class Poste {
 
     private String nomPoste;
 
-    private Long tempsEntree;
+    private LocalTime tempsEntree;
 
-    private Long tempsSortie;
+    private LocalTime tempsSortie;
 
   @ManyToOne
   @JoinColumn(name = "cin")
