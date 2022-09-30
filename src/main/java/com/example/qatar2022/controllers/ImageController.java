@@ -9,17 +9,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,10 +54,10 @@ public class ImageController {
     */
 
     @PostMapping("/image/saveImageDetails")
-    public @ResponseBody
-    ResponseEntity<?> createImage(@RequestParam("name") String name,
+    public
+    String createImage(
                                   Model model, HttpServletRequest request
-            , final @RequestParam("image") MultipartFile file) {
+            ,  @RequestParam("image") MultipartFile file, BindingResult result) {
         try {
 
             String uploadDirectory = request.getServletContext().getRealPath(uploadFolder);
@@ -61,7 +67,7 @@ public class ImageController {
             log.info("FileName: " + file.getOriginalFilename());
             if (fileName == null || fileName.contains("..")) {
                 model.addAttribute("invalid", "Sorry! Filename contains invalid path sequence \" + fileName");
-                return new ResponseEntity<>("Sorry! Filename contains invalid path sequence " + fileName, HttpStatus.BAD_REQUEST);
+                // return new ResponseEntity<>("Sorry! Filename contains invalid path sequence " + fileName, HttpStatus.BAD_REQUEST);
             }
 
 
@@ -90,17 +96,27 @@ public class ImageController {
 
 
             imageService.saveImage(image);
-            log.info("HttpStatus===" + new ResponseEntity<>(HttpStatus.OK));
+            /*log.info("HttpStatus===" + new ResponseEntity<>(HttpStatus.OK));
             return new ResponseEntity<>("Product Saved With File - " + fileName, HttpStatus.OK);
+
+             */
+
         } catch (Exception e) {
             e.printStackTrace();
             log.info("Exception: " + e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            //return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        return "redirect:/";
     }
 
+
+
+
+
+
+
     @GetMapping("/image/display/{id}")
-    @ResponseBody
+
     void showImage(@PathVariable("id") Long id, HttpServletResponse response, Optional<Image> image)
             throws ServletException, IOException {
         log.info("Id :: " + id);
@@ -108,6 +124,7 @@ public class ImageController {
         response.setContentType("image/jpg");
         response.getOutputStream().write(image.get().getImageByte());
         response.getOutputStream().close();
+
     }
 
 

@@ -34,12 +34,24 @@ public class Image implements Serializable {
     private byte[] imageByte;
 
 
-   public String generateBase64Image()
+   /*public String generateBase64Image()
     {
         return Base64.encodeBase64String(this.imageByte);
     }
 
+    */
 
+    public Image(String nom, byte[] imageByte) {
+        this.nom = nom;
+        this.imageByte = imageByte;
+    }
 
+    public Image(byte[] imageByte) {
+        this.imageByte = imageByte;
+    }
+
+    public void setImageByte(byte[] imageByte) {
+        this.imageByte = imageByte;
+    }
 
 }

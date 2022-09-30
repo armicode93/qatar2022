@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout">
+<head>
+
+
+    <title>Match detail </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
+    <link href="../static/css/index/index/index.css" th:href="@{/css/index/index.css}" rel="stylesheet" />
+</head>
+<header th:insert="fragments/header.html :: nav"></header>
+
+
+<table class="table"   >
+<thead>
+
+    <tbody>
+<tr>
+    <th scope="col" th:text="${partie.eq1.pays +' Team '}"></th>
+    <th scope="col"></th>
+    <th scope="col" th:text="${partie.eq2.pays +' Team '}"></th>
+
+</tr>
+</thead>
+
+
+    <tr>
+
+
+
+
+    <td th:text="${partie.eq1.joueur}" ></td>
+        <td></td>
+        <td th:text="${partie.eq2.joueur}"></td>
+        </div>
+    </tr>
+
+
+
+
+</thead>
+
+
+
+</tbody>
+
+</table>
+
+
+
+</html>
+

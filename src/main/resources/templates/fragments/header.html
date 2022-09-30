@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    ...
+</head>
+<body>
+<div th:fragment="nav">
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="/images/logo/fifaLogo.png" alt="" width="80" height="40">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/registration}">Inscription</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item">
+                        <a class="nav-link" th:href="@{/profile/index}">Profile</a>
+                    </li>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+                        <a class="nav-link" href="#">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class ="nav-link" sec:authorize= 'isAuthenticated()' th:href="@{/reservation/index}">Reservations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class ="nav-link"  th:href="@{/groupe}">Groupe</a>
+                    </li>
+                   <!-- <li class="nav-item">
+                        <a class="collapse navbar-collapse justify-content-end" > Welcome  [[${#httpServletRequest.remoteUser}]]</a>
+                        -->
+
+
+                        <!-- print username id -->
+                        <!--sec:authentification thymeleaf attribute to springSecurity
+                        principal.username sintax to take the username from the spring security object -->
+
+                        <!-- <h5>Welcome <span sec:authentication="principal.username"></span></h5> -->
+
+
+
+
+                    </li>
+
+                </ul>
+                    </div>
+
+
+                <form class="form-inline my-2 my-lg-0" form-method="post" th:action="@{/logout}">
+                    <a class="collapse navbar-collapse justify-content-end" style="text-decoration: none"> Welcome  [[${#httpServletRequest.remoteUser}]]</a>
+                    <button sec:authorize="isAuthenticated()" class="btn btn-outline-danger my-2 my-sm-0 btn-sm" type="submit">Logout</button>
+                    <button sec:authorize="isAnonymous()" th:href="@{~/login}" class="btn btn-outline-info my-2 my-sm-0 btn-sm" type="submit">Login</button>
+                </form>
+
+
+            </div>
+    </nav>
+        </div>
+
+
+</div>
+</body>
+
+</html>

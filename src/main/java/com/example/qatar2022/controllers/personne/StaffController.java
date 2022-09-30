@@ -54,7 +54,7 @@ public class StaffController {
         {
             return ResponseEntity.badRequest().body("Empty Request Body");
         }
-        Optional <Staff> staff = Optional.ofNullable(staffService.getStaffById(staffBody.getCin()));
+        Optional <Staff> staff = Optional.ofNullable(staffService.getStaffById(staffBody.getIdStaff()));
 
         if(!staff.isPresent())
         {
@@ -79,11 +79,11 @@ public class StaffController {
             return ResponseEntity.badRequest().body("Empty Request Body");
         }
 
-        Optional <Staff> staff = Optional.ofNullable(staffService.getStaffById(staffBody.getCin()));
+        Optional <Staff> staff = Optional.ofNullable(staffService.getStaffById(staffBody.getIdStaff()));
 
         if(staff.isPresent())
         {
-            Staff createStaff = staffService.updateStaff(staffBody.getCin(), staffBody);
+            Staff createStaff = staffService.updateStaff(staffBody.getIdStaff(), staffBody);
             return ResponseEntity.ok(staffBody);
         }
         return ResponseEntity.notFound().build();

@@ -5,16 +5,11 @@ import com.example.qatar2022.entities.personne.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
-@Table(name ="reservation")
+@Table
 @Setter
 @Getter
 @AllArgsConstructor
@@ -34,8 +29,10 @@ public class Reservation {
     private Boolean paye;
 
     @ManyToOne
-    @JoinColumn(name="user_cin")
+    @JoinColumn(name="user_id_user")
     private User user;
+
+
 
     @ManyToOne
     @JoinColumn(name="partie_id_partie")

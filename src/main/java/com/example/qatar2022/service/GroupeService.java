@@ -21,6 +21,7 @@ public class GroupeService {
         this.groupeRepository = groupeRepository;
     }
 
+
     public List<Groupe> getAllGroupe()
     {
         List<Groupe> groupes= new ArrayList<>();

@@ -12,4 +12,5 @@ public interface EquipeRepository extends JpaRepository<Equipe,Long> {
 
 
     Optional<Equipe> findEquipeByIdEquipe(Long idEquipe);
+
 }

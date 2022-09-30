@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html   lang="fr"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org"
+        layout:decorate="~{layouts/main}">
+<head>
+    <title>Fiche d'un artiste</title>
+
+    <!--colore errore messaggi-->
+    <style>
+        .error{
+            color:red;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+    <div layout:fragment="content">
+        <form action="# " th:action="@{'/equipe/edit/'+ ${equipe.idEquipe}}" th:object="${equipe}" method="post"> <!-- th:object ci serve per fare collegamento con il model -->
+            <!-- <h1 th:text="|${artist.firstname} ${artist.lastname}|">ARMEN sulu</h1> -->
+            <div class="form-group">
+                <strong> <label for="pays">Pays</label></strong>
+                <input class="form-control" type="text"  th:field="*{pays}" id="pays" placeholder="pays">
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('pays')}"  th:errors="*{pays}" th:errorclass="error"></div>
+            </div>
+
+            <div class="form-group">
+                <strong><label for="nbr_points">NBR Points</label></strong>
+                <!-- th field permette di recuperare il nome selezionato -->
+                <input class="form-control" type="text" th:field="*{nbr_points}"  id="nbr_points" placeholder="nbr_points">
+                <!-- place holder suggerimento allinterno del box -->
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('nbr_points')}" th:errors="*{nbr_points}" th:errorclass="error"></div>
+            </div>
+<!--
+            <div class="form-group">Drapeau</label></strong>
+
+                <input class="form-control" type="image" th:field="*{drapeau}"  id="drapeau" placeholder="drapeau">
+
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('drapeau')}" th:errors="*{drapeau}" th:errorclass="error"></div>
+            </div>
+    -->
+
+
+            <br/>
+
+            <button  type="submit" th:text="Edit" /><br/><br/>
+
+
+
+            <nav><a th:href="@{/equipe}">Annuler</a></nav>
+
+        </form>
+
+    </div>
+</div>
+
+</body>
+
+</html>

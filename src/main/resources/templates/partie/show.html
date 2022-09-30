@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+
+
+    <title>Match detail </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
+    <link href="../static/css/index/index/index.css" th:href="@{/css/index/index.css}" rel="stylesheet" />
+</head>
+
+<body>
+<header th:insert="fragments/header.html :: nav"></header>
+
+
+<table class="table">
+
+    <thead>
+    <tr>
+    <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr>
+        <th scope="row"></th>
+        <td th:text="${partie.eq1.pays}"> </td>
+        <td></td>
+        <td th:text="${partie.eq2.pays}"></td>
+    </tr>
+
+
+    <tr>
+        <th scope="row"><a valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:href="@{${'/v1/partie/showJoueurByPartie/' + partie.idPartie }}">Team Composition </a></th>
+        <td>
+        <img class="picture" th:src="@{${'/v1/image/display/' + partie.eq1.drapeau.id}}" width="100"></td>
+        <td></td>
+        <td>
+        <img class="picture" th:src="@{${'/v1/image/display/' + partie.eq2.drapeau.id}}" width="100"></td>
+        <td>
+            <a valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:href="@{${'/v1/partie/showJoueurByPartie/' + partie.idPartie }}">Team Composition </a></td>
+    </tr>
+
+    <tr>
+        <th scope="row" >Stadium</th>
+        <td></td>
+        <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${partie.stade.nomStade}"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <th scope="row" >Date Time</th>
+        <td></td>
+        <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${partie.dateTime}"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <th scope="row" >Arbitre</th>
+        <td></td>
+        <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${partie.arbitre_principal}"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <th scope="row" >Total Time</th>
+        <td></td>
+        <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${partie.totalTime}"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <th scope="row" >Price</th>
+        <td></td>
+        <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${partie.prix}+ ' euro'"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <th scope="row" ></th>
+        <td valign="middle" align="center" class="col-sm text-muted">
+            <a th:href="@{${'/reservation/reservationByPartie/' + partie.idPartie}}">Reservation</a></td>
+    </tr>
+    </tbody>
+</table>
+    </div>
+        <script> src="https://code.jquery.com/jquery-3.6.1.js"</script>
+</body>

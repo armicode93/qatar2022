@@ -28,9 +28,9 @@ public class StaffService {
 
         return staff;
     }
-    public Staff getStaffById(Long cin)
+    public Staff getStaffById(Long idStaff)
     {
-        return  staffRepository.findById(cin).orElse(null);
+        return  staffRepository.findById(idStaff).orElse(null);
     }
 
     public void addStaff(Staff staff)
@@ -38,19 +38,19 @@ public class StaffService {
         staffRepository.save(staff);
 
     }
-    public Staff updateStaff(Long cin, Staff staff)
+    public Staff updateStaff(Long idStaff, Staff staff)
     {
         staffRepository.save(staff);
         return staff;
     }
-    public void deleteStaff(Long cin)
+    public void deleteStaff(Long idStaff)
     {
-        boolean exists = staffRepository.existsById(cin);
+        boolean exists = staffRepository.existsById(idStaff);
         if(!exists)
         {
             throw new IllegalStateException("Not exists");
         }
-        staffRepository.deleteById(cin);
+        staffRepository.deleteById(idStaff);
     }
 
 }

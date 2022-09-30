@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liste des représentations de spectacle</title>
+</head>
+<body>
+
+
+<div class="container">
+    <div layout:fragment="content">
+
+
+        <form action="#" th:action="@{'/reservation/newReservation'}" th:object="${reservations}" method="post" class="form">
+
+            <h1> Reservations Billet</h1>
+            <div  th:unless="${#lists.isEmpty(parties)} ">
+
+            <select class="form-control" th:field="${parties}"  id="Stade">
+                <option value="0">--- Please choose the match --- </option>
+                <option th:each="partie: ${parties}"
+                        th:value="${partie}"
+                        th:text="${partie.eq1.pays + '      ' + partie.eq2.pays + '       '   + partie.dateTime + '        ' +partie.prix+'   £'}"
+                ></option>
+            </select>
+
+                <select class ="form-control" th:field="${reservations}" id="places">
+                    <option value="0">--Number of places--</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="4">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+
+
+</select>
+
+            </div>
+    <br>
+            <br>
+            <input class="btn btn-primary" type="submit" value="Submit" /><br/><br/>
+        </form>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"  xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 
 
@@ -14,37 +15,13 @@
 
       <title>Header fragment</title>
   </head>
-<body >
+<body>
+
+<header th:insert="fragments/header.html :: nav"></header>
 
 
 <!-- Navbar -->
-<header>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-          <a class="navbar-brand" href="#">
-              <img src="/images/logo/fifaLogo.png" alt="" width="80" height="40">
-          </a>
 
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav">
-                  <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="#">Home</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="#">Inscription</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="#">Connexion</a>
-                  </li>
-              </ul>
-          </div>
-
-      </div>
-  </nav>
-</header>
 
 
 <!-- Carousel
@@ -75,34 +52,50 @@
 
 
 <table class="table table-equipe" th:unless="${#lists.isEmpty(equipes)} ">
+
     <thead>
+
 <tr>
+
         <th scope="col">#</th>
         <th  scope="col">Pays</th>
+        <th><a  th:href="@{'/equipe/add'}"  class="btn btn-primary">Add New Equipe</a></th>
+
 
     </tr>
 
     </thead>
 
     <tbody>
-    <tr th:each="equipe: ${equipes} ">
+    <tr th:each="equipe : ${equipes}">
 
-        <th scope="row" th:text="${equipe.idEquipe}"></th>
+        <td scope="row" th:text="${equipe.idEquipe}"></td>
 
         <td  valign="middle"  th:text="${equipe.pays}" >Equipe</td>
         <td valign="middle" align="center">
-        <img  th:src="@{${'v1/image/display/' + equipe.drapeau.id}}" width="100"
-              ></td>
+        <img  th:src="@{${'v1/image/display/' + equipe.drapeau.id}}" width="100"></td>
+        <!-- delete form -->
+        <td>
+            <form  th:id="|deleteForm-${equipe.idEquipe}|"
+                  th:action="@{'/equipe/delete/'+ ${equipe.idEquipe}}" th:method="delete">
+                <!--delete form -->
+
+                <a href="#"  sec:authorize= 'hasRole("admin")' th:onclick="|if(confirm('Confirm delete equipe #${equipe.idEquipe}'))
+                document.getElementById('deleteForm-${equipe.idEquipe}').submit();
+                    return false;|">Delete</a> <!-- alert with javascript -->
+
+            </form>
+        </td>
 
     </tr>
 
 
-
-    </tr>
 
 
     </tbody>
+
 </table>
+
 
 
 
@@ -111,6 +104,9 @@
     <thead>
     <tr>
         <th scope="col" class="header-align-center">Calendrier des matchs</th>
+        <th></th>
+        <th></th>
+        <th><a   th:href="@{'v1/partie/add'}" class="btn btn-primary">Add New Match</a></th>
     </tr>
 
 
@@ -182,6 +178,10 @@
            <div class="tour">
                <div class="col-sm text-muted" style="font-size: small;">
                    <div th:text="${partie.dateTime}"></div>
+                   <ul>
+
+                       <li> <a th:href="@{${'v1/partie/show/'+ partie.idPartie}}" >Detail</a></li>
+                   </ul>
 
                </div>
                     </div>
@@ -208,8 +208,9 @@
                                 </p>
                             </div>
                         </div>
-                    </div></td>
+                    </div>
 
+                </td>
 
 
 
@@ -242,6 +243,8 @@
 <script> src="https://code.jquery.com/jquery-3.6.1.js"</script>
 
 </div>
+
+
 
 </body>
 

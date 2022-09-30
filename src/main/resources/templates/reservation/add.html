@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layouts/main}">
+<head>
+    <title>Reservation</title>
+</head>
+
+<body>
+<div class="container">
+    <div layout:fragmnent-="content">
+
+        <form action="# " th:action="@{'v1/Reservation/newReservation'}" th:object="${reservation}" method="post" class="form">
+            <h1> Reservations match</h1>
+    </div>
+</div>
+</body>

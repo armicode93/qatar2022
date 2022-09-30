@@ -28,5 +28,14 @@ public class Tour {
 
      */
 
+    public Tour(String nomTour) {
+        this.nomTour = nomTour;
+    }
 
+    @Override
+    public String toString() {
+        return "Tour{" +
+                "nomTour='" + nomTour + '\'' +
+                '}';
+    }
 }

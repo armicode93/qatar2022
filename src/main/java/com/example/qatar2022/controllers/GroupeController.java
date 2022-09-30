@@ -3,89 +3,43 @@ package com.example.qatar2022.controllers;
 
 import com.example.qatar2022.entities.Equipe;
 import com.example.qatar2022.entities.Groupe;
-import com.example.qatar2022.repository.GroupeRepository;
+import com.example.qatar2022.service.EquipeService;
 import com.example.qatar2022.service.GroupeService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("v1/Groupe")
+@Controller
+
 @CrossOrigin(origins="*")
 public class GroupeController {
 
     private final GroupeService groupeService;
 
-    public GroupeController(GroupeService groupeService) {
+    private final EquipeService equipeService;
+
+    public GroupeController(GroupeService groupeService, EquipeService equipeService) {
         this.groupeService = groupeService;
+        this.equipeService = equipeService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity findAll()
+    @GetMapping("/groupe ")
+    public String index(Model model)
     {
-        return ResponseEntity.ok(groupeService.getAllGroupe());
-    }
-    @GetMapping("/{idGroupe}")
-    public ResponseEntity findGroupeById(@PathVariable(name="idGroupe") Long idGroupe)
-    {
-        if(idGroupe == null)
-        {
-            return ResponseEntity.badRequest().body("Empty paramenre");
-        }
+        List<Groupe> groupes = groupeService.getAllGroupe();
+        List<Equipe> equipes= equipeService.getAllEquipe();
 
-        Groupe groupe = groupeService.getGroupeById(idGroupe);
+        model.addAttribute("groupes",groupes);
+        model.addAttribute("equipes",equipes);
 
-        if(groupe != null)
-        {
-            return ResponseEntity.ok(groupe);
-        }
-        else
-        {
-            return ResponseEntity.notFound().build();
-        }
+        return "groupe/index.html";
+
+
     }
 
-    @PostMapping("/")
-    public ResponseEntity createGroupe(@RequestBody Groupe groupeBody)
-    {
-        if (groupeBody == null)
-        {
-            return  ResponseEntity.badRequest().body("Empty Request Body");
-        }
-        Optional<Groupe> groupes= Optional.ofNullable(groupeService.getGroupeById(groupeBody.getIdGroupe()));
-
-
-        if(!groupes.isPresent())
-        {
-           groupeService.addGroupe(groupeBody);
-            return ResponseEntity.ok(groupeBody);
-        }
-        return  ResponseEntity.badRequest().body("Groupe exist");
-    }
-
-    @DeleteMapping(path="{idGroupe}")
-    public void deleteGroupe(@PathVariable("idGroupe") Long idGroupe)
-    {
-        groupeService.deleteGroupe(idGroupe);
-    }
-
-    @PutMapping("/")
-    public ResponseEntity updateGroupe (@RequestBody Groupe groupeBody)
-    {
-        if(groupeBody == null)
-        {
-            return ResponseEntity.badRequest().body("Empty Reqest body");
-        }
-        Optional<Groupe> groupes = Optional.ofNullable(groupeService.getGroupeById(groupeBody.getIdGroupe()));
-
-        if(groupes.isPresent())
-        {
-            Groupe createGroupe = groupeService.updateGroupe(groupeBody.getIdGroupe(),groupeBody);
-            return ResponseEntity.ok(groupeBody);
-        }
-
-        return ResponseEntity.notFound().build();
-    }
 
 }

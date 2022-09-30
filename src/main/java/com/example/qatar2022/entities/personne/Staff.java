@@ -8,15 +8,20 @@ import java.io.Serializable;
 
 @Entity
 @Data
-
+@Table(name="staff")
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@DiscriminatorValue("staff")
 
-public class Staff extends Personne implements Serializable  {
+
+public class Staff implements Serializable {
+
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long idStaff;
 
     @ManyToOne
     @JoinColumn(name="equipe_id_equipe")
@@ -25,3 +30,4 @@ public class Staff extends Personne implements Serializable  {
     private String fonction;
 
 }
+

@@ -30,7 +30,7 @@ public class Goal{
 
 
     @ManyToOne
-    @JoinColumn(name = "joueur_cin")
+    @JoinColumn(name = "joueur_id")
     private Joueur joueur;
 
 

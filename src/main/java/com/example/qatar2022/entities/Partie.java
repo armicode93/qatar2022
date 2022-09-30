@@ -7,39 +7,50 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Data
 @Table(name="partie")
 public class Partie implements Serializable {
 
+
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long idPartie;
 
-    @ManyToOne
-
+    //@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @ManyToOne(cascade = CascadeType.PERSIST)//(cascade = {CascadeType.ALL})
 
     private Equipe eq1;
 
-    @ManyToOne
+
+   // @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @ManyToOne(
+            cascade = CascadeType.PERSIST)//(cascade = {CascadeType.ALL})
 
     private Equipe  eq2;
 
-    @ManyToOne
+   // @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="stade_id_stade")
-    private Stade stade;
 
-   /* @ManyToMany
+
+    private Stade stade;
+/*
+    @ManyToMany
     private List<Joueur> joueur = new ArrayList<>();
 
-    */
+ */
+
+
 
     /*
     @OneToMany(mappedBy="partie")
@@ -47,19 +58,32 @@ public class Partie implements Serializable {
 
      */
 
-    @ManyToOne
-    @JoinColumn(name="tour_id_tour")
+    //@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="tour_id_tour" )
     private Tour tour ;
 
-   /*@ManyToMany(mappedBy = "partie")
-   private List <Joueur> joueur = new ArrayList<>();
 
-    */
+   @OneToMany(mappedBy = "partie")
+   private List<Joueur> joueur = new ArrayList<>();
+
+
+
+
 
   /* @OneToMany(mappedBy = "partie")
    private List<Reservation> reservation = new ArrayList<>();
 
    */
+/*
+    @OneToMany(mappedBy = "joueur")
+    private Set<Poste> joueur = new HashSet<Poste>();
+
+ */
+
+
+
+
 
 
 
@@ -67,6 +91,7 @@ public class Partie implements Serializable {
 
     private int scoreEq2;
 
+@DateTimeFormat(pattern="yyyy/MM/dd HH:mm:ss")
     private LocalDateTime dateTime;
 
 
@@ -78,6 +103,141 @@ public class Partie implements Serializable {
     private String prolongation;
 
     private Double prix;
+
+    public Partie(Equipe eq1, Equipe eq2, Stade stade, Tour tour, int scoreEq1, int scoreEq2, LocalDateTime dateTime, String arbitre_principal, String totalTime, String prolongation, Double prix) {
+        this.eq1 = eq1;
+        this.eq2 = eq2;
+        this.stade = stade;
+        this.tour = tour;
+        this.scoreEq1 = scoreEq1;
+        this.scoreEq2 = scoreEq2;
+        this.dateTime = dateTime;
+        this.arbitre_principal = arbitre_principal;
+        this.totalTime = totalTime;
+        this.prolongation = prolongation;
+        this.prix = prix;
+    }
+
+    public Partie() {
+
+    }
+
+
+    public Long getIdPartie() {
+        return idPartie;
+    }
+
+    public void setIdPartie(Long idPartie) {
+        this.idPartie = idPartie;
+    }
+
+    public Equipe getEq1() {
+        return eq1;
+    }
+
+    public void setEq1(Equipe eq1 ) {
+        this.eq1 = eq1;
+    }
+
+    public Equipe getEq2() {
+        return eq2;
+    }
+
+    public void setEq2(Equipe eq2) {
+        this.eq2 = eq2;
+    }
+
+
+    public Stade getStade() {
+        return stade;
+    }
+
+    public void setStade(Stade stade) {
+        this.stade = stade;
+    }
+
+    public Tour getTour() {
+        return tour;
+    }
+
+    public void setTour(Tour tour) {
+        this.tour = tour;
+    }
+
+    public int getScoreEq1() {
+        return scoreEq1;
+    }
+
+    public void setScoreEq1(int scoreEq1) {
+        this.scoreEq1 = scoreEq1;
+    }
+
+    public int getScoreEq2() {
+        return scoreEq2;
+    }
+
+    public void setScoreEq2(int scoreEq2) {
+        this.scoreEq2 = scoreEq2;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public String getArbitre_principal() {
+        return arbitre_principal;
+    }
+
+    public void setArbitre_principal(String arbitre_principal) {
+        this.arbitre_principal = arbitre_principal;
+    }
+
+    public String getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(String totalTime) {
+        this.totalTime = totalTime;
+    }
+
+    public String getProlongation() {
+        return prolongation;
+    }
+
+    public void setProlongation(String prolongation) {
+        this.prolongation = prolongation;
+    }
+
+    public Double getPrix() {
+        return prix;
+    }
+
+    public void setPrix(Double prix) {
+        this.prix = prix;
+    }
+
+    @Override
+    public String toString() {
+        return "Partie{" +
+                "eq1=" + eq1 +
+                ", eq2=" + eq2 +
+                ", stade=" + stade +
+                ", tour=" + tour +
+                ", scoreEq1=" + scoreEq1 +
+                ", scoreEq2=" + scoreEq2 +
+                ", dateTime=" + dateTime +
+                ", arbitre_principal='" + arbitre_principal + '\'' +
+                ", totalTime='" + totalTime + '\'' +
+                ", prolongation='" + prolongation + '\'' +
+                ", prix=" + prix +
+                '}';
+    }
+
+
 
 
 

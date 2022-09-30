@@ -41,7 +41,14 @@ public class Stade implements Serializable {
     private Long capacite;
 
 
+    public Stade(String nomStade) {
+        this.nomStade = nomStade;
+    }
 
-
-
+    @Override
+    public String toString() {
+        return "Stade{" +
+                "nomStade='" + nomStade + '\'' +
+                '}';
+    }
 }

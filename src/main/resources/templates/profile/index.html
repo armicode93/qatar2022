@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap core CSS -->
+<link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+<link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
+<link href="../static/css/index/index/index.css" th:href="@{/css/index/index.css}" rel="stylesheet" />
+<body>
+
+<!-- Page content goes here -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/registration}">Inscription</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="nav-link" th:href="@{/profile/index}">Profile</a>
+                </li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+                    <a class="nav-link" href="#">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class ="nav-link" th:href="@{/reservation/index}">Reservations</a>
+                </li>
+                <!-- <li class="nav-item">
+                     <a class="collapse navbar-collapse justify-content-end" > Welcome  [[${#httpServletRequest.remoteUser}]]</a>
+                     -->
+
+
+                <!-- print username id -->
+                <!--sec:authentification thymeleaf attribute to springSecurity
+                principal.username sintax to take the username from the spring security object -->
+
+                <!-- <h5>Welcome <span sec:authentication="principal.username"></span></h5> -->
+
+
+
+
+                </li>
+
+            </ul>
+        </div>
+
+
+        <form class="form-inline my-2 my-lg-0" form-method="post" th:action="@{/logout}">
+            <a class="collapse navbar-collapse justify-content-end" style="text-decoration: none"> Welcome  [[${#httpServletRequest.remoteUser}]]</a>
+
+            <button sec:authorize="isAuthenticated()" class="btn btn-outline-danger my-2 my-sm-0 btn-sm" type="submit">Logout</button>
+            <button sec:authorize="isAnonymous()" th:href="@{~/login}" class="btn btn-outline-info my-2 my-sm-0 btn-sm" type="submit">Login</button>
+        </form>
+
+
+
+
+    </div>
+</nav>
+
+
+
+
+
+
+</div>
+<div class="container">
+
+    <div th:if="${param.success}">
+        <div class="alert alert-info">You are sucessfully registered</div>
+    </div>
+
+        <!-- Profile Page -->
+
+    <div class="card" style="width: 18rem;">
+        <img src="/images/profile.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">User card</h5>
+            <p class="card-text">username : <span sec:authentication="name"></span></p>
+            <p><span sec:authentication="principal.authorities"></span></p>
+
+        </div>
+</div>
+</div>
+</body>
+</html>

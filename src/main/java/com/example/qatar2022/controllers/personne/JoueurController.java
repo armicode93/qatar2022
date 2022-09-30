@@ -3,8 +3,10 @@ package com.example.qatar2022.controllers.personne;
 import com.example.qatar2022.entities.personne.Joueur;
 import com.example.qatar2022.service.personne.JoueurService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -14,19 +16,26 @@ public class JoueurController {
 
     private final JoueurService joueurService;
 
+
+
     public JoueurController(JoueurService joueurService) {
         this.joueurService = joueurService;
     }
 
 
     @GetMapping("/")
-    public ResponseEntity findAll() {
-        return ResponseEntity.ok(joueurService.getAllJoueur());
+    public String findAll(Model model) {
+
+        List<Joueur> joueurs= joueurService.getAllJoueur();
+
+        model.addAttribute("joueurs",joueurs);
+
+        return "joueur/index" ;
     }
 
 
     @GetMapping("/equipe/{IdEquipe}")
-    public ResponseEntity findAll(@PathVariable(name = "IdEquipe") Long idEquipe) {
+    public ResponseEntity findAllByEquipe(@PathVariable(name = "IdEquipe") Long idEquipe) {
         return ResponseEntity.ok(joueurService.getAllJoueurByEquipe(idEquipe));
     }
 
@@ -51,7 +60,7 @@ public class JoueurController {
             return ResponseEntity.badRequest().body("Empty Request Body");
         }
 
-        Optional<Joueur> joueur = Optional.ofNullable(joueurService.getJoueurById(joueurBody.getCin()));
+        Optional<Joueur> joueur = Optional.ofNullable(joueurService.getJoueurById(joueurBody.getIdJoueur()));
         if (!joueur.isPresent()) {
 
             joueurService.addJoueur(joueurBody);
@@ -73,10 +82,10 @@ public class JoueurController {
         }
 
 
-        Optional<Joueur> joueur = Optional.ofNullable(joueurService.getJoueurById(joueurBody.getCin()));
+        Optional<Joueur> joueur = Optional.ofNullable(joueurService.getJoueurById(joueurBody.getIdJoueur()));
 
         if (joueur.isPresent()) {
-            Joueur createJoueur = joueurService.updateJoueur(joueurBody.getCin(),joueurBody);
+            Joueur createJoueur = joueurService.updateJoueur(joueurBody.getIdJoueur(),joueurBody);
             return ResponseEntity.ok(createJoueur);
         }
         return ResponseEntity.notFound().build();

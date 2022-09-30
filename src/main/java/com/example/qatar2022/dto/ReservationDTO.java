@@ -1,6 +1,5 @@
 package com.example.qatar2022.dto;
 
-import com.example.qatar2022.entities.Partie;
 import com.example.qatar2022.entities.personne.User;
 import lombok.Data;
 

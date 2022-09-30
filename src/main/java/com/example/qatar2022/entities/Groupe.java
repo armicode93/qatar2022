@@ -9,10 +9,8 @@ import java.util.List;
 @Entity
 @Data
 @Table(name="groupe")
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
+
+
 
 public class Groupe {
 
@@ -26,4 +24,38 @@ public class Groupe {
     private List<Equipe> equipe = new ArrayList<>();
 
      */
+
+    public Groupe() {
+    }
+
+    public Groupe(String nomGroupe) {
+        this.nomGroupe = nomGroupe;
+    }
+
+    public Groupe(Long idGroupe) {
+        this.idGroupe = idGroupe;
+    }
+
+    public Long getIdGroupe() {
+        return idGroupe;
+    }
+
+    public void setIdGroupe(Long idGroupe) {
+        this.idGroupe = idGroupe;
+    }
+
+    public String getNomGroupe() {
+        return nomGroupe;
+    }
+
+    public void setNomGroupe(String nomGroupe) {
+        this.nomGroupe = nomGroupe;
+    }
+
+    @Override
+    public String toString() {
+        return "Groupe{" +
+                "nomGroupe='" + nomGroupe + '\'' +
+                '}';
+    }
 }
