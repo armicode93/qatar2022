@@ -37,19 +37,6 @@ public class Joueur implements Serializable {
     @JoinColumn(name="equipe_id_equipe")
     private Equipe equipe;
 
-    @ManyToOne
-    private Partie partie;
-
-
-/*
-
-    @OneToMany(mappedBy="partie",cascade = CascadeType.ALL)
-    private Set<Poste> partie = new HashSet<>();
-
- */
-
-
-
 
 
     public Joueur(String nom, String prenom, Boolean blessure) {

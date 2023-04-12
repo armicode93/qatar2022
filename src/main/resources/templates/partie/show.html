@@ -83,6 +83,15 @@
         <th scope="row" ></th>
         <td valign="middle" align="center" class="col-sm text-muted">
             <a th:href="@{${'/reservation/reservationByPartie/' + partie.idPartie}}">Reservation</a></td>
+
+
+    </tr>
+    <tr>
+        <th scope="row" ></th>
+        <td valign="middle" align="center" class="col-sm text-muted">
+            <a th:href="@{'/v1/partie/editResult/' + ${partie.idPartie}}">Add Results</a></td>
+
+
     </tr>
     </tbody>
 </table>

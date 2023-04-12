@@ -5,6 +5,9 @@ import com.example.qatar2022.entities.*;
 import com.example.qatar2022.entities.personne.Joueur;
 import com.example.qatar2022.service.*;
 import com.example.qatar2022.service.personne.JoueurService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,8 +17,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -43,14 +46,32 @@ public class PartieController {
 
 
     @GetMapping("/")
-    public String index(Model model)
+    public String index(Model model, @RequestParam(defaultValue = "0") int
+            page, @RequestParam(defaultValue = "0") int size,  @RequestParam(defaultValue = "title") String sortBy)
     {
-        List<Partie> parties = partieService.getAllPartie();
-        List <Image> images = imageService.getAllImage();
 
-        model.addAttribute("parties", parties);
+        // <Partie> parties = partieService.getPartiteByTurno();
+        List <Image> images = imageService.getAllImage();
+     //   List<Tour> tours = tourService.getallTour();
+
+        List<Partie> parties = partieService.getAllPartie();
+
+       /* Map<Tour, List<P
+       artie>> partitePerTurno = new LinkedHashMap<>(); // mappa per associare ad ogni turno l'elenco delle partite
+        for (Tour tour : tours) {
+            List<Partie> partite = partieService.getPartiteByTurno(tour); // recupera le partite del turno corrente dal database
+
+            partitePerTurno.put(tour, partite); // aggiunge il turno e l'elenco delle partite alla mappa
+        }
+
+        */
+        //model.addAttribute("partitePerTurno", partitePerTurno);
+
+        model.addAttribute("parties",parties);
+       // model.addAttribute("tours", tours);
         model.addAttribute("images", images);
         model.addAttribute("title","Liste des matches");
+        // recupera tutti i turni
 
         return "index";
 
@@ -58,12 +79,21 @@ public class PartieController {
 
 
 
+
+
+
+
+
+
+
     @GetMapping("/show/{idPartie}")
     public String show (Model model, @PathVariable(name="idPartie")Long idPartie)
     {
+
          Partie partie = partieService.getPartieById(idPartie);
 
          model.addAttribute("partie",partie);
+
          /*model.addAttribute("image1",partie.getEq1().getDrapeau().getId());
          model.addAttribute("image2", partie.getEq2().getDrapeau().getId());
 
@@ -94,24 +124,20 @@ public class PartieController {
 
         return "partie/add";
     }
+    /*
     @GetMapping("/showJoueurByPartie/{idPartie}")
     public String showJoueurByPartie (Model model, @PathVariable(name="idPartie")Long idPartie)
     {
 
-        //  List<Poste> postes = posteService.getAllPoste();
+
         Partie partie =  partieService.getPartieById(idPartie);
-       // List <Joueur> joueurs= joueurService.getAllJoueur();
+
 
 
 
 
         model.addAttribute("partie",partie);
         model.addAttribute("joueurs", joueurService.getAllJoueur());
-        //model.addAttribute("joueurPrenom",joueur.getPrenom());
-       // model.addAttribute("joueur",joueur.getPrenom());
-
-        // model.addAttribute("postes",postes);
-
 
 
 
@@ -121,11 +147,13 @@ public class PartieController {
         return "partie/showJoueurByPartie";
     }
 
+     */
+
 
 
 
     @PostMapping("/add")
-    public String partieSubmitAdd(@Valid @ModelAttribute("partie") Partie partie,@ModelAttribute("equipe") Equipe equipe,@ModelAttribute("stade") Stade stade,@ModelAttribute("tour") Tour tour, BindingResult result, ModelMap model)
+    public String partieSubmitAdd( @ModelAttribute("partie") Partie partie,@ModelAttribute("equipe") Equipe equipe,@ModelAttribute("stade") Stade stade,@ModelAttribute("tour") Tour tour, BindingResult result, ModelMap model)
     {
         if(result.hasErrors())
         {
@@ -136,8 +164,8 @@ public class PartieController {
         partie.setStade(partie.getStade());
 
         partie.setTour(partie.getTour());
-        partie.setScoreEq1(partie.getScoreEq1());
-        partie.setScoreEq2(partie.getScoreEq2());
+       //partie.setScoreEq1(partie.getScoreEq1());
+        //partie.setScoreEq2(partie.getScoreEq2());
 
 
 
@@ -147,6 +175,8 @@ public class PartieController {
         partie.setTotalTime(partie.getTotalTime());
         partie.setProlongation(partie.getProlongation());
         partie.setPrix(partie.getPrix());
+
+
 
 
 
@@ -176,7 +206,7 @@ public class PartieController {
            partieService.deletePartie(idPartie);
         }
 
-    @PutMapping(path = "/" )
+   /* @PutMapping(path = "/" )
     public ResponseEntity updatePartie (@RequestBody Partie partieBody) {
 
 
@@ -193,5 +223,45 @@ public class PartieController {
         return ResponseEntity.notFound().build();
     }
 
+    */
 
+    @GetMapping("/editResult/{idPartie}")
+    public String editResult (Model model, @PathVariable(name="idPartie")String idPartie)
+    {
+        Partie partie = partieService.getPartieByIdPartie(idPartie);
+
+        model.addAttribute("partie",partie);
+        model.addAttribute("title","");
+
+        return "partie/editResultForm";
+
+
+    }
+
+    @PostMapping ("/editResult/{idPartie}")
+    public String editResultSubmit (@Valid @ModelAttribute("partie") Partie partie,@RequestParam("scoreEq1") int scoreEq1,
+                                    @RequestParam("scoreEq2") int scoreEq2,BindingResult result, @PathVariable("idPartie") Long idPartie, Model model)
+    {
+
+        if (result.hasErrors())
+        {
+            return "partie/editResultForm";
+        }
+         Partie existing = partieService.getPartieById(idPartie);
+
+
+        if (existing == null)
+        {
+            return "redirect:/";
+        }
+
+
+        partieService.updatePartie(idPartie, scoreEq1, scoreEq2);
+
+
+
+        return "redirect:/";
+
+
+    }
 }

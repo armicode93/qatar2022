@@ -5,6 +5,7 @@ import com.example.qatar2022.entities.personne.Joueur;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 
 @Entity
 @Data
@@ -41,55 +43,19 @@ public class Partie implements Serializable {
    // @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="stade_id_stade")
-
-
     private Stade stade;
-/*
-    @ManyToMany
-    private List<Joueur> joueur = new ArrayList<>();
 
- */
-
-
-
-    /*
-    @OneToMany(mappedBy="partie")
-    private List <Goal> goal = new ArrayList<>();
-
-     */
 
     //@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="tour_id_tour" )
     private Tour tour ;
 
+    @Nullable
+    private Integer scoreEq1 ;
 
-   @OneToMany(mappedBy = "partie")
-   private List<Joueur> joueur = new ArrayList<>();
-
-
-
-
-
-  /* @OneToMany(mappedBy = "partie")
-   private List<Reservation> reservation = new ArrayList<>();
-
-   */
-/*
-    @OneToMany(mappedBy = "joueur")
-    private Set<Poste> joueur = new HashSet<Poste>();
-
- */
-
-
-
-
-
-
-
-    private int scoreEq1;
-
-    private int scoreEq2;
+    @Nullable
+    private Integer scoreEq2 ;
 
 @DateTimeFormat(pattern="yyyy/MM/dd HH:mm:ss")
     private LocalDateTime dateTime;
@@ -118,10 +84,44 @@ public class Partie implements Serializable {
         this.prix = prix;
     }
 
+    public Partie(Long idPartie, Integer scoreEq1,  Integer scoreEq2) {
+        this.idPartie = idPartie;
+        this.scoreEq1 = scoreEq1;
+        this.scoreEq2 = scoreEq2;
+    }
+
+
     public Partie() {
 
     }
+    public Partie(Equipe eq1, Equipe eq2, Stade stade, Tour tour, LocalDateTime dateTime, String arbitre_principal, String totalTime, String prolongation, Double prix) {
+        this.eq1 = eq1;
+        this.eq2 = eq2;
+        this.stade = stade;
+        this.tour = tour;
 
+        this.dateTime = dateTime;
+        this.arbitre_principal = arbitre_principal;
+        this.totalTime = totalTime;
+        this.prolongation = prolongation;
+        this.prix = prix;
+    }
+
+    public Integer getScoreEq1() {
+        return scoreEq1;
+    }
+
+    public void setScoreEq1(Integer scoreEq1) {
+        this.scoreEq1 = scoreEq1;
+    }
+
+    public Integer getScoreEq2() {
+        return scoreEq2;
+    }
+
+    public void setScoreEq2(Integer scoreEq2) {
+        this.scoreEq2 = scoreEq2;
+    }
 
     public Long getIdPartie() {
         return idPartie;
@@ -164,21 +164,7 @@ public class Partie implements Serializable {
         this.tour = tour;
     }
 
-    public int getScoreEq1() {
-        return scoreEq1;
-    }
 
-    public void setScoreEq1(int scoreEq1) {
-        this.scoreEq1 = scoreEq1;
-    }
-
-    public int getScoreEq2() {
-        return scoreEq2;
-    }
-
-    public void setScoreEq2(int scoreEq2) {
-        this.scoreEq2 = scoreEq2;
-    }
 
     public LocalDateTime getDateTime() {
         return dateTime;

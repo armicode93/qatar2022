@@ -23,6 +23,10 @@ public class Staff implements Serializable {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long idStaff;
 
+    private String nom ;
+
+    private String prenom;
+
     @ManyToOne
     @JoinColumn(name="equipe_id_equipe")
     private Equipe equipe;

@@ -38,9 +38,7 @@ public class Goal{
     @JoinColumn(name="partie_id_partie")
     private Partie partie;
 
-    @ManyToOne
-    @JoinColumn(name="type_id_type")
-    private Type type;
+
     
 
 

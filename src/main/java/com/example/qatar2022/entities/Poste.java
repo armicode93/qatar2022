@@ -5,6 +5,7 @@ import lombok.*;
 import com.example.qatar2022.entities.Partie;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalTime;
 
@@ -18,23 +19,26 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class Poste implements Serializable {
 
-    @EmbeddedId
-    private PostePk id;
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long idPoste;
 
 
-    private String nomPoste;
+
+    @NotNull
+    private String Enum;
 
     private LocalTime tempsEntree;
 
     private LocalTime tempsSortie;
 
   @ManyToOne
-  @MapsId("joueur_id")
+
   @JoinColumn(name = "id_joueur")
     private Joueur joueur ;
 
    @ManyToOne
-   @MapsId("partie_id")
+
    @JoinColumn(name="id_partie")
     private Partie partie ;
 

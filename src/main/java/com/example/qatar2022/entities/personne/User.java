@@ -72,6 +72,8 @@ public class User implements Serializable {
     @Column(nullable = false)
     private Long gsm;
 
+    // i have to put relationship with reservation
+
 
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy="users") //caricamento veloce dei dati,senno LAZY caricamento quando necessario

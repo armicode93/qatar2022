@@ -5,44 +5,40 @@
 <head>
 
 
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap core CSS -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
     <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
     <link href="../static/css/index/index/index.css" th:href="@{/css/index/index.css}" rel="stylesheet" />
 
     <title>Header fragment</title>
 </head>
+    </head>
 <body>
 
 <header th:insert="fragments/header.html :: nav"></header>
 
-<table class="table table-groupe" th:unless="${#lists.isEmpty(groupes)} ">
+<table class="table table-groupe" th:unless="${#lists.isEmpty(groupes)}">
 
     <thead>
+    <tr>
+    <th th:each="groupe : ${groupes}">
 
-    <tr th:each="groupe : ${groupes}" >
+        <div scope="row" th:text="${groupe.nomGroupe}"></div>
+        <ul>
 
-
-            <th  scope="col" th:text="${groupe}">Groupe</th>
-
+            <li> <a th:href="@{${'/groupe/show/'+ groupe.idGroupe}}" >Detail</a></li>
+        </ul>
 
     </tr>
+    </th>
 
     </thead>
-
-    <tbody>
-
-
-
-
-
-    </tbody>
-
 </table>
-
-
 </body>
 </html>
+
+
+
+

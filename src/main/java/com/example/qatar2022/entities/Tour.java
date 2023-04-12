@@ -22,11 +22,14 @@ public class Tour {
     private String nomTour;
 
 
-    /*
+
     @OneToMany(mappedBy = "tour")
     private List<Partie> partie = new ArrayList<>();
 
-     */
+    public List<Partie> getPartie() {
+
+        return partie;
+    }
 
     public Tour(String nomTour) {
         this.nomTour = nomTour;

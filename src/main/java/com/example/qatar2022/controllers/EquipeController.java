@@ -4,11 +4,11 @@ package com.example.qatar2022.controllers;
 import com.example.qatar2022.entities.Equipe;
 import com.example.qatar2022.entities.Image;
 import com.example.qatar2022.entities.Partie;
+import com.example.qatar2022.entities.Tour;
 import com.example.qatar2022.service.EquipeService;
 import com.example.qatar2022.service.ImageService;
 import com.example.qatar2022.service.PartieService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import com.example.qatar2022.service.TourService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +21,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 //@RequestMapping("/v1/Equipe")
@@ -36,11 +34,13 @@ public class EquipeController {
     private final EquipeService equipeService;
     private final ImageService imageService;
     private final PartieService partieService;
+    private final TourService tourService;
 
-    public EquipeController(EquipeService equipeService, ImageService imageService, PartieService partieService) {
+    public EquipeController(EquipeService equipeService, ImageService imageService, PartieService partieService, TourService tourService) {
         this.equipeService = equipeService;
         this.imageService = imageService;
         this.partieService = partieService;
+        this.tourService = tourService;
     }
 
     @GetMapping("/")
@@ -48,8 +48,10 @@ public class EquipeController {
         List<Equipe> equipes = equipeService.getAllEquipe();
         List<Image> images = imageService.getAllImage();
         List<Partie> parties = partieService.getAllPartie();
+        List<Tour> tours = tourService.getallTour();
 
         model.addAttribute("parties", parties);
+        model.addAttribute("tours", tours);
         model.addAttribute("equipes", equipes);
         model.addAttribute("images", images);
         model.addAttribute("title", "Liste des equipe");

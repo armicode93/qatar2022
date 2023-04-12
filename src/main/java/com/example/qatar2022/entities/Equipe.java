@@ -49,9 +49,11 @@ public class Equipe implements Serializable {
 
 
 
-    @ManyToOne
+   /* @ManyToOne
     @JoinColumn(name = "groupe_id_groupe")
     private Groupe groupe ;
+
+    */
 
 
 
@@ -71,24 +73,17 @@ public class Equipe implements Serializable {
      */
 
 
-    public Equipe(String pays, Long nbr_points, Image drapeau, Groupe groupe) {
-        this.pays = pays;
-        this.nbr_points = nbr_points;
-        this.drapeau = drapeau;
-        this.groupe = groupe;
-    }
 
-    public Equipe(String pays) {
+
+    public Equipe(String nom) {
         this.pays = pays;
     }
 
-    public Equipe(String pays, Long nbr_points, Image drapeau) {
+    public Equipe(String nom, Long nbr_points, Image drapeau) {
         this.pays = pays;
         this.nbr_points = nbr_points;
         this.drapeau = drapeau;
     }
-
-
 
     @Override
     public String toString() {
@@ -97,7 +92,7 @@ public class Equipe implements Serializable {
                 ", pays='" + pays + '\'' +
                 ", nbr_points=" + nbr_points +
                 ", drapeau=" + drapeau +
-                ", groupe=" + groupe +
+
                 '}';
     }
 }

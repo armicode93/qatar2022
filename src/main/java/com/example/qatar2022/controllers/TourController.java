@@ -1,30 +1,46 @@
 package com.example.qatar2022.controllers;
 
 
-import com.example.qatar2022.entities.Equipe;
+import com.example.qatar2022.entities.Partie;
 import com.example.qatar2022.entities.Tour;
+import com.example.qatar2022.service.PartieService;
 import com.example.qatar2022.service.TourService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/Tour")
+@RequestMapping("/v1/tour")
 @CrossOrigin(origins = "*")
 public class TourController {
 
     private final TourService tourService;
+    private final PartieService partieService;
 
-    public TourController(TourService tourService) {
+    public TourController(TourService tourService, PartieService partieService) {
         this.tourService = tourService;
+        this.partieService = partieService;
     }
 
     @GetMapping("/")
-    public ResponseEntity findAll()
+    public String index(Model model)
     {
-        return ResponseEntity.ok(tourService.getallTour());
+        List<Partie> parties = partieService.getAllPartie();
+       List<Tour> tours = tourService.getallTour();
+
+       model.addAttribute("tours", tours);
+       model.addAttribute("parties",parties);
+       return "index";
     }
+
+
+
+
+
+
 
     @GetMapping("{idTour}")
     public ResponseEntity findTourById(@PathVariable(name = "idTour")Long idTour)

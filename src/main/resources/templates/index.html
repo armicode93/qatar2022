@@ -9,12 +9,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap core CSS -->
-     <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
-      <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
-      <link href="../static/css/index/index/index.css" th:href="@{/css/index/index.css}" rel="stylesheet" />
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
+    <link href="../static/css/index/index/index.css" th:href="@{/css/index/index.css}" rel="stylesheet" />
 
-      <title>Header fragment</title>
-  </head>
+    <title>Header fragment</title>
+</head>
 <body>
 
 <header th:insert="fragments/header.html :: nav"></header>
@@ -55,7 +55,7 @@
 
     <thead>
 
-<tr>
+    <tr>
 
         <th scope="col">#</th>
         <th  scope="col">Pays</th>
@@ -69,15 +69,16 @@
     <tbody>
     <tr th:each="equipe : ${equipes}">
 
+
         <td scope="row" th:text="${equipe.idEquipe}"></td>
 
         <td  valign="middle"  th:text="${equipe.pays}" >Equipe</td>
         <td valign="middle" align="center">
-        <img  th:src="@{${'v1/image/display/' + equipe.drapeau.id}}" width="100"></td>
+            <img  th:src="@{${'v1/image/display/' + equipe.drapeau.id}}" width="100"></td>
         <!-- delete form -->
         <td>
             <form  th:id="|deleteForm-${equipe.idEquipe}|"
-                  th:action="@{'/equipe/delete/'+ ${equipe.idEquipe}}" th:method="delete">
+                   th:action="@{'/equipe/delete/'+ ${equipe.idEquipe}}" th:method="delete">
                 <!--delete form -->
 
                 <a href="#"  sec:authorize= 'hasRole("admin")' th:onclick="|if(confirm('Confirm delete equipe #${equipe.idEquipe}'))
@@ -96,11 +97,28 @@
 
 </table>
 
+<!--
+<table class="table table-equipe" th:unless="${#lists.isEmpty(tours)} ">
+
+    <thead>
+    <p>Sono urururu</p>
+     <div class="total">
+
+     <tr th:each="tour : ${tours} ">
+
+
+                     <div th:text="${tour.nomTour}"></div>
+         <tr th:each="partie : ${parties} ">
+         <td th:text="${partie.eq1.pays}"></td>
+         <td th:text="${partie.eq2.pays}"></td>
 
 
 
+     </tr>
+     </div>
+-->
 
-<div th:unless="${#lists.isEmpty(parties)} ">
+<div th:unless="${#lists.isEmpty(tours)} ">
     <thead>
     <tr>
         <th scope="col" class="header-align-center">Calendrier des matchs</th>
@@ -112,11 +130,16 @@
 
 
 
-<div class="total">
-    <div th:each="partie: ${parties} ">
-        <div>
-            <table  class="full-width-table"  aria-label="Elements">
-                <!-- Id Column -->
+    <div class="total">
+        <tr th:each="tour : ${tours} ">
+
+
+            <div th:text="${tour.nomTour}"></div>
+        </tr>
+        <div th:each="partie: ${parties} ">
+            <div>
+                <table  class="full-width-table"  aria-label="Elements">
+                    <!-- Id Column -->
 
                     <th class ="mat-header-cell " scope="col" ></th>
                     <td class="mat-cell" >
@@ -128,111 +151,143 @@
                             <div class="row justify-content-center align-items-center">
                                 <p class="text-uppercase font-weight-bold">
 
-                                   <div th:text="${partie.eq1.pays}">
+                                <div th:text="${partie.eq1.pays}">
 
-                                </p>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
                         </div>  <!-- -->
                     </td>
 
 
 
-        <!-- Partie -->
+                    <!-- Partie -->
 
-                <td>
-                    <div class="container h-100">
-                <div class="row justify-content-center align-items-center font-weight-bold">
-           <div class ="col-sm">
+                   <!-- <td>
+                        <div class="container h-100">
+                            <div class="row justify-content-center align-items-center font-weight-bold">
 
-               <div th:text="${partie.scoreEq1}"> </div>
+                                    <div th:if="${partie.scoreEq1} != null">
+                                        <div class ="col-sm" >
+                                    <div th:text="${partie.scoreEq1}"> </div>
+                                    </div>
 
-           </div>
-           <div class="col-sm">
-               :
-           </div>
+                                <div class="col-sm">
+                                    :
+                                </div>
 
-           <div class="col-sm">
-               <div th:text="${partie.scoreEq2}"></div>
-           </div>
-       </div>
+                                <div class="col-sm">
+                                    <div th:text="${partie.scoreEq2}"></div>
+                                </div>
 
-
-
-      <!-- Tours -->
-       <div class="row justify-content-center align-items-center ">
-
-           <div class="tour">
-               <div  th:text="${partie.tour.nomTour}"></div>
-           </div>
+                                </div>
 
 
+                                    <div th:unless="${partie.scoreEq1}!= null">
+                                        <div class="col-sm">
+                                            <p>Match to play </p>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
 
-           <!-- Stade -->
-           <div class="tour ">
-               <div class="col-sm text-muted" style="font-size: small;">
-                   <div th:text="${partie.stade.nomStade}"></div>
-               </div>
-           </div>
+                    <td>
+                        <div class="container h-100">
+                            <div th:if="${partie.scoreEq1} != null">
+                            <div class="row justify-content-center align-items-center font-weight-bold">
 
-           <div class="tour">
-               <div class="col-sm text-muted" style="font-size: small;">
-                   <div th:text="${partie.dateTime}"></div>
-                   <ul>
+                                <div class ="col-sm">
 
-                       <li> <a th:href="@{${'v1/partie/show/'+ partie.idPartie}}" >Detail</a></li>
-                   </ul>
+                                    <div th:text="${partie.scoreEq1}"> </div>
 
-               </div>
-                    </div>
-                    </div>
-                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    :
+                                </div>
+
+                                <div class="col-sm">
+                                    <div th:text="${partie.scoreEq2}"></div>
+                                </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row justify-content-center align-items-center font-weight-bold">
+                            <div th:unless="${partie.scoreEq1}!= null">
+                                <div class="col-sm">
+                                    <p>       Match to play </p>
+                                </div>
+                            </div>
+                            </div>
+
+
+
+                            <!-- Tours -->
+                            <div class="row justify-content-center align-items-center ">
+
+                                <div class="tour">
+                                    <div  th:text="${partie.tour.nomTour}"></div>
+                                </div>
+
+
+
+                                <!-- Stade -->
+                                <div class="tour ">
+                                    <div class="col-sm text-muted" style="font-size: small;">
+                                        <div th:text="${partie.stade.nomStade}"></div>
+                                    </div>
+                                </div>
+
+                                <div class="tour">
+                                    <div class="col-sm text-muted" style="font-size: small;">
+                                        <div th:text="${partie.dateTime}"></div>
+                                        <ul>
+
+                                            <li> <a th:href="@{${'v1/partie/show/'+ partie.idPartie}}" >Detail</a></li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+
 
 
 
 
                         <!-- EQ2 -->
 
-                <th></th>
-                <td mat-cell *matCellDef="let row">
+                    <th></th>
+                    <td mat-cell *matCellDef="let row">
 
-                    <div class="container h-100">
-                        <div class="row justify-content-center align-items-center">
-                            <img height="32px" th:src="@{${'v1/image/display/' + partie.eq2.drapeau.id}}">
-                        </div>
-                        <div class="row justify-content-center align-items-center">
-                            <p class="text-uppercase font-weight-bold">
+                        <div class="container h-100">
+                            <div class="row justify-content-center align-items-center">
+                                <img height="32px" th:src="@{${'v1/image/display/' + partie.eq2.drapeau.id}}">
+                            </div>
+                            <div class="row justify-content-center align-items-center">
+                                <p class="text-uppercase font-weight-bold">
 
-                            <div th:text="${partie.eq2.pays}">
+                                <div th:text="${partie.eq2.pays}">
 
-                                </p>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                </td>
-
+                    </td>
 
 
-</table>
-</div>
 
+                </table>
+            </div>
+
+        </div>
+
+        </td>
     </div>
-
-   </td>
-</div>
     </thead>
 
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
+    </div>
+    </table>
 
 
 
@@ -242,14 +297,13 @@
 
 <script> src="https://code.jquery.com/jquery-3.6.1.js"</script>
 
-</div>
+</thead>
 
 
-
+</table>
 </body>
 
 
 
 
 </html>
-

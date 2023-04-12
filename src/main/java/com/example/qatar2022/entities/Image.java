@@ -30,6 +30,7 @@ public class Image implements Serializable {
     private String type;
 
      @Lob // to storage large objects into the database
+
     @Column(name="image", length = 1000)
     private byte[] imageByte;
 
