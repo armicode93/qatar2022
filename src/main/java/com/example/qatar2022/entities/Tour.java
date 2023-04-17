@@ -41,4 +41,6 @@ public class Tour {
                 "nomTour='" + nomTour + '\'' +
                 '}';
     }
+
+
 }

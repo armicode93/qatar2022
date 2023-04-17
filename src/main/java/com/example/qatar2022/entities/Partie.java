@@ -1,18 +1,12 @@
 package com.example.qatar2022.entities;
 
 
-import com.example.qatar2022.entities.personne.Joueur;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
@@ -200,6 +194,15 @@ public class Partie implements Serializable {
 
     public Double getPrix() {
         return prix;
+    }
+
+    public Equipe getVincitore() {
+        if (scoreEq1 > scoreEq2) {
+            return eq1;
+        } else if (scoreEq2 > scoreEq1) {
+            return eq2;
+        }
+        return null;
     }
 
     public void setPrix(Double prix) {

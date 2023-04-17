@@ -33,7 +33,7 @@ public class PartieController {
     private final TourService tourService;
 
 
-    private final JoueurService  joueurService;
+    private final JoueurService joueurService;
 
     public PartieController(PartieService partieService, ImageService imageService, EquipeService equipeService, StadeService stadeService, TourService tourService, JoueurService joueurService) {
         this.partieService = partieService;
@@ -47,12 +47,11 @@ public class PartieController {
 
     @GetMapping("/")
     public String index(Model model, @RequestParam(defaultValue = "0") int
-            page, @RequestParam(defaultValue = "0") int size,  @RequestParam(defaultValue = "title") String sortBy)
-    {
+            page, @RequestParam(defaultValue = "0") int size, @RequestParam(defaultValue = "title") String sortBy) {
 
         // <Partie> parties = partieService.getPartiteByTurno();
-        List <Image> images = imageService.getAllImage();
-     //   List<Tour> tours = tourService.getallTour();
+        List<Image> images = imageService.getAllImage();
+        //   List<Tour> tours = tourService.getallTour();
 
         List<Partie> parties = partieService.getAllPartie();
 
@@ -67,10 +66,10 @@ public class PartieController {
         */
         //model.addAttribute("partitePerTurno", partitePerTurno);
 
-        model.addAttribute("parties",parties);
-       // model.addAttribute("tours", tours);
+        model.addAttribute("parties", parties);
+        // model.addAttribute("tours", tours);
         model.addAttribute("images", images);
-        model.addAttribute("title","Liste des matches");
+        model.addAttribute("title", "Liste des matches");
         // recupera tutti i turni
 
         return "index";
@@ -78,21 +77,12 @@ public class PartieController {
     }
 
 
-
-
-
-
-
-
-
-
     @GetMapping("/show/{idPartie}")
-    public String show (Model model, @PathVariable(name="idPartie")Long idPartie)
-    {
+    public String show(Model model, @PathVariable(name = "idPartie") Long idPartie) {
 
-         Partie partie = partieService.getPartieById(idPartie);
+        Partie partie = partieService.getPartieById(idPartie);
 
-         model.addAttribute("partie",partie);
+        model.addAttribute("partie", partie);
 
          /*model.addAttribute("image1",partie.getEq1().getDrapeau().getId());
          model.addAttribute("image2", partie.getEq2().getDrapeau().getId());
@@ -100,25 +90,21 @@ public class PartieController {
           */
 
 
+        model.addAttribute("title", "Detail Partie");
 
-        model.addAttribute("title","Detail Partie");
-
-         return "partie/show";
+        return "partie/show";
     }
 
 
-
-
     @GetMapping("/add")
-    public String partieFormAdd(Model model)
-    {
+    public String partieFormAdd(Model model) {
         List<Equipe> equipes = equipeService.getAllEquipe();
         List<Stade> stades = stadeService.getAllStade();
-        List<Tour> tours= tourService.getallTour();
+        List<Tour> tours = tourService.getallTour();
 
-        model.addAttribute("stades",stades);
-        model.addAttribute("equipes",equipes);
-        model.addAttribute("tours",tours);
+        model.addAttribute("stades", stades);
+        model.addAttribute("equipes", equipes);
+        model.addAttribute("tours", tours);
         model.addAttribute(new Partie());
 
 
@@ -150,13 +136,9 @@ public class PartieController {
      */
 
 
-
-
     @PostMapping("/add")
-    public String partieSubmitAdd( @ModelAttribute("partie") Partie partie,@ModelAttribute("equipe") Equipe equipe,@ModelAttribute("stade") Stade stade,@ModelAttribute("tour") Tour tour, BindingResult result, ModelMap model)
-    {
-        if(result.hasErrors())
-        {
+    public String partieSubmitAdd(@ModelAttribute("partie") Partie partie, @ModelAttribute("equipe") Equipe equipe, @ModelAttribute("stade") Stade stade, @ModelAttribute("tour") Tour tour, BindingResult result, ModelMap model) {
+        if (result.hasErrors()) {
             return "partie/add";
         }
         partie.setEq1(partie.getEq1());
@@ -164,10 +146,8 @@ public class PartieController {
         partie.setStade(partie.getStade());
 
         partie.setTour(partie.getTour());
-       //partie.setScoreEq1(partie.getScoreEq1());
+        //partie.setScoreEq1(partie.getScoreEq1());
         //partie.setScoreEq2(partie.getScoreEq2());
-
-
 
 
         partie.setDateTime(partie.getDateTime());
@@ -177,18 +157,14 @@ public class PartieController {
         partie.setPrix(partie.getPrix());
 
 
-
-
-
         partieService.addPartie(partie);
 
-        model.addAttribute("eq1",equipe.getIdEquipe());
-        model.addAttribute("eq2",equipe.getIdEquipe());
-        model.addAttribute("stade",stade.getIdStade());
-        model.addAttribute("tour",tour.getIdTour());
+        model.addAttribute("eq1", equipe.getIdEquipe());
+        model.addAttribute("eq2", equipe.getIdEquipe());
+        model.addAttribute("stade", stade.getIdStade());
+        model.addAttribute("tour", tour.getIdTour());
 
-        model.addAttribute("partie","");
-
+        model.addAttribute("partie", "");
 
 
         return "redirect:/";
@@ -197,14 +173,10 @@ public class PartieController {
     }
 
 
-
-
-        @DeleteMapping(path ="{idPartie}")
-        public void deletePartie(@PathVariable("idPartie") Long idPartie)
-
-        {
-           partieService.deletePartie(idPartie);
-        }
+    @DeleteMapping(path = "{idPartie}")
+    public void deletePartie(@PathVariable("idPartie") Long idPartie) {
+        partieService.deletePartie(idPartie);
+    }
 
    /* @PutMapping(path = "/" )
     public ResponseEntity updatePartie (@RequestBody Partie partieBody) {
@@ -226,42 +198,58 @@ public class PartieController {
     */
 
     @GetMapping("/editResult/{idPartie}")
-    public String editResult (Model model, @PathVariable(name="idPartie")String idPartie)
-    {
+    public String editResult(Model model, @PathVariable(name = "idPartie") String idPartie) {
         Partie partie = partieService.getPartieByIdPartie(idPartie);
 
-        model.addAttribute("partie",partie);
-        model.addAttribute("title","");
+        model.addAttribute("partie", partie);
+        model.addAttribute("title", "");
 
         return "partie/editResultForm";
 
 
     }
 
-    @PostMapping ("/editResult/{idPartie}")
-    public String editResultSubmit (@Valid @ModelAttribute("partie") Partie partie,@RequestParam("scoreEq1") int scoreEq1,
-                                    @RequestParam("scoreEq2") int scoreEq2,BindingResult result, @PathVariable("idPartie") Long idPartie, Model model)
-    {
+    @PostMapping("/editResult/{idPartie}")
+    public String editResultSubmit(@ModelAttribute("partie") Partie partie, @RequestParam("scoreEq1") int scoreEq1,
+                                   @RequestParam("scoreEq2") int scoreEq2, BindingResult result, @PathVariable("idPartie") Long idPartie, Model model) {
 
-        if (result.hasErrors())
-        {
+        if (result.hasErrors()) {
             return "partie/editResultForm";
         }
-         Partie existing = partieService.getPartieById(idPartie);
+        Partie existing = partieService.getPartieById(idPartie);
 
-
-        if (existing == null)
-        {
+        if (existing == null) {
             return "redirect:/";
         }
 
+// Recupera il valore di tour dalla Partie esistente
+        Tour tour = existing.getTour();
 
+// Aggiorna la Partie esistente con i nuovi punteggi
         partieService.updatePartie(idPartie, scoreEq1, scoreEq2);
 
+        model.addAttribute("partie", partie);
 
-
+// Crea una nuova Partie per il successivo giro del torneo utilizzando il tour recuperato
+            partieService.creaPartitaSuccessiva(tour);
         return "redirect:/";
 
 
     }
+
+/*
+    @PostMapping("/addNewPartiesTours/{idTour}")
+    public String editResultSubmit(@Valid @ModelAttribute("partie") Partie partie,@ModelAttribute("tour")Tour tour,@PathVariable("idTour") Long idTour, Model model)
+    {
+        Tour prossimoGirone = partie.getTour();
+        if (prossimoGirone != null) {
+            partieService.creaPartitaSuccessiva(prossimoGirone);
+        }
+        return "redirect:/";
+    }
+
+ */
+
+
+
 }

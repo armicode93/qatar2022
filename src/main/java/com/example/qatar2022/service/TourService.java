@@ -1,7 +1,9 @@
 package com.example.qatar2022.service;
 
 
+import com.example.qatar2022.entities.Partie;
 import com.example.qatar2022.entities.Tour;
+import com.example.qatar2022.repository.PartieRepository;
 import com.example.qatar2022.repository.TourRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,12 @@ import java.util.List;
 public class TourService {
 
     private final TourRepository tourRepository;
+    private final PartieRepository partieRepository;
 
     @Autowired
-    public TourService(TourRepository tourRepository) {
+    public TourService(TourRepository tourRepository, PartieRepository partieRepository) {
         this.tourRepository = tourRepository;
+        this.partieRepository = partieRepository;
     }
 
 
@@ -52,4 +56,6 @@ public class TourService {
         tourRepository.save(tour);
         return tour;
     }
+
 }
+

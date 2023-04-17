@@ -113,6 +113,10 @@ navbar ul li a{
  .clickable{
      cursor: pointer;
  }
+ .match {
+     float: right;
+     margin-right: 5%;
+ }
 
  mat-paginator{
      position: relative;

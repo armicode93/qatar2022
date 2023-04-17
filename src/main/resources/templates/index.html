@@ -130,115 +130,97 @@
 
 
 
+    <!-- group matches by tour -->
+    <style>
+
+    </style>
+
     <div class="total">
-        <tr th:each="tour : ${tours} ">
+        <div th:each="tour : ${tours}">
+            <div class="tour">
+
+                <h2 th:text="${tour.nomTour}"></h2>
+                <div th:each="partie: ${parties}">
+                    <div th:if="${partie.tour.idTour == tour.idTour}" class="match">
+                        <table class="full-width-table" aria-label="Elements">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Match</th>
+                                <th class="mat-header-cell" scope="col"></th>
 
 
-            <div th:text="${tour.nomTour}"></div>
-        </tr>
-        <div th:each="partie: ${parties} ">
-            <div>
-                <table  class="full-width-table"  aria-label="Elements">
-                    <!-- Id Column -->
+                                <th>Stadium</th>
+                                <th></th>
+                                <th>Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
 
-                    <th class ="mat-header-cell " scope="col" ></th>
-                    <td class="mat-cell" >
-
-                        <div class="container h-100">
-                            <div class="row justify-content-center align-self-center">
-                                <img height="32px" th:src="@{${'v1/image/display/' + partie.eq1.drapeau.id}}">
-                            </div>
-                            <div class="row justify-content-center align-items-center">
-                                <p class="text-uppercase font-weight-bold">
-
-                                <div th:text="${partie.eq1.pays}">
-
-                                    </p>
-                                </div>
-                            </div>
-                        </div>  <!-- -->
-                    </td>
-
-
-
-                    <!-- Partie -->
-
-                   <!-- <td>
-                        <div class="container h-100">
-                            <div class="row justify-content-center align-items-center font-weight-bold">
-
-                                    <div th:if="${partie.scoreEq1} != null">
-                                        <div class ="col-sm" >
-                                    <div th:text="${partie.scoreEq1}"> </div>
+                                <!-- Partie/Flags -->
+                                <td class="mat-cell">
+                                    <div class="container h-100">
+                                        <div class="row justify-content-center align-self-center">
+                                            <img height="32px" th:src="@{${'v1/image/display/' + partie.eq1.drapeau.id}}">
+                                        </div>
+                                        <div class="row justify-content-center align-items-center">
+                                            <p class="text-uppercase font-weight-bold" th:text="${partie.eq1.pays}"></p>
+                                        </div>
                                     </div>
+                                </td>
 
-                                <div class="col-sm">
-                                    :
-                                </div>
-
-                                <div class="col-sm">
-                                    <div th:text="${partie.scoreEq2}"></div>
-                                </div>
-
-                                </div>
-
-
-                                    <div th:unless="${partie.scoreEq1}!= null">
-                                        <div class="col-sm">
-                                            <p>Match to play </p>
+                                <!-- Results -->
+                                <td>
+                                    <div class="container h-100">
+                                        <div th:if="${partie.scoreEq1} != null" class="row justify-content-center align-items-center font-weight-bold">
+                                            <div class="col-sm">
+                                                <div th:text="${partie.scoreEq1}"></div>
+                                            </div>
+                                            <div class="col-sm">
+                                                :
+                                            </div>
+                                            <div class="col-sm">
+                                                <div th:text="${partie.scoreEq2}"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center align-items-center font-weight-bold" th:unless="${partie.scoreEq1}!= null">
+                                            <div class="col-sm">
+                                                <p>Match to play</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            -->
+                                </td>
 
-                    <td>
-                        <div class="container h-100">
-                            <div th:if="${partie.scoreEq1} != null">
-                            <div class="row justify-content-center align-items-center font-weight-bold">
-
-                                <div class ="col-sm">
-
-                                    <div th:text="${partie.scoreEq1}"> </div>
-
-                                </div>
-                                <div class="col-sm">
-                                    :
-                                </div>
-
-                                <div class="col-sm">
-                                    <div th:text="${partie.scoreEq2}"></div>
-                                </div>
-                                </div>
-
-                            </div>
-
-                            <div class="row justify-content-center align-items-center font-weight-bold">
-                            <div th:unless="${partie.scoreEq1}!= null">
-                                <div class="col-sm">
-                                    <p>       Match to play </p>
-                                </div>
-                            </div>
-                            </div>
-
-
-
-                            <!-- Tours -->
-                            <div class="row justify-content-center align-items-center ">
-
-                                <div class="tour">
-                                    <div  th:text="${partie.tour.nomTour}"></div>
-                                </div>
-
+                                <!-- Flags -->
+                                <td class="mat-cell">
+                                    <div class="container h-100">
+                                        <div class="row justify-content-center align-items-center">
+                                            <img height="32px" th:src="@{${'v1/image/display/' + partie.eq2.drapeau.id}}">
+                                        </div>
+                                        <div class="row justify-content-center align-items-center">
+                                            <p class="text-uppercase font-weight-bold" th:text="${partie.eq2.pays}"></p>
+                                        </div>
+                                    </div>
+                                </td>
 
 
                                 <!-- Stade -->
-                                <div class="tour ">
-                                    <div class="col-sm text-muted" style="font-size: small;">
-                                        <div th:text="${partie.stade.nomStade}"></div>
-                                    </div>
-                                </div>
+                            <td>
 
-                                <div class="tour">
+
+
+                                            <div th:if="${partie.stade != null}">
+                                                <div th:text="${partie.stade.nomStade}"></div>
+                                                <div th:if="${partie.stade.nomStade == null}">
+                                                    <p>To define</p>
+                                                </div>
+                                            </div>
+
+                            </td>
+                                <!-- Date -->
+                                <br/>
+                                <td>
                                     <div class="col-sm text-muted" style="font-size: small;">
                                         <div th:text="${partie.dateTime}"></div>
                                         <ul>
@@ -247,46 +229,17 @@
                                         </ul>
 
                                     </div>
-                                </div>
-                            </div>
+                                </td>
+                            </tr>
 
 
 
-
-
-                        <!-- EQ2 -->
-
-                    <th></th>
-                    <td mat-cell *matCellDef="let row">
-
-                        <div class="container h-100">
-                            <div class="row justify-content-center align-items-center">
-                                <img height="32px" th:src="@{${'v1/image/display/' + partie.eq2.drapeau.id}}">
-                            </div>
-                            <div class="row justify-content-center align-items-center">
-                                <p class="text-uppercase font-weight-bold">
-
-                                <div th:text="${partie.eq2.pays}">
-
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </td>
-
-
-
-                </table>
-            </div>
-
-        </div>
-
-        </td>
-    </div>
-    </thead>
+</div>
+                                            </div></div></div></div></tbody></table></div></div></div></div></div>
+                            </thead>
 
     </div>
+</tbody>
     </table>
 
 
