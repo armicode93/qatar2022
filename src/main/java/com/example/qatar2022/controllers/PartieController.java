@@ -236,19 +236,49 @@ public class PartieController {
 
 
     }
+    @GetMapping("/edit/{idPartie}")
+    public String edit(Model model, @PathVariable(name = "idPartie") String idPartie) {
+        Partie partie = partieService.getPartieByIdPartie(idPartie);
+        List<Stade> stades = stadeService.getAllStade();
+        List<Tour> tours = tourService.getallTour();
+        List<Equipe>equipes = equipeService.getAllEquipe();
 
-/*
-    @PostMapping("/addNewPartiesTours/{idTour}")
-    public String editResultSubmit(@Valid @ModelAttribute("partie") Partie partie,@ModelAttribute("tour")Tour tour,@PathVariable("idTour") Long idTour, Model model)
-    {
-        Tour prossimoGirone = partie.getTour();
-        if (prossimoGirone != null) {
-            partieService.creaPartitaSuccessiva(prossimoGirone);
-        }
-        return "redirect:/";
+        model.addAttribute("partie", partie);
+        model.addAttribute("stades", stades);
+        model.addAttribute("tours",tours);
+        model.addAttribute("equipes",equipes);
+        model.addAttribute("title", "");
+
+        return "partie/edit";
+
+
     }
 
- */
+    @PostMapping("/edit/{idPartie}")
+    public String edit(@ModelAttribute("partie") Partie partie,  BindingResult result, @PathVariable("idPartie") Long idPartie, Model model) {
+
+        if (result.hasErrors()) {
+            return "partie/editResultForm";
+        }
+        Partie existing = partieService.getPartieById(idPartie);
+
+        if (existing == null) {
+            return "redirect:/";
+        }
+
+
+// Aggiorna la Partie esistente con i nuovi punteggi
+        partieService.editPartie(idPartie, partie);
+
+
+
+        model.addAttribute("partie", partie);
+
+
+        return "redirect:/";
+
+
+    }
 
 
 

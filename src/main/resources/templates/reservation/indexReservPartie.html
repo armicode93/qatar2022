@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
+    <link href="../static/css/index/index/index.css" th:href="@{/css/index/index.css}" rel="stylesheet" />
+
+    <title>Header fragment</title>
+</head>
+<header th:insert="fragments/header.html :: nav"></header>
+<body>
+
+
+
+<div class="container">
+    <div layout:fragment="content">
+        <form action="#" th:action="@{'/reservation/reservationPartie/'+ ${partie.idPartie}}" th:object="${reservations}" method="post" class="form">
+
+            <table class="table">
+
+                <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <th scope="row"></th>
+                    <td th:text="${partie.eq1.pays}"> </td>
+                    <td></td>
+                    <td th:text="${partie.eq2.pays}"></td>
+                </tr>
+
+
+                <tr>
+                    <th scope="row"><a valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:href="@{${'/v1/partie/showJoueurByPartie/' + partie.idPartie }}">Team Composition </a></th>
+                    <td>
+                        <img class="picture" th:src="@{${'/v1/image/display/' + partie.eq1.drapeau.id}}" width="100"></td>
+                    <td></td>
+                    <td>
+                        <img class="picture" th:src="@{${'/v1/image/display/' + partie.eq2.drapeau.id}}" width="100"></td>
+                    <td>
+                        <a valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:href="@{${'/v1/partie/showJoueurByPartie/' + partie.idPartie }}">Team Composition </a></td>
+                </tr>
+
+                <tr>
+                    <th scope="row" >Stadium</th>
+                    <td></td>
+
+                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:if="${partie.stade != null}">
+                        <div th:text="${partie.stade.nomStade}"></div>
+                        <div th:if="${partie.stade.nomStade == null}">
+
+                        </div>
+                    </td>
+
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row" >Date Time</th>
+                    <td></td>
+                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${partie.dateTime}"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row" >Arbitre</th>
+                    <td></td>
+                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${partie.arbitre_principal}"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row" >Total Time</th>
+                    <td></td>
+                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${partie.totalTime}"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row" >Price</th>
+                    <td></td>
+                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:if="${partie.prix != null}">
+                        <div th:text="${partie.prix}"></div>
+                        <div th:if="${partie.stade.nomStade == null}">
+
+
+                        </div>
+                    </td>
+
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <select class="form-control"  name="nbr_places" id="nbr_places" th:value="${nbr_places}">
+                            <option value="0">--Number of places--</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="4">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+
+                    <input type="hidden" th:name="idUser" id="idUser" th:value="${idUser}" />
+                        <!-- altri campi del form -->
+
+                    <td>
+                        <input class="btn btn-primary" type="submit" value="Submit" /><br/><br/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

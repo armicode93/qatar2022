@@ -17,6 +17,8 @@ public class ReservationDTO {
 
     private Boolean paye;
 
+    private int nbr_places;
+
     private User user;
 
    private Long idpartie ;

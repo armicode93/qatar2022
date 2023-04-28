@@ -115,12 +115,15 @@ navbar ul li a{
  }
  .match {
      float: right;
-     margin-right: 5%;
+     margin-right: 3%;
+
+
  }
 
  mat-paginator{
      position: relative;
      bottom: 0px;
+
  }
  .tour
  {
@@ -132,6 +135,14 @@ navbar ul li a{
      position: relative;
      bottom: 0px;
  }
+ /*.matches-container {
+     border: 1px solid black;
+     padding: 10px;
+     margin-bottom: 20px;
+ }
+
+  */
+
 
 
 

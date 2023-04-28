@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @Table
-@Setter
-@Getter
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class Reservation {
@@ -19,6 +18,8 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long codeReservation;
+
+    private int nbr_places;
 
     private Double prixTotal;
 
@@ -44,5 +45,59 @@ public class Reservation {
 
      */
 
+    public Long getCodeReservation() {
+        return codeReservation;
+    }
 
+    public void setCodeReservation(Long codeReservation) {
+        this.codeReservation = codeReservation;
+    }
+
+    public int getNbr_places() {
+        return nbr_places;
+    }
+
+    public void setNbr_places(int nbr_places) {
+        this.nbr_places = nbr_places;
+    }
+
+    public Double getPrixTotal() {
+        return prixTotal;
+    }
+
+    public void setPrixTotal(Double prixTotal) {
+        this.prixTotal = prixTotal;
+    }
+
+    public LocalDateTime getDateAchat() {
+        return dateAchat;
+    }
+
+    public void setDateAchat(LocalDateTime dateAchat) {
+        this.dateAchat = dateAchat;
+    }
+
+    public Boolean getPaye() {
+        return paye;
+    }
+
+    public void setPaye(Boolean paye) {
+        this.paye = paye;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Partie getPartie() {
+        return partie;
+    }
+
+    public void setPartie(Partie partie) {
+        this.partie = partie;
+    }
 }

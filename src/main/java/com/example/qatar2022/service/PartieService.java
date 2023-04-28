@@ -3,6 +3,7 @@ package com.example.qatar2022.service;
 
 import com.example.qatar2022.entities.Equipe;
 import com.example.qatar2022.entities.Partie;
+import com.example.qatar2022.entities.Stade;
 import com.example.qatar2022.entities.Tour;
 import com.example.qatar2022.repository.PartieRepository;
 import com.example.qatar2022.repository.TourRepository;
@@ -84,6 +85,21 @@ public class PartieService {
         partie.setScoreEq2(scoreEq2);
         partieRepository.save(partie);
     }
+
+    public void editPartie(long idPartie, Partie partie) {
+
+        partie.setEq1(partie.getEq1());
+        partie.setEq2(partie.getEq2());
+        partie.setStade(partie.getStade());
+
+        partie.setTour(partie.getTour());
+        partie.setDateTime(partie.getDateTime());
+        partie.setArbitre_principal(partie.getArbitre_principal());
+        partie.setTotalTime(partie.getTotalTime());
+        partie.setProlongation(partie.getProlongation());
+        partie.setPrix(partie.getPrix());
+        partieRepository.save(partie);
+    }
     @Transactional
     public void creaPartitaSuccessiva(Tour tour) {
         List<Partie> parties = partieRepository.findByTour(tour);
@@ -107,7 +123,7 @@ public class PartieService {
             // Crea le partite successive per il girone successivo
             Tour gironeSuccessivo = calcolaGironeSuccessivo(tour);
             int numPartiteSuccessive = calcolaNumPartiteSuccessive(tour);
-            for (int i = 0; i < numPartiteSuccessive; i++) {
+            for (int i = 0; i <numPartiteSuccessive; i++) {
                 Partie partitaSuccessiva = new Partie();
                 partitaSuccessiva.setTour(gironeSuccessivo);
                 partitaSuccessiva.setEq1(vincitori.get(i * 2));

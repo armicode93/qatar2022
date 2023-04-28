@@ -1,6 +1,7 @@
 package com.example.qatar2022.repository.personne;
 
 
+import com.example.qatar2022.entities.Partie;
 import com.example.qatar2022.entities.personne.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -9,7 +10,8 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User,Long> {
     User findByUsername(String username);
 
-    User findById(long id);
+    User findById(long idUser);
+    //User findUserByIdUser(long idUser);
 
     User findByEmail(String email);
 }

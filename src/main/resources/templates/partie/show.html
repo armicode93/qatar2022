@@ -52,7 +52,14 @@
     <tr>
         <th scope="row" >Stadium</th>
         <td></td>
-        <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${partie.stade.nomStade}"></td>
+
+        <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:if="${partie.stade != null}">
+            <div th:text="${partie.stade.nomStade}"></div>
+            <div th:if="${partie.stade.nomStade == null}">
+
+            </div>
+        </td>
+
         <td></td>
     </tr>
     <tr>
@@ -76,14 +83,27 @@
     <tr>
         <th scope="row" >Price</th>
         <td></td>
-        <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${partie.prix}+ ' euro'"></td>
+        <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:if="${partie.prix != null}">
+            <div th:text="${partie.prix}"></div>
+            <div th:if="${partie.stade.nomStade == null}">
+
+
+            </div>
+        </td>
+
         <td></td>
     </tr>
     <tr>
         <th scope="row" ></th>
         <td valign="middle" align="center" class="col-sm text-muted">
-            <a th:href="@{${'/reservation/reservationByPartie/' + partie.idPartie}}">Reservation</a></td>
+            <a th:href="@{'/v1/partie/edit/' + ${partie.idPartie}}">Edit</a></td>
 
+
+    </tr>
+    <tr>
+        <th scope="row" ></th>
+        <td valign="middle" align="center" class="col-sm text-muted" sec:authorize="isAuthenticated()">
+            <a th:href="@{'/reservation/selectPartie/' + ${partie.idPartie}}">Reservation</a>
 
     </tr>
     <tr>

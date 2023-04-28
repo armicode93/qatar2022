@@ -99,26 +99,19 @@
 
 <!--
 <table class="table table-equipe" th:unless="${#lists.isEmpty(tours)} ">
-
     <thead>
     <p>Sono urururu</p>
      <div class="total">
-
      <tr th:each="tour : ${tours} ">
-
-
                      <div th:text="${tour.nomTour}"></div>
          <tr th:each="partie : ${parties} ">
          <td th:text="${partie.eq1.pays}"></td>
          <td th:text="${partie.eq2.pays}"></td>
-
-
-
      </tr>
      </div>
 -->
 
-<div th:unless="${#lists.isEmpty(tours)} ">
+
     <thead>
     <tr>
         <th scope="col" class="header-align-center">Calendrier des matchs</th>
@@ -136,8 +129,9 @@
     </style>
 
     <div class="total">
+        <div class="match">
         <div th:each="tour : ${tours}">
-            <div class="tour">
+
 
                 <h2 th:text="${tour.nomTour}"></h2>
                 <div th:each="partie: ${parties}">
@@ -182,6 +176,7 @@
                                             </div>
                                             <div class="col-sm">
                                                 <div th:text="${partie.scoreEq2}"></div>
+
                                             </div>
                                         </div>
                                         <div class="row justify-content-center align-items-center font-weight-bold" th:unless="${partie.scoreEq1}!= null">
@@ -206,18 +201,18 @@
 
 
                                 <!-- Stade -->
-                            <td>
+                                <td>
 
 
 
-                                            <div th:if="${partie.stade != null}">
-                                                <div th:text="${partie.stade.nomStade}"></div>
-                                                <div th:if="${partie.stade.nomStade == null}">
-                                                    <p>To define</p>
-                                                </div>
-                                            </div>
+                                    <div th:if="${partie.stade != null}">
+                                        <div th:text="${partie.stade.nomStade}"></div>
+                                        <div th:if="${partie.stade.nomStade == null}">
+                                            <p>To define</p>
+                                        </div>
+                                    </div>
 
-                            </td>
+                                </td>
                                 <!-- Date -->
                                 <br/>
                                 <td>
@@ -233,14 +228,14 @@
                             </tr>
 
 
+</tbody></table>
+                    </div>
+                </div></div></div></div></tbody></table></div></div></div></div></div>
+</thead>
 
 </div>
-                                            </div></div></div></div></tbody></table></div></div></div></div></div>
-                            </thead>
-
-    </div>
 </tbody>
-    </table>
+</table>
 
 
 
