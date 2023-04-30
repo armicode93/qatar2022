@@ -35,44 +35,22 @@
             <div class="form-group">
                 <strong><label for="nom">User Name</label></strong>
                 <!-- th field permette di recuperare il nome selezionato -->
-                <input class="form-control" type="nom" th:field="*{nom}"  id="nom" placeholder="nom">
+                <input class="form-control" type="nom" th:field="*{user.nom}"  id="nom" placeholder="nom">
                 <!-- place holder suggerimento allinterno del box -->
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" th:errorclass="error"></div>
-            </div>
-
-
-            <div class="form-group">
-                <strong><label for="arbitre_principal">Arbitre Principal</label></strong>
-                <!-- th field permette di recuperare il nome selezionato -->
-                <input class="form-control" type="text" th:field="*{arbitre_principal}"  id="arbitre_principal" placeholder="arbitre_principal">
-                <!-- place holder suggerimento allinterno del box -->
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('arbitre_principal')}" th:errors="*{arbitre_principal}" th:errorclass="error"></div>
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('nom')}" th:errors="*{}" th:errorclass="error"></div>
             </div>
 
             <div class="form-group">
-                <strong><label for="totalTime">Total Time</label></strong>
+                <strong><label for="nom">User Name</label></strong>
                 <!-- th field permette di recuperare il nome selezionato -->
-                <input class="form-control" type="text" th:field="*{totalTime}"  id="totalTime" placeholder="totalTime">
+                <input class="form-control" type="nom" th:field="*{user.prenom}"  id="prenom" placeholder="prenom">
                 <!-- place holder suggerimento allinterno del box -->
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('totalTime')}" th:errors="*{totalTime}" th:errorclass="error"></div>
-            </div>
-
-            <div class="form-group">
-                <strong><label for="prolongation">Prolongation</label></strong>
-                <!-- th field permette di recuperare il nome selezionato -->
-                <input class="form-control" type="text" th:field="*{prolongation}"  id="prolongation" placeholder="prolongation">
-                <!-- place holder suggerimento allinterno del box -->
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('prolongation')}" th:errors="*{prolongation}" th:errorclass="error"></div>
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('nom')}" th:errors="*{}" th:errorclass="error"></div>
             </div>
 
 
-            <div class="form-group">
-                <strong><label for="prix">Prix</label></strong>
-                <!-- th field permette di recuperare il nome selezionato -->
-                <input class="form-control" type="number" th:field="*{prix}"  id="prix" placeholder="prix">
-                <!-- place holder suggerimento allinterno del box -->
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('prix')}" th:errors="*{prix}" th:errorclass="error"></div>
-            </div>
+
+
 
 
 

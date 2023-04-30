@@ -2,23 +2,16 @@ package com.example.qatar2022.controllers;
 
 
 import com.example.qatar2022.entities.*;
-import com.example.qatar2022.entities.personne.Joueur;
+import com.example.qatar2022.entities.personne.User;
 import com.example.qatar2022.service.*;
 import com.example.qatar2022.service.personne.JoueurService;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Controller
@@ -31,16 +24,18 @@ public class PartieController {
     private final EquipeService equipeService;
     private final StadeService stadeService;
     private final TourService tourService;
+    private final UserServiceImpl userServiceImpl;
 
 
     private final JoueurService joueurService;
 
-    public PartieController(PartieService partieService, ImageService imageService, EquipeService equipeService, StadeService stadeService, TourService tourService, JoueurService joueurService) {
+    public PartieController(PartieService partieService, ImageService imageService, EquipeService equipeService, StadeService stadeService, TourService tourService, UserServiceImpl userServiceImpl, JoueurService joueurService) {
         this.partieService = partieService;
         this.imageService = imageService;
         this.equipeService = equipeService;
         this.stadeService = stadeService;
         this.tourService = tourService;
+        this.userServiceImpl = userServiceImpl;
         this.joueurService = joueurService;
     }
 
@@ -82,7 +77,10 @@ public class PartieController {
 
         Partie partie = partieService.getPartieById(idPartie);
 
+
         model.addAttribute("partie", partie);
+
+
 
          /*model.addAttribute("image1",partie.getEq1().getDrapeau().getId());
          model.addAttribute("image2", partie.getEq2().getDrapeau().getId());

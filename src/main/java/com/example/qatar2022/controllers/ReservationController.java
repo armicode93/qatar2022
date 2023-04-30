@@ -4,23 +4,23 @@ package com.example.qatar2022.controllers;
 import com.example.qatar2022.dto.ReservationDTO;
 import com.example.qatar2022.entities.Partie;
 import com.example.qatar2022.entities.Reservation;
-import com.example.qatar2022.entities.Tour;
 import com.example.qatar2022.entities.personne.User;
 import com.example.qatar2022.repository.personne.UserRepository;
 import com.example.qatar2022.service.PartieService;
 import com.example.qatar2022.service.ReservationService;
 import com.example.qatar2022.service.TicketService;
-import com.example.qatar2022.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -124,11 +124,65 @@ public class ReservationController {
         }
     }
 
+
+    @GetMapping("/selectPartie/{idPartie}")
+    public String selectPartiePlace(Model model, @PathVariable(name = "idPartie") String idPartie, @ModelAttribute("user") User user) {
+        Partie partie = partieService.getPartieByIdPartie(idPartie);
+
+        model.addAttribute("partie", partie);
+        model.addAttribute("user", user);
+
+
+        model.addAttribute("reservation", new Reservation());
+        model.addAttribute("title", "");
+        return "reservation/indexReservPartie";
+    }
+
+    @PostMapping("/reservationPartie/{idPartie}")
+    public String selectPartiePlacetSubmit(@ModelAttribute("partie") Partie partie,@ModelAttribute("reservation") Reservation reservation, @RequestParam("nbr_places") int nbr_places, BindingResult result, @PathVariable("idPartie") String idPartie, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+       // User currentUser = userRepository.getById(Long.parseLong(idUser));
+        reservation.setPartie(partieService.getPartieByIdPartie(idPartie));
+        UserDetails currentUser = (UserDetails) auth.getPrincipal();
+
+        User user = userRepository.findByUsername(currentUser.getUsername());
+       /* if (user == null) {
+            // handle error
+        }
+
+        */
+        reservation.setUser(user);
+        reservation.setNbr_places(nbr_places);
+        reservationService.addReservation(reservation);
+        model.addAttribute("partieId", idPartie);
+        model.addAttribute("idUser", user.getIdUser());
+        model.addAttribute("reservation", reservation);
+        return "reservation/formPrixPayement";
+    }
+
+    /*@GetMapping("/selectPartie/{idPartie}")
+    public String selectPartiePlace(Model model, @PathVariable(name = "idPartie") String idPartie, @ModelAttribute("user") User user) {
+        Partie partie = partieService.getPartieByIdPartie(idPartie);
+
+        model.addAttribute("partie", partie);
+        model.addAttribute("user", user);
+
+
+        model.addAttribute("reservation", new Reservation());
+        model.addAttribute("title", "");
+        return "reservation/indexReservPartie";
+    }
+
+     */
+/*
     @GetMapping("/selectPartie/{idPartie}")
     public String selectPartiePlace(Model model, @PathVariable(name = "idPartie") String idPartie) {
         Partie partie = partieService.getPartieByIdPartie(idPartie);
 
+
         model.addAttribute("partie", partie);
+
 
         model.addAttribute("title", "");
 
@@ -136,32 +190,30 @@ public class ReservationController {
 
 
     }
+
+ */
     //@PathVariable quando mettiamo cio bisognera includere attributo nel Link
-    @PostMapping("/reservationPartie/{idPartie}")
-    public String selectPartiePlacetSubmit(@ModelAttribute("partie") Partie partie,@ModelAttribute("reservation") Reservation reservation, @ModelAttribute("user") User user, @RequestParam("nbr_places") int nbr_places,
-                                     @RequestParam("idUser") Long idUser,BindingResult result, @PathVariable("idPartie") String idPartie, Model model) {
+   /* @PostMapping("/reservationPartie/{idPartie}")
+    public String selectPartiePlacetSubmit(@ModelAttribute("partie") Partie partie,@ModelAttribute("reservation") Reservation reservation, @ModelAttribute("user") User user, @ModelAttribute("idUser") String idUser, @RequestParam("nbr_places") int nbr_places,
+                                     BindingResult result, @PathVariable("idPartie") String idPartie, Model model) {
 
-       /* if (result.hasErrors()) {
-            return "partie/editResultForm";
-        }
-        Partie existing = partieService.getPartieById(idPartie);
 
-        if (existing == null) {
-            return "redirect:/";
-        }
 
-        */
 
-       // Long indice = Long.parseLong(idPartie);
-        //Long indiceUser = Long.parseLong(idUser);
+
+        Long userId = Long.parseLong(idUser);
+        User currentUser = userRepository.getById(userId);
 
         reservation.setPartie(partieService.getPartieByIdPartie(idPartie));
-        reservation.setUser(userRepository.getById(idUser));
+        reservation.setUser(currentUser);
         reservation.setNbr_places(nbr_places);
+
+
+
         reservationService.addReservation(reservation);
 
         model.addAttribute("partieId", idPartie);
-        model.addAttribute("idUser",idUser);
+        model.addAttribute("idUser",userId);
         model.addAttribute("reservation", reservation);
 
         return "redirect:/";
@@ -170,6 +222,9 @@ public class ReservationController {
 
 
     }
+
+    */
+
 /*
     @GetMapping("/selectPartie/{codeReservation}")
     public String selectPartie(@ModelAttribute("partie") Partie partie, Model model)

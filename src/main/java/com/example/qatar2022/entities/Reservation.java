@@ -100,4 +100,8 @@ public class Reservation {
     public void setPartie(Partie partie) {
         this.partie = partie;
     }
+
+    public void setUser(Long idUser) {
+        this.user=user;
+    }
 }
