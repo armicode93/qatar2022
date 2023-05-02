@@ -2,8 +2,7 @@ package com.example.qatar2022.controllers;
 
 
 import com.example.qatar2022.dto.ReservationDTO;
-import com.example.qatar2022.entities.Partie;
-import com.example.qatar2022.entities.Reservation;
+import com.example.qatar2022.entities.*;
 import com.example.qatar2022.entities.personne.User;
 import com.example.qatar2022.repository.personne.UserRepository;
 import com.example.qatar2022.service.PartieService;
@@ -18,9 +17,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -139,7 +140,9 @@ public class ReservationController {
     }
 
     @PostMapping("/reservationPartie/{idPartie}")
-    public String selectPartiePlacetSubmit(@ModelAttribute("partie") Partie partie,@ModelAttribute("reservation") Reservation reservation, @RequestParam("nbr_places") int nbr_places, BindingResult result, @PathVariable("idPartie") String idPartie, Model model) {
+    public String selectPartiePlacetSubmit(@ModelAttribute("reservation") Reservation reservation, @RequestParam("nbr_places") int nbr_places, BindingResult result, @PathVariable("idPartie") String idPartie, Model model) {
+        Partie partie = partieService.getPartieByIdPartie(idPartie);
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
        // User currentUser = userRepository.getById(Long.parseLong(idUser));
@@ -153,13 +156,68 @@ public class ReservationController {
 
         */
         reservation.setUser(user);
+
         reservation.setNbr_places(nbr_places);
+        // Calcolate total price
+
+        double prix_total= (nbr_places * partie.getPrix());
+        reservation.setPrixTotal(prix_total);
+
+        //Date purchased
+        Date date_achat = new Date();
+        reservation.setDateAchat(date_achat);
+
         reservationService.addReservation(reservation);
         model.addAttribute("partieId", idPartie);
         model.addAttribute("idUser", user.getIdUser());
+        model.addAttribute("nom", user.getNom());
+        model.addAttribute("prenom", user.getPrenom());
+
+        model.addAttribute("prix_total", prix_total);
+        model.addAttribute("date_achat",date_achat);
+
         model.addAttribute("reservation", reservation);
         return "reservation/formPrixPayement";
     }
+/*
+    public String partieSubmitAdd(@ModelAttribute("partie") Partie partie, @ModelAttribute("equipe") Equipe equipe, @ModelAttribute("stade") Stade stade, @ModelAttribute("tour") Tour tour, BindingResult result, ModelMap model) {
+        if (result.hasErrors()) {
+            return "partie/add";
+        }
+        partie.setEq1(partie.getEq1());
+        partie.setEq2(partie.getEq2());
+        partie.setStade(partie.getStade());
+
+        partie.setTour(partie.getTour());
+        //partie.setScoreEq1(partie.getScoreEq1());
+        //partie.setScoreEq2(partie.getScoreEq2());
+
+
+        partie.setDateTime(partie.getDateTime());
+        partie.setArbitre_principal(partie.getArbitre_principal());
+        partie.setTotalTime(partie.getTotalTime());
+        partie.setProlongation(partie.getProlongation());
+        partie.setPrix(partie.getPrix());
+
+
+        partieService.addPartie(partie);
+
+        model.addAttribute("eq1", equipe.getIdEquipe());
+        model.addAttribute("eq2", equipe.getIdEquipe());
+        model.addAttribute("stade", stade.getIdStade());
+        model.addAttribute("tour", tour.getIdTour());
+
+        model.addAttribute("partie", "");
+
+
+        return "redirect:/";
+
+
+    }
+
+ */
+
+
 
     /*@GetMapping("/selectPartie/{idPartie}")
     public String selectPartiePlace(Model model, @PathVariable(name = "idPartie") String idPartie, @ModelAttribute("user") User user) {

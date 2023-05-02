@@ -30,26 +30,110 @@
     <div layout:fragment="content">
         <form action="# " th:action="@{'/v1/reservation/user/payement'}" th:object="${reservation}" method="post" class="form"> <!-- th:object ci serve per fare collegamento con il model -->
 
-            -->
 
             <div class="form-group">
-                <strong><label for="nom">User Name</label></strong>
+                <strong><label for="nom">LastName</label></strong>
                 <!-- th field permette di recuperare il nome selezionato -->
-                <input class="form-control" type="nom" th:field="*{user.nom}"  id="nom" placeholder="nom">
+                <input  class="form-control" id="nom" name="nom" th:value="${reservation.user.nom}" readonly>
                 <!-- place holder suggerimento allinterno del box -->
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('nom')}" th:errors="*{}" th:errorclass="error"></div>
-            </div>
-
-            <div class="form-group">
-                <strong><label for="nom">User Name</label></strong>
-                <!-- th field permette di recuperare il nome selezionato -->
-                <input class="form-control" type="nom" th:field="*{user.prenom}"  id="prenom" placeholder="prenom">
-                <!-- place holder suggerimento allinterno del box -->
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('nom')}" th:errors="*{}" th:errorclass="error"></div>
+                <!--<div class="alert alert-warning" th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" th:errorclass="error"></div> -->
             </div>
 
 
+            <div class="form-group">
+                <strong><label for="prenom">FirstName</label></strong>
+                <!-- th field permette di recuperare il nome selezionato -->
+                <input  class="form-control" id="prenom" name="prenom" th:value="${reservation.user.prenom}" readonly>
+                <!-- place holder suggerimento allinterno del box -->
+                 <!--<div class="alert alert-warning" th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" th:errorclass="error"></div> -->
+            </div>
+            <div class="form-group">
+                <strong><label for="prix_total">Number of Ticket:</label></strong>
+                <input  class="form-control" id="nbr_places" name="nbr_places" th:value="${reservation.nbr_places}" readonly>
+            </div>
+            <div class="form-group">
+                <strong><label for="prix_total">Total Price:</label></strong>
+                <input  class="form-control" id="prix_total" name="prix_total" th:value="${reservation.prixTotal}" readonly>
+            </div>
+            <div class="form-group">
+                <strong><label for="date_achat">Date of puchase:</label></strong>
+                <input type="text" class="form-control" id="date_achat" name="date_achat" th:value="${reservation.dateAchat}" readonly>
+            </div>
 
+            <table class="table">
+
+                <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <th scope="row"></th>
+                    <td th:text="${reservation.partie.eq1.pays}"> </td>
+                    <td></td>
+                    <td th:text="${reservation.partie.eq2.pays}"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        <img class="picture" th:src="@{${'/v1/image/display/' + reservation.partie.eq1.drapeau.id}}" width="100"></td>
+                    <td></td>
+                    <td>
+                        <img class="picture" th:src="@{${'/v1/image/display/' + reservation.partie.eq2.drapeau.id}}" width="100"></td>
+                    <td>
+
+                </tr>
+
+                <tr>
+                    <th scope="row" >Stadium</th>
+                    <td></td>
+
+                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:if="${reservation.partie.stade != null}">
+                        <div th:text="${reservation.partie.stade.nomStade}"></div>
+                        <div th:if="${reservation.partie.stade.nomStade == null}">
+
+                        </div>
+                    </td>
+
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row" >Date Time</th>
+                    <td></td>
+                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${reservation.partie.dateTime}"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row" >Arbitre</th>
+                    <td></td>
+                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${reservation.partie.arbitre_principal}"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row" >Total Time</th>
+                    <td></td>
+                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${reservation.partie.totalTime}"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row" >Price</th>
+                    <td></td>
+                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:if="${reservation.partie.prix != null}">
+                        <div th:text="${reservation.partie.prix}"></div>
+                        <div th:if="${reservation.partie.stade.nomStade == null}">
+
+
+                        </div>
+                    </td>
+
+                    <td></td>
+                </tr>
 
 
 
@@ -60,12 +144,14 @@
             <!-- th:errorclass="error" serve per indicare lo style del errore, il colore che ho definito sopra -->
             <br/>
 
-            <input class="btn btn-primary" type="submit" value="Submit" /><br/><br/>
+            <input class="btn btn-primary" type="submit" value="Pay" /><br/><br/>
             <!-- class="btn btn-primary" serve per il design del bottone -->
 
 
             <!-- <div><a th:href="@{/artists/{id}}">annuler</a></div> -->
             <nav><a th:href="@{/}">Annuler</a></nav>
+                </tbody>
+            </table>
 
         </form>
 

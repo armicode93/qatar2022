@@ -5,7 +5,7 @@ import com.example.qatar2022.entities.personne.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -23,7 +23,7 @@ public class Reservation {
 
     private Double prixTotal;
 
-    private LocalDateTime dateAchat;
+    private Date dateAchat;
 
 
 
@@ -69,11 +69,11 @@ public class Reservation {
         this.prixTotal = prixTotal;
     }
 
-    public LocalDateTime getDateAchat() {
+    public Date getDateAchat() {
         return dateAchat;
     }
 
-    public void setDateAchat(LocalDateTime dateAchat) {
+    public void setDateAchat(Date dateAchat) {
         this.dateAchat = dateAchat;
     }
 
@@ -101,7 +101,5 @@ public class Reservation {
         this.partie = partie;
     }
 
-    public void setUser(Long idUser) {
-        this.user=user;
-    }
+
 }
