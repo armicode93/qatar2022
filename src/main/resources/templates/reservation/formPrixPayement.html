@@ -28,7 +28,7 @@
 
 <div class="container">
     <div layout:fragment="content">
-        <form action="# " th:action="@{'/v1/reservation/user/payement'}" th:object="${reservation}" method="post" class="form"> <!-- th:object ci serve per fare collegamento con il model -->
+        <form action="# " th:action="@{'/pay/'+ ${reservation.codeReservation}}" th:object="${reservation}" method="get" class="form"> <!-- th:object ci serve per fare collegamento con il model -->
 
 
             <div class="form-group">

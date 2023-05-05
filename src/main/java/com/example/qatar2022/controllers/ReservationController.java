@@ -180,6 +180,21 @@ public class ReservationController {
         return "reservation/formPrixPayement";
     }
 /*
+    @GetMapping("/pay/{codeReservation}")
+    public String selectPartiePlace(Model model, @PathVariable(name = "codeReservation") Long codeReservation, @ModelAttribute("reservation") Reservation reservation) {
+        Reservation reservation = reservationService.getReservationById(codeReservation);
+
+        model.addAttribute("partie", partie);
+        model.addAttribute("user", user);
+
+
+        model.addAttribute("reservation", new Reservation());
+        model.addAttribute("title", "");
+        return "reservation/indexReservPartie";
+    }
+
+ */
+/*
     public String partieSubmitAdd(@ModelAttribute("partie") Partie partie, @ModelAttribute("equipe") Equipe equipe, @ModelAttribute("stade") Stade stade, @ModelAttribute("tour") Tour tour, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             return "partie/add";
