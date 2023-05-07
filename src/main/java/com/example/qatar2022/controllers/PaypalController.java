@@ -3,6 +3,7 @@ package com.example.qatar2022.controllers;
 import com.example.qatar2022.config.Order;
 import com.example.qatar2022.entities.Reservation;
 import com.example.qatar2022.entities.Ticket;
+import com.example.qatar2022.entities.personne.User;
 import com.example.qatar2022.service.PaypalService;
 import com.example.qatar2022.service.ReservationService;
 import com.example.qatar2022.service.TicketService;
@@ -10,10 +11,24 @@ import com.paypal.api.payments.Links;
 
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.mail.util.ByteArrayDataSource;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 
 
 @Controller
@@ -27,6 +42,10 @@ public class PaypalController {
 
     @Autowired
     TicketService ticketService;
+
+    @Autowired
+    private JavaMailSender emailSender;
+
 
     public static final String SUCCESS_URL = "pay/success/";
     public static final String CANCEL_URL = "pay/cancel";
@@ -86,6 +105,8 @@ public class PaypalController {
                 //New Ticket
                 Ticket ticket = new Ticket();
                 ticket.setReservation(reservation);
+                ticketService.addTicket(ticket);
+
 
                 model.addAttribute("ticket",ticket);
                 model.addAttribute("ticket", ticket);
@@ -100,5 +121,52 @@ public class PaypalController {
         }
         return "redirect:/";
     }
+
+
+    @PostMapping("/sendTicket/{idTicket}")
+    public String sendTicket(@PathVariable Long idTicket, @ModelAttribute("user") User user) {
+        Ticket ticket = ticketService.getTicketById(idTicket);
+        Reservation reservation = ticket.getReservation();
+        try {
+            // Creazione del PDF
+            PDDocument document = new PDDocument();
+            PDPage page = new PDPage();
+            document.addPage(page);
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            contentStream.newLineAtOffset(100, 700);
+            contentStream.showText("Ticket for reservation " + reservation.getCodeReservation());
+            contentStream.newLineAtOffset(0, -20);
+            contentStream.showText("User: " + ticket.getReservation().getUser().getNom());
+            contentStream.newLineAtOffset(0, -20);
+            contentStream.showText("User: " + ticket.getReservation().getUser().getPrenom());
+            contentStream.newLineAtOffset(0, -20);
+           // contentStream.showText("Payment number: " + ticket.getPaymentNumber());
+            contentStream.newLineAtOffset(0, -20);
+            contentStream.showText("Ticket number: " + ticket.getCodeTicket());
+            contentStream.endText();
+            contentStream.close();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            document.save(baos);
+            document.close();
+
+            // Invio della mail con il PDF come allegato
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setTo(ticket.getReservation().getUser().getEmail());
+            helper.setSubject("Ticket for reservation " + reservation.getCodeReservation());
+            helper.setText("Dear " + ticket.getReservation().getUser().getNom() + ",\n\nPlease find attached your ticket for reservation " +
+                    reservation.getCodeReservation() + ".\n\nThank you for choosing our service!\n\nBest regards,\nYour Ben Kheder Team");
+            ByteArrayDataSource dataSource = new ByteArrayDataSource(baos.toByteArray(), "application/pdf");
+            helper.addAttachment("Ticket.pdf", dataSource);
+            emailSender.send(message);
+            return "redirect:/ticketSent";
+        } catch (MessagingException | IOException e) {
+            e.printStackTrace();
+            return "redirect:/ticketNotSent";
+        }
+    }
+
 
 }

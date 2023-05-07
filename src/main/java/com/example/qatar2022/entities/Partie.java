@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -193,7 +194,8 @@ public class Partie implements Serializable {
     }
 
     public Double getPrix() {
-        return prix;
+
+        return prix.doubleValue();
     }
 
     public Equipe getVincitore() {

@@ -128,7 +128,7 @@
                     <label for="price">Total</label>
                     <input type="text" id="price" name="price" th:value="${reservation.prixTotal}" readonly >
                     <label for="currency">Currency</label>
-                    <input type="text" id="currency" name="currency" placeholder="Enter Currency"  >
+                    <input type="text" maxlength="3" id="currency" name="currency" placeholder="Enter Currency"  >
                     <label for="method">Payment Method</label>
                     <input type="text" id="method" name="method" placeholder="Payment Method" value="Paypal" readonly>
                     <label for="intent">Intent</label>
