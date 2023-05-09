@@ -171,29 +171,18 @@ public class PartieController {
     }
 
 
-    @DeleteMapping(path = "{idPartie}")
-    public void deletePartie(@PathVariable("idPartie") Long idPartie) {
-        partieService.deletePartie(idPartie);
+    @DeleteMapping(path = "/delete/{idPartie}")
+    public String deletePartie(@PathVariable("idPartie") Long idPartie)
+    {
+
+            partieService.deletePartie(idPartie);
+
+          return "redirect:/";
+
+
     }
 
-   /* @PutMapping(path = "/" )
-    public ResponseEntity updatePartie (@RequestBody Partie partieBody) {
 
-
-        if (partieBody == null) {
-            return ResponseEntity.badRequest().body("Empty Request Body");
-        }
-
-        Optional<Partie> partie = Optional.ofNullable(partieService.getPartieById(partieBody.getIdPartie()));
-
-        if (partie.isPresent()) {
-            Partie createPartie = partieService.updatePartie(partieBody.getIdPartie(), partieBody);
-            return ResponseEntity.ok(partieBody);
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    */
 
     @GetMapping("/editResult/{idPartie}")
     public String editResult(Model model, @PathVariable(name = "idPartie") String idPartie) {

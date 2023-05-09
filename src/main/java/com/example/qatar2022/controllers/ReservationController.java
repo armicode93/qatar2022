@@ -21,6 +21,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -130,6 +131,17 @@ public class ReservationController {
     public String selectPartiePlace(Model model, @PathVariable(name = "idPartie") String idPartie, @ModelAttribute("user") User user) {
         Partie partie = partieService.getPartieByIdPartie(idPartie);
 
+        // I have to check if match has already been played
+        if(partie.getScoreEq1()!= null && partie.getScoreEq2() != null )
+        {
+            model.addAttribute("title", "Match already played");
+            return "reservation/matchPlayed";
+        }
+        if(partie.getPrix()== null )
+        {
+            model.addAttribute("title", "Match already played");
+            return "reservation/matchNoReservable";
+        }
         model.addAttribute("partie", partie);
         model.addAttribute("user", user);
 
@@ -159,8 +171,12 @@ public class ReservationController {
 
         reservation.setNbr_places(nbr_places);
         // Calcolate total price
+        // i have to convert it
+        BigDecimal nbr_places_bd = new BigDecimal(String.valueOf(nbr_places));
+        //its different than the primitive type, to multiply a bigDecimal with and other BigDecimal i have to use
+        //multiply
+        BigDecimal prix_total = nbr_places_bd.multiply(partie.getPrix());
 
-        double prix_total= (nbr_places * partie.getPrix());
         reservation.setPrixTotal(prix_total);
 
         //Date purchased

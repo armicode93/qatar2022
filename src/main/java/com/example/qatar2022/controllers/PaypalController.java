@@ -3,7 +3,6 @@ package com.example.qatar2022.controllers;
 import com.example.qatar2022.config.Order;
 import com.example.qatar2022.entities.Reservation;
 import com.example.qatar2022.entities.Ticket;
-import com.example.qatar2022.entities.personne.User;
 import com.example.qatar2022.service.PaypalService;
 import com.example.qatar2022.service.ReservationService;
 import com.example.qatar2022.service.TicketService;
@@ -16,7 +15,6 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -27,7 +25,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 
 
@@ -77,7 +74,7 @@ public class PaypalController {
             // setta il valore paye a false
             reservation.setPaye(false);
             reservationService.updateReservation(reservation);
-            return "error";
+            return "reservation/error";
 
         } catch (PayPalRESTException e) {
 
@@ -88,7 +85,7 @@ public class PaypalController {
 
     @GetMapping(value = CANCEL_URL)
     public String cancelPay() {
-        return "cancel";
+        return "reservation/cancel";
     }
 
     @GetMapping(value = "/pay/success/{idReservation}")
@@ -109,12 +106,12 @@ public class PaypalController {
 
 
                 model.addAttribute("ticket",ticket);
-                model.addAttribute("ticket", ticket);
+
                 model.addAttribute("paymentId", paymentId);
                 model.addAttribute("payerId", payerId);
                 model.addAttribute("amount", payment.getTransactions().get(0).getAmount().getTotal());
                 model.addAttribute("currency", payment.getTransactions().get(0).getAmount().getCurrency());
-                return "ticketDetail";
+                return "ticket/ticketDetail";
             }
         } catch (PayPalRESTException e) {
             System.out.println(e.getMessage());
@@ -123,9 +120,9 @@ public class PaypalController {
     }
 
 
-    @PostMapping("/sendTicket/{idTicket}")
-    public String sendTicket(@PathVariable Long idTicket, @ModelAttribute("user") User user) {
-        Ticket ticket = ticketService.getTicketById(idTicket);
+    @PostMapping("/sendTicket/{codeTicket}")
+    public String sendTicket(@PathVariable Long codeTicket) {
+        Ticket ticket = ticketService.getTicketById(codeTicket);
         Reservation reservation = ticket.getReservation();
         try {
             // Creazione del PDF
@@ -161,10 +158,10 @@ public class PaypalController {
             ByteArrayDataSource dataSource = new ByteArrayDataSource(baos.toByteArray(), "application/pdf");
             helper.addAttachment("Ticket.pdf", dataSource);
             emailSender.send(message);
-            return "redirect:/ticketSent";
+            return "ticket/ticketSent";
         } catch (MessagingException | IOException e) {
             e.printStackTrace();
-            return "redirect:/ticketNotSent";
+            return "ticket/ticketNotSent";
         }
     }
 

@@ -84,18 +84,16 @@
         <th scope="row" >Price</th>
         <td></td>
         <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:if="${partie.prix != null}">
-            <div th:text="${partie.prix}"></div>
-            <div th:if="${partie.stade.nomStade == null}">
-
-
-            </div>
+            <div th:if="${partie.prix != null}" th:text="${partie.prix}"></div>
+            <div th:else>-</div>
+        </td>
         </td>
 
         <td></td>
     </tr>
     <tr>
         <th scope="row" ></th>
-        <td valign="middle" align="center" class="col-sm text-muted">
+        <td valign="middle" align="center" class="col-sm text-muted"sec:authorize="isAuthenticated()">
             <a th:href="@{'/v1/partie/edit/' + ${partie.idPartie}}">Edit</a></td>
 
 
@@ -108,8 +106,27 @@
     </tr>
     <tr>
         <th scope="row" ></th>
-        <td valign="middle" align="center" class="col-sm text-muted">
+        <td valign="middle" align="center" class="col-sm text-muted" sec:authorize="isAuthenticated()">
             <a th:href="@{'/v1/partie/editResult/' + ${partie.idPartie}}">Add Results</a></td>
+
+
+    </tr>
+    <tr>
+        <th scope="row" ></th>
+
+        <!-- il backslesh i use it to hide the ' caracthers -->
+        <td valign="middle" align="center" class="col-sm text-muted" sec:authorize="isAuthenticated()">
+            <a method="post" href="#" th:onclick="'if(confirm(\'Are you sure you want to delete this item?\')){window.location=\'/v1/partie/delete/'+ ${partie.idPartie} + '\'}'">Delete</a>
+        </td>
+
+        <!--<form th:id="|deleteForm-${partie.idPartie}|"
+              th:action="@{'/delete/'+ ${partie.idPartie}}" th:method="delete">
+            <td> <a href="#" th:onclick="|if(confirm('Confirm delete partie #${partie.idPartie} '))
+        document.getElementById('deleteForm-${partie.idPartie}').submit();
+        return false;|" >Delete</a>
+            </td>
+        </form>
+        -->
 
 
     </tr>

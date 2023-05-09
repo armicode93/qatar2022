@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
@@ -59,13 +60,15 @@ public class Partie implements Serializable {
 
     private String arbitre_principal;
 
+
+
     private String totalTime;
 
     private String prolongation;
 
-    private Double prix;
+    private BigDecimal prix; //its better its more precisely
 
-    public Partie(Equipe eq1, Equipe eq2, Stade stade, Tour tour, int scoreEq1, int scoreEq2, LocalDateTime dateTime, String arbitre_principal, String totalTime, String prolongation, Double prix) {
+    public Partie(Equipe eq1, Equipe eq2, Stade stade, Tour tour, int scoreEq1, int scoreEq2, LocalDateTime dateTime, String arbitre_principal, String totalTime, String prolongation, BigDecimal prix) {
         this.eq1 = eq1;
         this.eq2 = eq2;
         this.stade = stade;
@@ -89,7 +92,7 @@ public class Partie implements Serializable {
     public Partie() {
 
     }
-    public Partie(Equipe eq1, Equipe eq2, Stade stade, Tour tour, LocalDateTime dateTime, String arbitre_principal, String totalTime, String prolongation, Double prix) {
+    public Partie(Equipe eq1, Equipe eq2, Stade stade, Tour tour, LocalDateTime dateTime, String arbitre_principal, String totalTime, String prolongation, BigDecimal prix) {
         this.eq1 = eq1;
         this.eq2 = eq2;
         this.stade = stade;
@@ -140,6 +143,13 @@ public class Partie implements Serializable {
 
     public void setEq2(Equipe eq2) {
         this.eq2 = eq2;
+    }
+    public BigDecimal getPrix() {
+        return prix;
+    }
+
+    public void setPrix(BigDecimal prix) {
+        this.prix = prix;
     }
 
 
@@ -193,10 +203,7 @@ public class Partie implements Serializable {
         this.prolongation = prolongation;
     }
 
-    public Double getPrix() {
 
-        return prix.doubleValue();
-    }
 
     public Equipe getVincitore() {
         if (scoreEq1 > scoreEq2) {
@@ -207,9 +214,7 @@ public class Partie implements Serializable {
         return null;
     }
 
-    public void setPrix(Double prix) {
-        this.prix = prix;
-    }
+
 
     @Override
     public String toString() {

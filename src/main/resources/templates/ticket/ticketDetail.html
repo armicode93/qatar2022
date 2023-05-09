@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
+    <link href="../static/css/index/index/index.css" th:href="@{/css/ticket/ticketDetail.css}" rel="stylesheet" />
+    <title>Payment accepted</title>
+</head>
+<body>
+<form action="# " th:action="@{'/sendTicket/'+${ticket.codeTicket}}" th:object="${ticket}" method="post" class="form">
+<p>
+    <div class="container">
+        <div class="ticket">
+            <div class="ticket-header">
+                <h2>Ticket Details</h2>
+            </div>
+            <div class="ticket-content">
+                <p>
+                    <span class="ticket-label">Code Ticket:</span>
+                    <span class="ticket-value" th:text="${ticket.codeTicket}"></span>
+                </p>
+                <p>
+                    <span class="ticket-label">Reservation ID:</span>
+                    <span class="ticket-value" th:text="${ticket.reservation.codeReservation}"></span>
+                </p>
+                <h2>Payment Details</h2>
+                <p>
+                    <span class="ticket-label">Payment ID:</span>
+                    <span class="ticket-value" th:text="${paymentId}"></span>
+                </p>
+                <p>
+                    <span class="ticket-label">Payer ID:</span>
+                    <span class="ticket-value" th:text="${payerId}"></span>
+                </p>
+                <p>
+                    <span class="ticket-label">Payment Method:</span>
+                    <span class="ticket-value">PayPal</span>
+                </p>
+                <p>
+                    <span class="ticket-label">Amount:</span>
+                    <span class="ticket-value" th:text="${amount}"></span>
+                </p>
+                <p>
+                    <span class="ticket-label">First Name:</span>
+                    <span class="ticket-value" th:text="${ticket.reservation.user.prenom}"></span>
+                </p>
+                <p>
+                    <span class="ticket-label">Last Name:</span>
+                    <span class="ticket-value" th:text="${ticket.reservation.user.nom}"></span>
+                </p>
+            </div>
+            <div class="ticket-footer">
+                <form action="#" th:action="@{'/sendTicket/'+${ticket.codeTicket}}" th:object="${ticket}" method="post" class="form">
+                    <button type="submit" class="btn btn-primary">Send Ticket Email</button>
+                    <a href="/" class="btn btn-secondary">Home Page</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+</html>

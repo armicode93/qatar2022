@@ -5,6 +5,7 @@ import com.example.qatar2022.entities.personne.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -21,7 +22,7 @@ public class Reservation {
 
     private int nbr_places;
 
-    private Double prixTotal;
+    private BigDecimal prixTotal;
 
     private Date dateAchat;
 
@@ -61,11 +62,11 @@ public class Reservation {
         this.nbr_places = nbr_places;
     }
 
-    public Double getPrixTotal() {
+    public BigDecimal getPrixTotal() {
         return prixTotal;
     }
 
-    public void setPrixTotal(Double prixTotal) {
+    public void setPrixTotal(BigDecimal prixTotal) {
         this.prixTotal = prixTotal;
     }
 
