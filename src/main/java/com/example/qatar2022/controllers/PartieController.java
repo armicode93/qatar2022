@@ -172,10 +172,16 @@ public class PartieController {
 
 
     @DeleteMapping(path = "/delete/{idPartie}")
-    public String deletePartie(@PathVariable("idPartie") Long idPartie)
+    public String deletePartie(@PathVariable("idPartie")String idPartie,Model model)
     {
+        Partie exists = partieService.getPartieByIdPartie(idPartie);
+        if(exists != null)
+        {
+            Long indice = (long) Integer.parseInt(idPartie);
+            partieService.deletePartie(indice);
+        }
 
-            partieService.deletePartie(idPartie);
+
 
           return "redirect:/";
 

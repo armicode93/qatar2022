@@ -48,6 +48,50 @@
                     <span class="ticket-label">Amount:</span>
                     <span class="ticket-value" th:text="${amount}"></span>
                 </p>
+                <table>
+                <tbody>
+                <tr>
+                    <th scope="row"></th>
+                    <td th:text="${ticket.reservation.partie.eq1.pays}"> </td>
+                    <td></td>
+                    <td th:text="${ticket.reservation.partie.eq2.pays}"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        <img class="picture" th:src="@{${'/v1/image/display/' + ticket.reservation.partie.eq1.drapeau.id}}" width="100"></td>
+                    <td></td>
+                    <td>
+                        <img class="picture" th:src="@{${'/v1/image/display/' + ticket.reservation.partie.eq2.drapeau.id}}" width="100"></td>
+                    <td>
+
+                </tr>
+
+                <tr>
+                    <th scope="row" >Stadium</th>
+                    <td></td>
+
+                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:if="${ticket.reservation.partie.stade != null}">
+                        <div th:text="${ticket.reservation.partie.stade.nomStade}"></div>
+                        <div th:if="${ticket.reservation.partie.stade.nomStade == null}">
+
+                        </div>
+                    </td>
+
+                    <td></td>
+                </tr>
+                </tbody>
+                </table>
+                <tr>
+                    <th scope="row" >Date Time</th>
+                    <td></td>
+                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${ticket.reservation.partie.dateTime}"></td>
+                    <td></td>
+                </tr>
+
+
                 <p>
                     <span class="ticket-label">First Name:</span>
                     <span class="ticket-value" th:text="${ticket.reservation.user.prenom}"></span>
@@ -56,6 +100,7 @@
                     <span class="ticket-label">Last Name:</span>
                     <span class="ticket-value" th:text="${ticket.reservation.user.nom}"></span>
                 </p>
+
             </div>
             <div class="ticket-footer">
                 <form action="#" th:action="@{'/sendTicket/'+${ticket.codeTicket}}" th:object="${ticket}" method="post" class="form">

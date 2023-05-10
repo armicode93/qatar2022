@@ -1,10 +1,13 @@
 package com.example.qatar2022.controllers;
 
 import com.example.qatar2022.config.Order;
+import com.example.qatar2022.entities.Partie;
 import com.example.qatar2022.entities.Reservation;
+import com.example.qatar2022.entities.Stade;
 import com.example.qatar2022.entities.Ticket;
 import com.example.qatar2022.service.PaypalService;
 import com.example.qatar2022.service.ReservationService;
+import com.example.qatar2022.service.StadeService;
 import com.example.qatar2022.service.TicketService;
 import com.paypal.api.payments.Links;
 
@@ -42,6 +45,9 @@ public class PaypalController {
 
     @Autowired
     private JavaMailSender emailSender;
+
+    @Autowired
+    private StadeService stadeService;
 
 
     public static final String SUCCESS_URL = "pay/success/";
@@ -104,16 +110,41 @@ public class PaypalController {
                 ticket.setReservation(reservation);
                 ticketService.addTicket(ticket);
 
+                //Refresh stadium capacity
+                Partie partie = reservation.getPartie();
+                Stade stade = partie.getStade();
+                //take the current capacity of the stadium
+                Long currentCapacity = stade.getCapacite();
+
+                // subtract nbr_place selected with actualCapacity
+                currentCapacity = currentCapacity- reservation.getNbr_places();
+
+                stade.setCapacite(currentCapacity);
+                stadeService.updateStade(stade.getIdStade(),stade);
 
                 model.addAttribute("ticket",ticket);
-
+                model.addAttribute("stade",stade);
                 model.addAttribute("paymentId", paymentId);
                 model.addAttribute("payerId", payerId);
                 model.addAttribute("amount", payment.getTransactions().get(0).getAmount().getTotal());
                 model.addAttribute("currency", payment.getTransactions().get(0).getAmount().getCurrency());
                 return "ticket/ticketDetail";
             }
-        } catch (PayPalRESTException e) {
+            else {
+                // Payment not approved
+                Reservation reservation = reservationService.getReservationById(idReservation);
+                reservation.setPaye(false);
+                reservationService.updateReservation(reservation);
+
+
+
+                return "redirect:/reservation/cancel";
+            }
+        }
+
+
+
+        catch (PayPalRESTException e) {
             System.out.println(e.getMessage());
         }
         return "redirect:/";
@@ -135,13 +166,22 @@ public class PaypalController {
             contentStream.newLineAtOffset(100, 700);
             contentStream.showText("Ticket for reservation " + reservation.getCodeReservation());
             contentStream.newLineAtOffset(0, -20);
-            contentStream.showText("User: " + ticket.getReservation().getUser().getNom());
+            contentStream.showText("User FirstName: " + ticket.getReservation().getUser().getNom());
             contentStream.newLineAtOffset(0, -20);
-            contentStream.showText("User: " + ticket.getReservation().getUser().getPrenom());
+            contentStream.showText("User LastName: " + ticket.getReservation().getUser().getPrenom());
             contentStream.newLineAtOffset(0, -20);
            // contentStream.showText("Payment number: " + ticket.getPaymentNumber());
-            contentStream.newLineAtOffset(0, -20);
+
             contentStream.showText("Ticket number: " + ticket.getCodeTicket());
+            contentStream.newLineAtOffset(0, -20);
+            contentStream.showText("Amount: " + ticket.getReservation().getPrixTotal()+" $" );
+            contentStream.newLineAtOffset(0, -20);
+            contentStream.showText("Match: " + ticket.getReservation().getPartie().getScoreEq1()+" vs"+ ticket.getReservation().getPartie().getScoreEq2() );
+            contentStream.newLineAtOffset(0, -20);
+            contentStream.showText("Date: " + ticket.getReservation().getPartie().getDateTime());
+            contentStream.newLineAtOffset(0, -20);
+            contentStream.showText("Amount: " + ticket.getReservation().getPartie().getStade().getNomStade());
+            contentStream.newLineAtOffset(0, -20);
             contentStream.endText();
             contentStream.close();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

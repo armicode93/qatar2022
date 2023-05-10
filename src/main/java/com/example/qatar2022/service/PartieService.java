@@ -63,11 +63,7 @@ public class PartieService {
 
     public void deletePartie(Long idPartie)
     {
-        boolean exists = partieRepository.existsById(idPartie);
-        if(!exists)
-        {
-            throw new IllegalStateException("Not exists");
-        }
+
         partieRepository.deleteById(idPartie);
     }
 
