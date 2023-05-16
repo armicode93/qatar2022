@@ -166,9 +166,9 @@ public class PaypalController {
             contentStream.newLineAtOffset(100, 700);
             contentStream.showText("Ticket for reservation " + reservation.getCodeReservation());
             contentStream.newLineAtOffset(0, -20);
-            contentStream.showText("User FirstName: " + ticket.getReservation().getUser().getNom());
+            contentStream.showText("FirstName: " + ticket.getReservation().getUser().getNom());
             contentStream.newLineAtOffset(0, -20);
-            contentStream.showText("User LastName: " + ticket.getReservation().getUser().getPrenom());
+            contentStream.showText("LastName: " + ticket.getReservation().getUser().getPrenom());
             contentStream.newLineAtOffset(0, -20);
            // contentStream.showText("Payment number: " + ticket.getPaymentNumber());
 
@@ -176,11 +176,11 @@ public class PaypalController {
             contentStream.newLineAtOffset(0, -20);
             contentStream.showText("Amount: " + ticket.getReservation().getPrixTotal()+" $" );
             contentStream.newLineAtOffset(0, -20);
-            contentStream.showText("Match: " + ticket.getReservation().getPartie().getScoreEq1()+" vs"+ ticket.getReservation().getPartie().getScoreEq2() );
+            contentStream.showText("Match: " + ticket.getReservation().getPartie().getEq1()+" vs"+ ticket.getReservation().getPartie().getEq2());
             contentStream.newLineAtOffset(0, -20);
             contentStream.showText("Date: " + ticket.getReservation().getPartie().getDateTime());
             contentStream.newLineAtOffset(0, -20);
-            contentStream.showText("Amount: " + ticket.getReservation().getPartie().getStade().getNomStade());
+            contentStream.showText("Stadium: " + ticket.getReservation().getPartie().getStade().getNomStade());
             contentStream.newLineAtOffset(0, -20);
             contentStream.endText();
             contentStream.close();

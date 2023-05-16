@@ -74,15 +74,15 @@
 
                     <div class="form-group">
                         <label class="control-label" for="email"> Email </label> <input
-                            id="email" class="form-control" th:field="*{email}" required
+                            id="email" class="form-control" type="email" field="*{email}" name="email" required
                             autofocus="autofocus" />
                         <div class="alert alert-warning" th:if="${#fields.hasErrors('email')}"  th:errors="*{email}" th:errorclass="error"></div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label" for="gsm"> GSM </label> <input
-                            id="gsm" class="form-control" type="number"
-                            th:field="*{gsm}" required autofocus="autofocus" />
+                        <label class="control-label" for="gsm"> GSM </label>
+                        <input  id="gsm" class="form-control" type="number" name="gsm"
+                            th:field="*{gsm}"  required autofocus="autofocus"  />
                         <div class="alert alert-warning" th:if="${#fields.hasErrors('gsm')}"  th:errors="*{gsm}" th:errorclass="error"></div>
                     </div>
 

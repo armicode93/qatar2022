@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
 
 @CrossOrigin(origins = "*")
@@ -38,8 +40,11 @@ public class UserRegistrationController {
         return "registration";
     }
 
+
+    // Valid is for activate the validation
+    //Biinding Result give me access at the result
     @PostMapping("/registration/new")
-    public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto, BindingResult result, Model model) {
+    public String registerUserAccount(@Valid @ModelAttribute("user") UserRegistrationDto registrationDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "registration";
         }

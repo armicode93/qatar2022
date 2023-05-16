@@ -1,18 +1,15 @@
 package com.example.qatar2022.service;
 
 
-import com.example.qatar2022.entities.Equipe;
-import com.example.qatar2022.entities.Partie;
-import com.example.qatar2022.entities.Stade;
-import com.example.qatar2022.entities.Tour;
+import com.example.qatar2022.entities.*;
 import com.example.qatar2022.repository.PartieRepository;
+import com.example.qatar2022.repository.ReservationRepository;
 import com.example.qatar2022.repository.TourRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -22,14 +19,16 @@ public class PartieService {
 
     private final PartieRepository partieRepository;
     private final TourRepository tourRepository;
+    private final ReservationRepository reservationRepository;
 
 
 
     @Autowired
-    public PartieService(PartieRepository partieRepository, TourRepository tourRepository) {
+    public PartieService(PartieRepository partieRepository, TourRepository tourRepository, ReservationRepository reservationRepository) {
         this.partieRepository = partieRepository;
         this.tourRepository = tourRepository;
 
+        this.reservationRepository = reservationRepository;
     }
 
 
@@ -60,6 +59,12 @@ public class PartieService {
 
         partieRepository.save(partie);
     }
+// give us False if we dont have reservation, true if we  reservation
+    public boolean hasReservationsForPartie(Long idPartie) {
+        Partie partie = partieRepository.findPartieByIdPartie(idPartie);
+        List<Reservation> reservations = reservationRepository.findByPartie(partie);
+        return !reservations.isEmpty();
+    }
 
     public void deletePartie(Long idPartie)
     {
@@ -67,18 +72,13 @@ public class PartieService {
         partieRepository.deleteById(idPartie);
     }
 
-    /*
-    public void updatePartie(Long idPartie, Partie partie)
-    {
-        partieRepository.save(partie);
 
-    }
-
-     */
-    public void updatePartie(long idPartie, int scoreEq1, int scoreEq2) {
+    public void updatePartie(long idPartie, int scoreEq1, int scoreEq2,String prolongation,String totalTime) {
         Partie partie = getPartieById(idPartie);
         partie.setScoreEq1(scoreEq1);
         partie.setScoreEq2(scoreEq2);
+        partie.setProlongation(prolongation);
+        partie.setTotalTime(totalTime);
         partieRepository.save(partie);
     }
 

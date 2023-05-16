@@ -54,13 +54,14 @@ public class Role {
         this.id = id;
     }
 
-    public String getname() {
+    public String getName() {
         return name;
     }
 
-    public void setRoleName(String roleName) {
-        this.name = name;
-    }
+
+    public void setName(String name) {
+    this.name = name;
+}
 
     public List<User> getUsers() {
         return users;

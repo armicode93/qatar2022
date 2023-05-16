@@ -14,32 +14,35 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService{
 
 
-
+    @Autowired
     private UserRepository userRepository; //base injection
-
+    @Autowired
     private RoleRepository roleRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository,RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         super();
-        this.roleRepository= roleRepository;
+
         this.userRepository = userRepository;
     }
+
 
     @Override
     public User save(UserRegistrationDto registrationDto)
     {
         final User user= new User();
-        final Role role= new Role();
+
         //User user = new User(registrationDto.getUsername(),passwordEncoder.encode(registrationDto.getPassword()),registrationDto.getNom(),registrationDto.getPrenom(),registrationDto.getEmail(),registrationDto.getDateNaiss(),
              //   registrationDto.getGsm(),Arrays.asList(roleRepository.findByName("ROLE_USER")));
 
@@ -50,11 +53,21 @@ public class UserServiceImpl implements UserService{
         user.setEmail(registrationDto.getEmail());
         user.setDateNaiss(registrationDto.getDateNaiss());
         user.setGsm(registrationDto.getGsm());
-        user.setRoles(Arrays.asList(new Role("ROLE_ADMIN")));
-        //role.setRoleName("ROLE_USER");
-        //create a user object here
+
+
+
+        Role userRole = roleRepository.findByName("ROLE_USER");
+        if (userRole != null) {
+            user.setRoles(Collections.singletonList(userRole));
+        } else {
+            // Il ruolo "ROLE_USER" non esiste nel repository dei ruoli
+            // Puoi gestire questo caso a tua discrezione
+        }
+        //user.setRoles(Collections.singletonList(userRole));
+
         return userRepository.save(user);
     }
+
 
 
 
@@ -65,7 +78,10 @@ public class UserServiceImpl implements UserService{
         if(user == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                mapRolesToAuthorities(user.getRoles()));
 
     }
     //Methode to maps roles to authorities, we are going to convert Roles t oauthorities
@@ -73,7 +89,7 @@ public class UserServiceImpl implements UserService{
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
         //here im going to map  Roles to authorities
 
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getname())).collect(Collectors.toList());
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     //we converted roles to stream,w maped a roles and we converted role into s.grantedAuthority, is the spring security provided class
         //and after that we converted stream to a list
     }

@@ -2,15 +2,18 @@ package com.example.qatar2022.controllers;
 
 
 import com.example.qatar2022.entities.*;
-import com.example.qatar2022.entities.personne.User;
+import com.example.qatar2022.entities.personne.Joueur;
+import com.example.qatar2022.entities.personne.Staff;
 import com.example.qatar2022.service.*;
 import com.example.qatar2022.service.personne.JoueurService;
+import com.example.qatar2022.service.personne.StaffService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.*;
 
 
@@ -25,17 +28,19 @@ public class PartieController {
     private final StadeService stadeService;
     private final TourService tourService;
     private final UserServiceImpl userServiceImpl;
+    private final StaffService staffService;
 
 
     private final JoueurService joueurService;
 
-    public PartieController(PartieService partieService, ImageService imageService, EquipeService equipeService, StadeService stadeService, TourService tourService, UserServiceImpl userServiceImpl, JoueurService joueurService) {
+    public PartieController(PartieService partieService, ImageService imageService, EquipeService equipeService, StadeService stadeService, TourService tourService, UserServiceImpl userServiceImpl, StaffService staffService, JoueurService joueurService) {
         this.partieService = partieService;
         this.imageService = imageService;
         this.equipeService = equipeService;
         this.stadeService = stadeService;
         this.tourService = tourService;
         this.userServiceImpl = userServiceImpl;
+        this.staffService = staffService;
         this.joueurService = joueurService;
     }
 
@@ -108,19 +113,29 @@ public class PartieController {
 
         return "partie/add";
     }
-    /*
+
     @GetMapping("/showJoueurByPartie/{idPartie}")
     public String showJoueurByPartie (Model model, @PathVariable(name="idPartie")Long idPartie)
     {
-
-
         Partie partie =  partieService.getPartieById(idPartie);
 
+
+        // ho utilizzato una list perche prendo tanti giocatori in conto, cioe una lista
+        List <Joueur> eq1Joueurs = partie.getEq1().getJoueur();
+        List <Joueur> eq2Joueurs = partie.getEq2().getJoueur();
+
+        List<Staff> eq1Staff = staffService.getStaffByEquipe(partie.getEq1());
+        List<Staff> eq2Staff = staffService.getStaffByEquipe(partie.getEq2());
 
 
 
 
         model.addAttribute("partie",partie);
+        model.addAttribute("eq1Joueurs",eq1Joueurs);
+        model.addAttribute("eq2Joueurs",eq2Joueurs);
+        model.addAttribute("eq1Staff",eq1Staff);
+        model.addAttribute("eq2Staff",eq2Staff);
+
         model.addAttribute("joueurs", joueurService.getAllJoueur());
 
 
@@ -131,7 +146,7 @@ public class PartieController {
         return "partie/showJoueurByPartie";
     }
 
-     */
+
 
 
     @PostMapping("/add")
@@ -172,13 +187,20 @@ public class PartieController {
 
 
     @DeleteMapping(path = "/delete/{idPartie}")
-    public String deletePartie(@PathVariable("idPartie")String idPartie,Model model)
+    public String deletePartie(@PathVariable("idPartie")Long idPartie,Model model)
     {
-        Partie exists = partieService.getPartieByIdPartie(idPartie);
+        Partie exists = partieService.getPartieById(idPartie);
         if(exists != null)
         {
-            Long indice = (long) Integer.parseInt(idPartie);
-            partieService.deletePartie(indice);
+            if(partieService.hasReservationsForPartie(idPartie))
+            {
+                model.addAttribute("error","Cannot delete we have reservation");
+                return "partie/deleteError";
+            }
+            else{
+                partieService.deletePartie(idPartie);
+            }
+
         }
 
 
@@ -202,9 +224,10 @@ public class PartieController {
 
     }
 
+    //importante Binding result deve essere subito dopo il parametro con cui facciamo il Valid, in modo che spring possa popolare l'oggetto
     @PostMapping("/editResult/{idPartie}")
-    public String editResultSubmit(@ModelAttribute("partie") Partie partie, @RequestParam("scoreEq1") int scoreEq1,
-                                   @RequestParam("scoreEq2") int scoreEq2, BindingResult result, @PathVariable("idPartie") Long idPartie, Model model) {
+    public String editResultSubmit(@Valid @ModelAttribute("partie") Partie partie, BindingResult result,@RequestParam("scoreEq1") int scoreEq1,
+                                   @RequestParam("scoreEq2") int scoreEq2,@RequestParam("prolongation") String prolongation,@RequestParam("totalTime") String totalTime, @PathVariable("idPartie") Long idPartie, Model model) {
 
         if (result.hasErrors()) {
             return "partie/editResultForm";
@@ -219,7 +242,7 @@ public class PartieController {
         Tour tour = existing.getTour();
 
 // Aggiorna la Partie esistente con i nuovi punteggi
-        partieService.updatePartie(idPartie, scoreEq1, scoreEq2);
+        partieService.updatePartie(idPartie, scoreEq1, scoreEq2, prolongation,totalTime);
 
         model.addAttribute("partie", partie);
 

@@ -88,11 +88,15 @@ navbar ul li a{
  }
 
  .mat-cell {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
      text-align: center;
-     justify-content:center;
-     padding-top: 2.2vh;
-     padding-left: 0vh;
-     padding-right: 0vh;
+ }
+
+ .mat-cell .container{
+     margin-bottom: 10px;
  }
 
  .mat-row:hover{
@@ -135,13 +139,13 @@ navbar ul li a{
      position: relative;
      bottom: 0px;
  }
- /*.matches-container {
-     border: 1px solid black;
-     padding: 10px;
-     margin-bottom: 20px;
+ .team-container {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     text-align: center;
  }
-
-  */
 
 
 

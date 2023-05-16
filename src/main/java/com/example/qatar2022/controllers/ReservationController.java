@@ -7,6 +7,7 @@ import com.example.qatar2022.entities.personne.User;
 import com.example.qatar2022.repository.personne.UserRepository;
 import com.example.qatar2022.service.PartieService;
 import com.example.qatar2022.service.ReservationService;
+import com.example.qatar2022.service.StadeService;
 import com.example.qatar2022.service.TicketService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -17,7 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +40,9 @@ public class ReservationController {
     private  final ReservationService reservationService;
 
     @Autowired
+    private final StadeService stadeService;
+
+    @Autowired
     private final TicketService ticketService;
 
     @Autowired
@@ -56,8 +59,9 @@ public class ReservationController {
     @Autowired
     private ModelMapper modelMapper;
 
-    public ReservationController(ReservationService reservationService, TicketService ticketService, PartieService partieService,  UserRepository userRepository) {
+    public ReservationController(ReservationService reservationService, StadeService stadeService, TicketService ticketService, PartieService partieService, UserRepository userRepository) {
         this.reservationService = reservationService;
+        this.stadeService = stadeService;
         this.ticketService = ticketService;
         this.partieService = partieService;
         this.userRepository = userRepository;
@@ -128,7 +132,7 @@ public class ReservationController {
 
 
     @GetMapping("/selectPartie/{idPartie}")
-    public String selectPartiePlace(Model model, @PathVariable(name = "idPartie") String idPartie, @ModelAttribute("user") User user) {
+    public String selectPartiePlace(Model model, @PathVariable(name = "idPartie") String idPartie, @ModelAttribute("user") User user, @ModelAttribute("stade") Stade stade) {
         Partie partie = partieService.getPartieByIdPartie(idPartie);
 
         // I have to check if match has already been played
@@ -142,6 +146,11 @@ public class ReservationController {
             model.addAttribute("title", "Match already played");
             return "reservation/matchNoReservable";
         }
+        if(partie.getStade().getCapacite() == 0)
+        {
+            model.addAttribute("title","Match sold out");
+                    return "reservation/MatchSoldOut";
+        }
         model.addAttribute("partie", partie);
         model.addAttribute("user", user);
 
@@ -152,7 +161,7 @@ public class ReservationController {
     }
 
     @PostMapping("/reservationPartie/{idPartie}")
-    public String selectPartiePlacetSubmit(@ModelAttribute("reservation") Reservation reservation, @RequestParam("nbr_places") int nbr_places, BindingResult result, @PathVariable("idPartie") String idPartie, Model model) {
+    public String selectPartiePlacetSubmit(@ModelAttribute("reservation") Reservation reservation, @ModelAttribute("stade") Stade stade, @RequestParam("nbr_places") int nbr_places, BindingResult result, @PathVariable("idPartie") String idPartie, Model model) {
         Partie partie = partieService.getPartieByIdPartie(idPartie);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -167,6 +176,17 @@ public class ReservationController {
         }
 
         */
+
+        //if nbr_place > of capacity of stade
+        long remainingSeats =  partie.getStade().getCapacite() - nbr_places;
+
+        if(remainingSeats < 0)
+        {
+            model.addAttribute("title","Seats not avaiable");
+            model.addAttribute("remaining", partie.getStade().getCapacite());
+            model.addAttribute("partie", partie);
+                    return "reservation/nbr_placesRemaining";
+        }
         reservation.setUser(user);
 
         reservation.setNbr_places(nbr_places);

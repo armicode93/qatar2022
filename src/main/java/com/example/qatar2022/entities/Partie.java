@@ -4,6 +4,8 @@ package com.example.qatar2022.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 import java.math.BigDecimal;
@@ -61,9 +63,10 @@ public class Partie implements Serializable {
     private String arbitre_principal;
 
 
-
+    @Pattern(regexp = "^\\d{1,3}:\\d{2}$", message = "Total time should be in the format HH:MM")
     private String totalTime;
 
+    @Size(min=2, max =3, message = "Prolongation can be only two value YES or NO")
     private String prolongation;
 
     private BigDecimal prix; //its better its more precisely

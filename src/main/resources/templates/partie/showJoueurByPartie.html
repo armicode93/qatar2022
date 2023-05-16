@@ -17,7 +17,7 @@
 <table class="table"   >
 <thead>
 
-    <tbody>
+
 <tr>
     <th scope="col" th:text="${partie.eq1.pays +' Team '}"></th>
     <th scope="col"></th>
@@ -25,31 +25,37 @@
 
 </tr>
 </thead>
-
-
+    <tbody>
     <tr>
-
-
-
-
-    <td th:text="${partie.eq1.joueur}" ></td>
+        <td>
+            <ul>
+                <li th:each="joueur : ${eq1Joueurs}" th:text="${joueur.nom + ' ' + joueur.prenom}"></li>
+            </ul>
+        </td>
         <td></td>
-        <td th:text="${partie.eq2.joueur}"></td>
-        </div>
+        <td>
+            <ul>
+                <li th:each="joueur : ${eq2Joueurs}" th:text="${joueur.nom + ' ' + joueur.prenom}"></li>
+            </ul>
+        </td>
     </tr>
-
-
-
-
-</thead>
-
-
-
-</tbody>
-
+    <tr>
+        <td>
+            <h5>Staff</h5>
+            <ul>
+                <li th:each="staff : ${eq1Staff}" th:text="${staff.nom + ' ' + staff.prenom + ' (' + staff.fonction + ')'}"></li>
+            </ul>
+        </td>
+        <td></td>
+        <td>
+            <h5>Staff</h5>
+            <ul>
+                <li th:each="staff : ${eq2Staff}" th:text="${staff.nom + ' ' + staff.prenom + ' (' + staff.fonction + ')'}"></li>
+            </ul>
+        </td>
+    </tr>
+    // scrivere cio nel onenote
+   <a th:href="@{${'~/v1/partie/show/'+ partie.idPartie}}">Back </a>
+    </tbody>
 </table>
-
-
-
-</html>
 

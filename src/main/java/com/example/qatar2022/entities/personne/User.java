@@ -38,8 +38,7 @@ public class User implements Serializable {
 
     private Long id;
 
-    //@Size(min = 2, max = 30, message = " username should have at least 2 characters and max 30 characters" )
-    @NotEmpty(message = "value is required and can t be empty")
+
     @Column(nullable = false)
     private String username;
 
@@ -47,18 +46,16 @@ public class User implements Serializable {
     private String password;
 
     @Column(nullable = false)
-    @Size(min = 2, max = 60 , message = "Firstname should have at least 2 characters and max 60 characters")
-    @NotEmpty(message = "value is required and can t be empty")
+
     private String nom;
 
     @Column(nullable = false)
-    @Size(min = 2, max = 60 , message = "Lastname should have at least 2 characters and max 60 characters")
-    @NotEmpty(message = "value is required and can t be empty")
+
     private String prenom;
 
 
     @Email
-    @NotEmpty(message = "Value is required and can t be empty")
+
     @Column(nullable = false)
     private String email;
 
@@ -67,7 +64,6 @@ public class User implements Serializable {
     private LocalDate dateNaiss;
 
 
-    @NumberFormat
 
     @Column(nullable = false)
     private Long gsm;
@@ -79,7 +75,7 @@ public class User implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER, mappedBy="users") //caricamento veloce dei dati,senno LAZY caricamento quando necessario
     private Collection<Role> roles;
 
-
+/*
     public User(String username, String password, String nom, String prenom, String email, LocalDate dateNaiss, Long gsm) {
         this.username = username;
         this.password = password;
@@ -89,6 +85,8 @@ public class User implements Serializable {
         this.dateNaiss = dateNaiss;
         this.gsm = gsm;
     }
+
+ */
 
     public User(String username, String password, String nom, String prenom, String email, LocalDate dateNaiss, Long gsm, Collection<Role> roles) {
         super();
@@ -196,12 +194,9 @@ public class User implements Serializable {
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
-}
-    /*
-    @OneToMany(mappedBy = "user")
-    private List<Reservation> reservation = new ArrayList<>();
 
- */
+}
+
 
 
 

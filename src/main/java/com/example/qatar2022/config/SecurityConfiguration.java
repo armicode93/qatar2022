@@ -19,6 +19,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter { //this class overload config methods to config to prive our costum configuration
 
@@ -80,8 +81,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter { //this
                         "index",
                         "/",
                 "framents/**",
-                "partie/**",
-                "equipe/**"
+                "partie",
+                "partie/show",
+                        "equipe"
                 ).permitAll()
 
                 //authenticate anyRequest to this url
@@ -102,12 +104,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter { //this
 
 
         http.authorizeRequests() .antMatchers("/profile/**").authenticated();
-       /* http.authorizeRequests() .antMatchers("/admin/**").hasRole("ADMIN");
-        http.authorizeRequests() .antMatchers("/equipe/edit").hasRole("ADMIN");
-        http.authorizeRequests() .antMatchers("/equipe/add").hasRole("ADMIN");
-        http.authorizeRequests() .antMatchers("/partie/add").hasRole("ADMIN");
+       //http.authorizeRequests() .antMatchers("/admin/**").hasRole("ADMIN");
+       // http.authorizeRequests() .antMatchers("/equipe/edit").hasRole("ADMIN");
+       // http.authorizeRequests() .antMatchers("/equipe/add").hasRole("ADMIN");
+       // http.authorizeRequests() .antMatchers("/partie/add").hasRole("ADMIN");
+        //http.authorizeRequests() .antMatchers("/partie/edit").hasRole("ADMIN");
 
-        */
+        //http.authorizeRequests() .antMatchers("/partie/editResultForm").hasRole("ADMIN");
+        //http.authorizeRequests() .antMatchers("/reservation/**").hasRole("USER");
+        //http.authorizeRequests() .antMatchers("/ticket/**").hasRole("USER");
+
+
         //http.authorizeRequests() .antMatchers("//edit").hasRole("ADMIN");
 
 

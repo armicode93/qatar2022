@@ -59,7 +59,7 @@ public class RoleController {
 
 
 
-        role.setRoleName(role.getname());
+        role.setName(role.getName());
 
         model.addAttribute(new Role());
         service.add(role);

@@ -40,13 +40,20 @@
 
     <tr>
         <th scope="row"><a valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:href="@{${'/v1/partie/showJoueurByPartie/' + partie.idPartie }}">Team Composition </a></th>
+
         <td>
+            <b th:if="${partie.scoreEq1!= null}" th:text="${partie.scoreEq1}"></b>
         <img class="picture" th:src="@{${'/v1/image/display/' + partie.eq1.drapeau.id}}" width="100"></td>
+
         <td></td>
+
         <td>
+            <b th:if="${partie.scoreEq2 != null }" th:text="${partie.scoreEq2}"></b>
         <img class="picture" th:src="@{${'/v1/image/display/' + partie.eq2.drapeau.id}}" width="100"></td>
+
         <td>
             <a valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:href="@{${'/v1/partie/showJoueurByPartie/' + partie.idPartie }}">Team Composition </a></td>
+
     </tr>
 
     <tr>
@@ -93,7 +100,7 @@
     </tr>
     <tr>
         <th scope="row" ></th>
-        <td valign="middle" align="center" class="col-sm text-muted"sec:authorize="isAuthenticated()">
+        <td valign="middle" align="center" class="col-sm text-muted" sec:authorize="hasRole('ROLE_ADMIN')">
             <a th:href="@{'/v1/partie/edit/' + ${partie.idPartie}}">Edit</a></td>
 
 
@@ -107,7 +114,7 @@
     </tr>
     <tr>
         <th scope="row" ></th>
-        <td valign="middle" align="center" class="col-sm text-muted" sec:authorize="isAuthenticated()">
+        <td valign="middle" align="center" class="col-sm text-muted" >
             <a th:href="@{'/v1/partie/editResult/' + ${partie.idPartie}}">Add Results</a></td>
 
 
@@ -118,7 +125,7 @@
         <!-- il backslesh i use it to hide the ' caracthers -->
         <form th:action="@{'/v1/partie/delete/'+ ${partie.idPartie}}" method="post" class="form">
             <input type="hidden" name="_method" value="delete" />
-            <td valign="middle" align="center" class="col-sm text-muted" sec:authorize="isAuthenticated()">
+            <td valign="middle" align="center" class="col-sm text-muted" >
                 <button type="submit" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
             </td>
         </form>

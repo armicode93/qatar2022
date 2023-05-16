@@ -1,5 +1,6 @@
 package com.example.qatar2022.service.personne;
 
+import com.example.qatar2022.entities.Equipe;
 import com.example.qatar2022.entities.personne.Staff;
 import com.example.qatar2022.repository.personne.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,11 @@ public class StaffService {
     public Staff getStaffById(Long idStaff)
     {
         return  staffRepository.findById(idStaff).orElse(null);
+    }
+
+    public List<Staff> getStaffByEquipe(Equipe equipe)
+    {
+        return staffRepository.findByEquipe(equipe);
     }
 
     public void addStaff(Staff staff)
