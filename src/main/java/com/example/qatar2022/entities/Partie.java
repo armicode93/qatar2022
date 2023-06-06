@@ -1,6 +1,7 @@
 package com.example.qatar2022.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
@@ -55,7 +57,7 @@ public class Partie implements Serializable {
     @Nullable
     private Integer scoreEq2 ;
 
-@DateTimeFormat(pattern="yyyy/MM/dd HH:mm:ss")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dateTime;
 
 
@@ -91,6 +93,15 @@ public class Partie implements Serializable {
         this.scoreEq2 = scoreEq2;
     }
 
+
+
+    public Partie(Long idPartie, Stade stade, LocalDateTime dateTime, String arbitre_principal, BigDecimal prix) {
+        this.idPartie = idPartie;
+        this.stade = stade;
+        this.dateTime = dateTime;
+        this.arbitre_principal = arbitre_principal;
+        this.prix = prix;
+    }
 
     public Partie() {
 
@@ -177,6 +188,11 @@ public class Partie implements Serializable {
     public LocalDateTime getDateTime() {
         return dateTime;
     }
+    public String getDateTimeAsString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        LocalDateTime dateTime = getDateTime();
+        return dateTime.format(formatter);
+    }
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
@@ -205,7 +221,6 @@ public class Partie implements Serializable {
     public void setProlongation(String prolongation) {
         this.prolongation = prolongation;
     }
-
 
 
     public Equipe getVincitore() {

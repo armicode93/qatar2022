@@ -72,8 +72,10 @@ public class User implements Serializable {
 
 
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy="users") //caricamento veloce dei dati,senno LAZY caricamento quando necessario
-    private Collection<Role> roles;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
 
 /*
     public User(String username, String password, String nom, String prenom, String email, LocalDate dateNaiss, Long gsm) {
@@ -88,7 +90,7 @@ public class User implements Serializable {
 
  */
 
-    public User(String username, String password, String nom, String prenom, String email, LocalDate dateNaiss, Long gsm, Collection<Role> roles) {
+    public User(String username, String password, String nom, String prenom, String email, LocalDate dateNaiss, Long gsm, Role role) {
         super();
         this.username = username;
         this.password = password;
@@ -97,7 +99,7 @@ public class User implements Serializable {
         this.email = email;
         this.dateNaiss = dateNaiss;
         this.gsm = gsm;
-        this.roles = roles;
+        this.role=role;
     }
 
     public User(){}
@@ -187,14 +189,13 @@ public class User implements Serializable {
         this.gsm = gsm;
     }
 
-    public Collection<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
-
 }
 
 

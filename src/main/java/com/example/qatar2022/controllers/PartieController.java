@@ -14,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -55,6 +57,7 @@ public class PartieController {
 
         List<Partie> parties = partieService.getAllPartie();
 
+
        /* Map<Tour, List<P
        artie>> partitePerTurno = new LinkedHashMap<>(); // mappa per associare ad ogni turno l'elenco delle partite
         for (Tour tour : tours) {
@@ -82,7 +85,7 @@ public class PartieController {
 
         Partie partie = partieService.getPartieById(idPartie);
 
-
+             //String dateTimeConv = partieService.formatDateTime(partie.getDateTime());
         model.addAttribute("partie", partie);
 
 
@@ -94,6 +97,8 @@ public class PartieController {
 
 
         model.addAttribute("title", "Detail Partie");
+        //model.addAttribute("dateTimeConv", dateTimeConv);
+
 
         return "partie/show";
     }
@@ -271,11 +276,11 @@ public class PartieController {
     }
 
     @PostMapping("/edit/{idPartie}")
-    public String edit(@ModelAttribute("partie") Partie partie,  BindingResult result, @PathVariable("idPartie") Long idPartie, Model model) {
+    public String edit(@Valid @ModelAttribute("partie") Partie partie, BindingResult result, @PathVariable("idPartie") Long idPartie,
+                       @RequestParam("stade") Stade stade, @RequestParam("dateTime") String dateTime,@RequestParam("arbitre_principal") String arbitre_principal,@RequestParam("prix") BigDecimal prix, Model model) {
 
-        if (result.hasErrors()) {
-            return "partie/editResultForm";
-        }
+
+
         Partie existing = partieService.getPartieById(idPartie);
 
         if (existing == null) {
@@ -283,8 +288,10 @@ public class PartieController {
         }
 
 
+       LocalDateTime dateTimeString = partieService.convertStringToLocalDateTime(dateTime);
+
 // Aggiorna la Partie esistente con i nuovi punteggi
-        partieService.editPartie(idPartie, partie);
+        partieService.editPartie(idPartie,stade,dateTimeString,arbitre_principal,prix);
 
 
 

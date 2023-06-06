@@ -1,10 +1,15 @@
 package com.example.qatar2022.controllers;
 
 import com.example.qatar2022.entities.Ticket;
+import com.example.qatar2022.entities.personne.User;
+import com.example.qatar2022.repository.personne.UserRepository;
 import com.example.qatar2022.service.TicketService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -14,9 +19,11 @@ import java.util.Optional;
 public class TicketController {
 
     private final TicketService ticketService;
+    private final UserRepository userRepository;
 
-    public TicketController(TicketService ticketService) {
+    public TicketController(TicketService ticketService, UserRepository userRepository) {
         this.ticketService = ticketService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/")
@@ -61,6 +68,8 @@ public class TicketController {
             return ResponseEntity.badRequest().body("Ticket exist");
         }
     }
+
+
         @DeleteMapping(path="{codeTicket}")
         public void deleteTicket (@PathVariable("codeTicket") Long codeTicket)
         {

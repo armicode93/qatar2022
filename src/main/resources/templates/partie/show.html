@@ -72,7 +72,13 @@
     <tr>
         <th scope="row" >Date Time</th>
         <td></td>
-        <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${partie.dateTime}"></td>
+        <div>
+        <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:if="${partie.dateTime != null}"  th:text="${#temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm')}">
+            <p th:if="${partie.dateTime == null}">
+        </p></div>
+
+
+        </td>
         <td></td>
     </tr>
     <tr>
@@ -109,13 +115,16 @@
         <th scope="row" ></th>
         <td valign="middle" align="center" class="col-sm text-muted" >
             <a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{'/reservation/selectPartie/' + ${partie.idPartie}}">Reservation</a>
-            <a th:if="${!#authorization.expression('isAuthenticated()')}" th:href="@{/login}">Reservation</a>
+            <!-- redirection after the Log In into the selectPartie HTML -->
+            <a th:if="${!#authorization.expression('isAuthenticated()')}"
+               th:href="@{'/login?redirect=/reservation/selectPartie/' + ${partie.idPartie}}">Reservation</a>
+
 
     </tr>
     <tr>
         <th scope="row" ></th>
         <td valign="middle" align="center" class="col-sm text-muted" >
-            <a th:href="@{'/v1/partie/editResult/' + ${partie.idPartie}}">Add Results</a></td>
+            <a th:href="@{'/v1/partie/editResult/' + ${partie.idPartie}}" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Add Results</a></td>
 
 
     </tr>
@@ -123,8 +132,8 @@
         <th scope="row" ></th>
 
         <!-- il backslesh i use it to hide the ' caracthers -->
-        <form th:action="@{'/v1/partie/delete/'+ ${partie.idPartie}}" method="post" class="form">
-            <input type="hidden" name="_method" value="delete" />
+        <form th:action="@{'/v1/partie/delete/'+ ${partie.idPartie}}" method="post" class="form" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+            <input type="hidden" name="_method"  value="delete" />
             <td valign="middle" align="center" class="col-sm text-muted" >
                 <button type="submit" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
             </td>

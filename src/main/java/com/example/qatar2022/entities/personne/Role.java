@@ -23,27 +23,27 @@ public class Role {
 
     private Long id;
 
-    @NotEmpty(message = "Role value is required and can t be empty")
-    @Size(min=2, max=30, message ="Role should have at least 2 characters and max 30 characters")
-    @Column(name = "role")
+
+
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name="role_user", //name table de jointure
-            joinColumns= @JoinColumn(name="user_id", referencedColumnName = "id"), //name column de jointure
-            inverseJoinColumns= @JoinColumn(
-                    name = "role_id", referencedColumnName = "id")) //name deuxieme column de jointure
-    //I added referencedColumnName
-    private List<User> users= new ArrayList<>();
+    @OneToMany(mappedBy = "role")
+    private List<User> users = new ArrayList<>();
+
 
     public Role() {
 
     }
 
+
     public Role(String name) {
         super();
         this.name = name;
+    }
+
+    public Role(String name, List<User> users) {
+        this.name = name;
+        this.users = users;
     }
 
     public Long getId() {

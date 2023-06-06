@@ -104,21 +104,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter { //this
 
 
         http.authorizeRequests() .antMatchers("/profile/**").authenticated();
-       //http.authorizeRequests() .antMatchers("/admin/**").hasRole("ADMIN");
-       // http.authorizeRequests() .antMatchers("/equipe/edit").hasRole("ADMIN");
-       // http.authorizeRequests() .antMatchers("/equipe/add").hasRole("ADMIN");
-       // http.authorizeRequests() .antMatchers("/partie/add").hasRole("ADMIN");
-        //http.authorizeRequests() .antMatchers("/partie/edit").hasRole("ADMIN");
+       http.authorizeRequests() .antMatchers("/admin/**").hasRole("ADMIN");
+        http.authorizeRequests() .antMatchers("/equipe/edit/**").hasRole("ADMIN");
+        http.authorizeRequests() .antMatchers("/equipe/add").hasRole("ADMIN");
+        http.authorizeRequests() .antMatchers("/v1/partie/add").hasRole("ADMIN");
+        http.authorizeRequests() .antMatchers("/v1/partie/edit/**").hasRole("ADMIN");
+        http.authorizeRequests() .antMatchers( "/v1/partie/editResult/**").hasRole("ADMIN");
+        http.authorizeRequests() .antMatchers( "/v1/partie/delete/**").hasRole("ADMIN");
+        http.authorizeRequests() .antMatchers("/v1/partie/editResultForm").hasRole("ADMIN");
+        http.authorizeRequests() .antMatchers("/reservation/**").hasAnyRole("USER","ADMIN");
+       http.authorizeRequests() .antMatchers("/v1/Ticket/**").hasAnyRole("USER","ADMIN");
 
-        //http.authorizeRequests() .antMatchers("/partie/editResultForm").hasRole("ADMIN");
-        //http.authorizeRequests() .antMatchers("/reservation/**").hasRole("USER");
-        //http.authorizeRequests() .antMatchers("/ticket/**").hasRole("USER");
+       http.authorizeRequests() .antMatchers("/edit").hasRole("ADMIN");
 
 
-        //http.authorizeRequests() .antMatchers("//edit").hasRole("ADMIN");
-
-
-        //http.authorizeRequests() .antMatchers("v1/public/users").hasAnyRole("ADMIN");
+        http.authorizeRequests() .antMatchers("v1/public/users").hasAnyRole("ADMIN");
 
 
 

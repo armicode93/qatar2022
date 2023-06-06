@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
+
+
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
@@ -15,14 +17,18 @@
     <title>Payment accepted</title>
 </head>
 <body>
-<form action="# " th:action="@{'/sendTicket/'+${ticket.codeTicket}}" th:object="${ticket}" method="post" class="form">
-<p>
-    <div class="container">
-        <div class="ticket">
+
+
+
+
+    <div class="container" th:each="ticket : ${tickets}">
+        <div class="ticket" >
             <div class="ticket-header">
                 <h2>Ticket Details</h2>
             </div>
+            <div class="container" >
             <div class="ticket-content">
+
                 <p>
                     <span class="ticket-label">Code Ticket:</span>
                     <span class="ticket-value" th:text="${ticket.codeTicket}"></span>
@@ -45,8 +51,12 @@
                     <span class="ticket-value">PayPal</span>
                 </p>
                 <p>
+                    <span class="ticket-label">Number of Ticket : </span>
+                    <span class="ticket-value" th:text="${ticket.reservation.nbr_places}"></span>
+                </p>
+                <p>
                     <span class="ticket-label">Amount:</span>
-                    <span class="ticket-value" th:text="${amount}"></span>
+                    <span class="ticket-value" th:text="${ticket.reservation.partie.prix}"></span>
                 </p>
                 <table>
                 <tbody>
@@ -70,12 +80,15 @@
                 </tr>
 
                 <tr>
-                    <th scope="row" >Stadium</th>
+                    <th>
+                    <span class="ticket-label" >Stadium</span>
+                    </th>
                     <td></td>
 
-                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:if="${ticket.reservation.partie.stade != null}">
-                        <div th:text="${ticket.reservation.partie.stade.nomStade}"></div>
-                        <div th:if="${ticket.reservation.partie.stade.nomStade == null}">
+                    <td>
+                        <div class="ticket-value"th:text="${ticket.reservation.partie.stade.nomStade}"></div>
+                    </td>
+
 
                         </div>
                     </td>
@@ -85,9 +98,11 @@
                 </tbody>
                 </table>
                 <tr>
-                    <th scope="row" >Date Time</th>
+                    <th>
+                    <span class="ticket-label" >Date Time</span>
+                    </th>
                     <td></td>
-                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${ticket.reservation.partie.dateTime}"></td>
+                    <td class="ticket-value" th:text="${#temporals.format(ticket.reservation.partie.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
                     <td></td>
                 </tr>
 
@@ -102,14 +117,32 @@
                 </p>
 
             </div>
-            <div class="ticket-footer">
+            <p>
+                <span class="ticket-label"></span>
+                <img th:src="@{${'/qrcode/' + ticket.codeTicket }}" alt="QR Code" />
+
+
+            </p>
+            </div>
+            <!--<div class="ticket-footer">
                 <form action="#" th:action="@{'/sendTicket/'+${ticket.codeTicket}}" th:object="${ticket}" method="post" class="form">
                     <button type="submit" class="btn btn-primary">Send Ticket Email</button>
                     <a href="/" class="btn btn-secondary">Home Page</a>
                 </form>
+
             </div>
+            -->
         </div>
+    <form action="#" th:action="@{'/sendTicket/' + ${reservation.codeReservation}}" th:object="${reservation}" method="post" class="form">
+        <div class="ticket-footer">
+            <button type="submit" class="btn btn-primary">Send Ticket Email</button>
+            <a href="/" class="btn btn-secondary">Home Page</a>
+        </div>
+    </form>
     </div>
-</form>
+
+</div>
+    </form>
+
 </body>
 </html>

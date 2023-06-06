@@ -15,9 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,14 +54,16 @@ public class UserServiceImpl implements UserService{
 
 
 
+        // Verifica se esiste il ruolo "ROLE_USER" nel database
         Role userRole = roleRepository.findByName("ROLE_USER");
-        if (userRole != null) {
-            user.setRoles(Collections.singletonList(userRole));
-        } else {
-            // Il ruolo "ROLE_USER" non esiste nel repository dei ruoli
-            // Puoi gestire questo caso a tua discrezione
+        if (userRole == null) {
+            // Se il ruolo non esiste, crea un nuovo ruolo "ROLE_USER"
+            userRole = new Role();
+            userRole.setName("ROLE_USER");
+            roleRepository.save(userRole);
         }
-        //user.setRoles(Collections.singletonList(userRole));
+        // Associa il ruolo "ROLE_USER" all'utente
+        user.setRole(userRole);
 
         return userRepository.save(user);
     }
@@ -81,17 +81,21 @@ public class UserServiceImpl implements UserService{
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                mapRolesToAuthorities(user.getRoles()));
+                mapRolesToAuthorities(user.getRole()));
 
     }
     //Methode to maps roles to authorities, we are going to convert Roles t oauthorities
     //becouse spring security expecting authorities
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Role role){
         //here im going to map  Roles to authorities
 
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+      //  return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     //we converted roles to stream,w maped a roles and we converted role into s.grantedAuthority, is the spring security provided class
         //and after that we converted stream to a list
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role.getName()));
+        return authorities;
+
     }
 }
 

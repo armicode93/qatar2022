@@ -20,35 +20,6 @@
 <header th:insert="fragments/header.html :: nav"></header>
 
 
-<!-- Navbar -->
-
-
-
-<!-- Carousel
-<div class="container" style="">
-    <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img  style="height:350px; width:500px;" src="images/logo/wordCup.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img  style="height:350px; width:400px;" src="images/stadium/stade2.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img   style="height:350px; width:400px;" src="images/stadium/stade3.jpg" class="d-block w-100" alt="...">
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-</div>
--->
 
 
 <table class="table table-equipe" th:unless="${#lists.isEmpty(equipes)} ">
@@ -59,7 +30,7 @@
 
         <th scope="col">#</th>
         <th  scope="col">Pays</th>
-        <th><a  th:href="@{'/equipe/add'}"  class="btn btn-primary">Add New Equipe</a></th>
+        <th><a  th:href="@{'/equipe/add'}"  class="btn btn-primary" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" >Add New Equipe</a></th>
 
 
     </tr>
@@ -81,7 +52,7 @@
                    th:action="@{'/equipe/delete/'+ ${equipe.idEquipe}}" th:method="delete">
                 <!--delete form -->
 
-                <a href="#"  sec:authorize= 'hasRole("admin")' th:onclick="|if(confirm('Confirm delete equipe #${equipe.idEquipe}'))
+                <a href="#"  th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" th:onclick="|if(confirm('Confirm delete equipe #${equipe.idEquipe}'))
                 document.getElementById('deleteForm-${equipe.idEquipe}').submit();
                     return false;|">Delete</a> <!-- alert with javascript -->
 
@@ -97,19 +68,6 @@
 
 </table>
 
-<!--
-<table class="table table-equipe" th:unless="${#lists.isEmpty(tours)} ">
-    <thead>
-    <p>Sono urururu</p>
-     <div class="total">
-     <tr th:each="tour : ${tours} ">
-                     <div th:text="${tour.nomTour}"></div>
-         <tr th:each="partie : ${parties} ">
-         <td th:text="${partie.eq1.pays}"></td>
-         <td th:text="${partie.eq2.pays}"></td>
-     </tr>
-     </div>
--->
 
 
     <thead>
@@ -117,7 +75,7 @@
         <th scope="col" class="header-align-center">Calendrier des matchs</th>
         <th></th>
         <th></th>
-        <th><a   th:href="@{'v1/partie/add'}" class="btn btn-primary">Add New Match</a></th>
+        <th><a   th:href="@{'v1/partie/add'}" class="btn btn-primary" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Add New Match</a></th>
     </tr>
 
 
@@ -130,33 +88,36 @@
 
     <div class="total">
         <div class="match">
-        <div th:each="tour : ${tours}">
+        <div th:each="tour : ${tours}" class="tour-container">
 
 
-                <h2 th:text="${tour.nomTour}"></h2>
-                <div th:each="partie: ${parties}">
-                    <div th:if="${partie.tour.idTour == tour.idTour}" class="match">
-                        <table class="full-width-table" aria-label="Elements">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>Match</th>
-                                <th class="mat-header-cell" scope="col"></th>
-
-
-                                <th>Stadium</th>
-                                <th></th>
-                                <th>Date</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
+            <div class="total">
+                <div th:each="tour : ${tours}" class="tour-container">
+                    <div class="tour-frame">
+                        <h2 th:text="${tour.nomTour}"></h2>
+                        <div th:each="partie: ${parties}">
+                            <div th:if="${partie.tour.idTour == tour.idTour}" class="match-container">
+                                <table class="full-width-table" aria-label="Elements">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Match</th>
+                                        <th class="mat-header-cell" scope="col"></th>
+                                        <th>Stadium</th>
+                                        <th></th>
+                                        <th>Date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
 
                                 <!-- Partie/Flags -->
                                 <td class="mat-cell">
                                     <div class="container h-100">
                                         <div class="row justify-content-center align-self-center">
+                                            <div class="team-container">
                                             <img height="32px" th:src="@{${'v1/image/display/' + partie.eq1.drapeau.id}}">
+                                            </div>
                                         </div>
                                         <div class="row justify-content-center align-items-center">
                                             <p class="text-uppercase font-weight-bold" th:text="${partie.eq1.pays}"></p>
@@ -191,7 +152,9 @@
                                 <td class="mat-cell">
                                     <div class="container h-100">
                                         <div class="row justify-content-center align-items-center">
+                                            <div class="team-container">
                                             <img height="32px" th:src="@{${'v1/image/display/' + partie.eq2.drapeau.id}}">
+                                            </div>
                                         </div>
                                         <div class="row justify-content-center align-items-center">
                                             <p class="text-uppercase font-weight-bold" th:text="${partie.eq2.pays}"></p>
@@ -217,7 +180,10 @@
                                 <br/>
                                 <td>
                                     <div class="col-sm text-muted" style="font-size: small;">
-                                        <div th:text="${partie.dateTime}"></div>
+                                        <div th:if="${partie.dateTime != null}" th:text="${#temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm')}"></div>
+                                        <div th:if="${partie.dateTime == null}">
+                                            <p>To define</p>
+                                        </div>
                                         <ul>
 
                                             <li> <a th:href="@{${'v1/partie/show/'+ partie.idPartie}}" >Detail</a></li>

@@ -139,12 +139,24 @@ navbar ul li a{
      position: relative;
      bottom: 0px;
  }
- .team-container {
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     justify-content: center;
-     text-align: center;
+ .team-container img {
+     vertical-align: middle;
+ }
+ .tour-container {
+     border: 2px solid black;
+     padding: 10px;
+     margin-bottom: 20px;
+ }
+
+ .match-container {
+     border: 1px solid gray;
+     padding: 10px;
+     margin-bottom: 10px;
+ }
+ .tour-frame {
+     border: 1px solid black;
+     padding: 10px;
+     margin-bottom: 20px;
  }
 
 

@@ -137,6 +137,13 @@
                 </div>
 
                 <input type="submit" value="Continue to checkout" class="btn">
+
+                <h5>Les conditions générales suivantes s'appliquent à l'achat de billets </h5>
+                <p>1. Une fois le paiement effectué, les billets ne peuvent être remboursés.</p>
+                    <br/><p>2. Il incombe à l'acheteur de s'assurer qu'il sélectionne correctement le type de billet souhaité avant de procéder au paiement.
+
+                        En cliquant sur le bouton "Acheter", vous confirmez que vous avez lu, compris et accepté les conditions générales d'achat des billets.
+                </p>
             </form>
         </div>
     </div>
@@ -144,10 +151,10 @@
         <div class="container">
             <h4>Cart <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i> <b th:text="${reservation.nbr_places}"></b></b></span></h4>
             <p><span href="#"  th:text="${reservation.partie.eq1.pays} +' vs '+${reservation.partie.eq2.pays} "></span> </p>
-            <p><span href="#"  th:text="${reservation.partie.dateTime}"></span> </p>
+            <p><span href="#"  th:text="${#temporals.format(reservation.partie.dateTime, 'dd/MM/yyyy HH:mm')}"></span> </p>
 
             <hr>
-            <p>Total <span class="price" style="color:black"><b th:text="${reservation.prixTotal}"></b> $ </span></p>
+            <p>Total <span class="price" style="color:black"><b th:text="${reservation.prixTotal}"></b> € </span></p>
         </div>
     </div>
 </div>

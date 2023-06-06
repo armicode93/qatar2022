@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,18 +85,18 @@ public class PartieService {
         partieRepository.save(partie);
     }
 
-    public void editPartie(long idPartie, Partie partie) {
+    public void editPartie(long idPartie, Stade stade, LocalDateTime dateTime, String arbitre_principal, BigDecimal prix) {
+        Partie partie = getPartieById(idPartie);
 
-        partie.setEq1(partie.getEq1());
-        partie.setEq2(partie.getEq2());
-        partie.setStade(partie.getStade());
 
-        partie.setTour(partie.getTour());
-        partie.setDateTime(partie.getDateTime());
-        partie.setArbitre_principal(partie.getArbitre_principal());
-        partie.setTotalTime(partie.getTotalTime());
-        partie.setProlongation(partie.getProlongation());
-        partie.setPrix(partie.getPrix());
+        partie.setStade(stade);
+
+
+        partie.setDateTime(dateTime);
+        partie.setArbitre_principal(arbitre_principal);
+
+
+        partie.setPrix(prix);
         partieRepository.save(partie);
     }
     @Transactional
@@ -157,6 +160,15 @@ public class PartieService {
                 // gestisci il caso in cui il girone corrente non sia valido
                 throw new IllegalArgumentException("Girone corrente non valido: " + nomTour);
         }
+    }
+
+    public LocalDateTime convertStringToLocalDateTime(String dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        return LocalDateTime.parse(dateTime, formatter);
+    }
+    public String formatDateTime(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return dateTime.format(formatter);
     }
 
 }

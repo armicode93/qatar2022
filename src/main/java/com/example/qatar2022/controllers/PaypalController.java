@@ -9,6 +9,7 @@ import com.example.qatar2022.service.PaypalService;
 import com.example.qatar2022.service.ReservationService;
 import com.example.qatar2022.service.StadeService;
 import com.example.qatar2022.service.TicketService;
+import com.example.qatar2022.utils.MethodUtils;
 import com.paypal.api.payments.Links;
 
 import com.paypal.api.payments.Payment;
@@ -17,7 +18,12 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -27,8 +33,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import org.apache.commons.codec.binary.Base64;
+
+
+import java.util.List;
 
 
 @Controller
@@ -48,6 +61,12 @@ public class PaypalController {
 
     @Autowired
     private StadeService stadeService;
+
+    private final String data = "";
+
+    //where do you want to generate the QR code
+
+    private final String imagePath = "./src/main/resources/static/images/QRCode.png";
 
 
     public static final String SUCCESS_URL = "pay/success/";
@@ -96,23 +115,59 @@ public class PaypalController {
 
     @GetMapping(value = "/pay/success/{idReservation}")
     public String successPay(@PathVariable("idReservation") Long idReservation,@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId,Model model) {
+
         try {
             Payment payment = service.executePayment(paymentId, payerId);
             System.out.println(payment.toJSON());
             if (payment.getState().equals("approved")) {
                 Reservation reservation = reservationService.getReservationById(idReservation);
+
                 // setta il valore paye a true
                 reservation.setPaye(true);
                 reservationService.updateReservation(reservation);
 
                 //New Ticket
-                Ticket ticket = new Ticket();
-                ticket.setReservation(reservation);
-                ticketService.addTicket(ticket);
+                int numberOfTickets= reservation.getNbr_places();
+                List<Ticket> tickets = new ArrayList<>();
+
+                for(int i = 0; i < numberOfTickets;i++)
+                {
+                    Ticket ticket = new Ticket();
+                    ticket.setReservation(reservation);
+
+                    //QrCode
+
+
+                    ticketService.addTicket(ticket);
+
+                    tickets.add(ticket); // adding ticket into the List
+                }
+
+                //to add the codeTicket into the qrcode
+                for (Ticket ticket : tickets) {
+                    // Genera il dettaglio del biglietto utilizzando il codice del biglietto e altre informazioni
+                    String ticketDetails = "Code Ticket: " + ticket.getCodeTicket() +
+                            "\nReservation ID: " + ticket.getReservation().getCodeReservation() +
+                            "\nPayment ID: " + paymentId +
+                            "\nPayer ID: " + payerId +
+                            "\nPayment Method: PayPal" +
+                            "\nNumber of Ticket: " + ticket.getReservation().getNbr_places() +
+                            "\nAmount: " + ticket.getReservation().getPartie().getPrix() +
+                            "\nStadium: " + ticket.getReservation().getPartie().getStade().getNomStade() +
+                            "\nDate Time: " + ticket.getReservation().getPartie().getDateTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+
+                    byte[] byteQRCode = MethodUtils.generateByteQRCode(ticketDetails, 250, 250, imagePath);
+
+                    ticket.setBarCode(byteQRCode);
+                }
+
+
+
 
                 //Refresh stadium capacity
                 Partie partie = reservation.getPartie();
                 Stade stade = partie.getStade();
+
                 //take the current capacity of the stadium
                 Long currentCapacity = stade.getCapacite();
 
@@ -122,8 +177,13 @@ public class PaypalController {
                 stade.setCapacite(currentCapacity);
                 stadeService.updateStade(stade.getIdStade(),stade);
 
-                model.addAttribute("ticket",ticket);
+                //Generated QRcode
+
+                //MethodUtils.generateImageQRCode(partie.getEq1().getPays(),250,250,imagePath);
+
+                model.addAttribute("tickets",tickets);
                 model.addAttribute("stade",stade);
+                model.addAttribute("reservation",reservation);
                 model.addAttribute("paymentId", paymentId);
                 model.addAttribute("payerId", payerId);
                 model.addAttribute("amount", payment.getTransactions().get(0).getAmount().getTotal());
@@ -149,51 +209,72 @@ public class PaypalController {
         }
         return "redirect:/";
     }
-
-
-    @PostMapping("/sendTicket/{codeTicket}")
-    public String sendTicket(@PathVariable Long codeTicket) {
+    //to show the qrcode
+    @GetMapping("/qrcode/{codeTicket}")
+    void  getQRCodeImage(@PathVariable("codeTicket") Long codeTicket, HttpServletResponse response) throws IOException {
         Ticket ticket = ticketService.getTicketById(codeTicket);
-        Reservation reservation = ticket.getReservation();
+        response.setContentType("qrCode/png");
+        response.getOutputStream().write(ticket.getBarCode());
+        response.getOutputStream().close();
+
+    }
+
+
+
+
+    @PostMapping("/sendTicket/{codeReservation}")
+    public String sendTicket(@PathVariable Long codeReservation) {
+        //Ticket ticket = ticketService.getTicketById(codeTicket);
+        Reservation reservation = reservationService.getReservationById(codeReservation);
+        List <Ticket> tickets = ticketService.getTicketsByReservation(reservation);
         try {
             // Creazione del PDF
             PDDocument document = new PDDocument();
-            PDPage page = new PDPage();
-            document.addPage(page);
-            PDPageContentStream contentStream = new PDPageContentStream(document, page);
-            contentStream.beginText();
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
-            contentStream.newLineAtOffset(100, 700);
-            contentStream.showText("Ticket for reservation " + reservation.getCodeReservation());
-            contentStream.newLineAtOffset(0, -20);
-            contentStream.showText("FirstName: " + ticket.getReservation().getUser().getNom());
-            contentStream.newLineAtOffset(0, -20);
-            contentStream.showText("LastName: " + ticket.getReservation().getUser().getPrenom());
-            contentStream.newLineAtOffset(0, -20);
-           // contentStream.showText("Payment number: " + ticket.getPaymentNumber());
-
-            contentStream.showText("Ticket number: " + ticket.getCodeTicket());
-            contentStream.newLineAtOffset(0, -20);
-            contentStream.showText("Amount: " + ticket.getReservation().getPrixTotal()+" $" );
-            contentStream.newLineAtOffset(0, -20);
-            contentStream.showText("Match: " + ticket.getReservation().getPartie().getEq1()+" vs"+ ticket.getReservation().getPartie().getEq2());
-            contentStream.newLineAtOffset(0, -20);
-            contentStream.showText("Date: " + ticket.getReservation().getPartie().getDateTime());
-            contentStream.newLineAtOffset(0, -20);
-            contentStream.showText("Stadium: " + ticket.getReservation().getPartie().getStade().getNomStade());
-            contentStream.newLineAtOffset(0, -20);
-            contentStream.endText();
-            contentStream.close();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            document.save(baos);
+
+            for(Ticket t : tickets) {
+
+                PDPage page = new PDPage();
+                document.addPage(page);
+                PDPageContentStream contentStream = new PDPageContentStream(document, page);
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                contentStream.newLineAtOffset(100, 700);
+                contentStream.showText("Ticket for reservation " + reservation.getCodeReservation());
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.showText("FirstName: " + t.getReservation().getUser().getNom());
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.showText("LastName: " + t.getReservation().getUser().getPrenom());
+                contentStream.newLineAtOffset(0, -20);
+                // contentStream.showText("Payment number: " + ticket.getPaymentNumber());
+
+                contentStream.showText("Ticket number: " + t.getCodeTicket());
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.showText("Amount: " + t.getReservation().getPartie().getPrix() + " € ");
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.showText("Match: " + t.getReservation().getPartie().getEq1().getPays() + " vs " + t.getReservation().getPartie().getEq2().getPays());
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.showText("Date: " + t.getReservation().getPartie().getDateTimeAsString());
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.showText("Stadium: " + t.getReservation().getPartie().getStade().getNomStade());
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.endText();
+                contentStream.close();
+
+                document.save(baos);    // i use baos to save the document
+
+            }
+
             document.close();
+            // Generate a QR code image for each ticket
+
 
             // Invio della mail con il PDF come allegato
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setTo(ticket.getReservation().getUser().getEmail());
+            helper.setTo(reservation.getUser().getEmail());
             helper.setSubject("Ticket for reservation " + reservation.getCodeReservation());
-            helper.setText("Dear " + ticket.getReservation().getUser().getNom() + ",\n\nPlease find attached your ticket for reservation " +
+            helper.setText("Dear " + reservation.getUser().getNom() + ",\n\nPlease find attached your ticket for reservation " +
                     reservation.getCodeReservation() + ".\n\nThank you for choosing our service!\n\nBest regards,\nYour Ben Kheder Team");
             ByteArrayDataSource dataSource = new ByteArrayDataSource(baos.toByteArray(), "application/pdf");
             helper.addAttachment("Ticket.pdf", dataSource);

@@ -18,6 +18,9 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long codeTicket;
 
+    @Lob
+    private byte[] barCode;
+
     @ManyToOne
     @JoinColumn(name="reservation_code_reservation")
     private Reservation reservation;

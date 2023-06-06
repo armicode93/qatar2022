@@ -22,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -136,14 +137,15 @@ public class ReservationController {
         Partie partie = partieService.getPartieByIdPartie(idPartie);
 
         // I have to check if match has already been played
-        if(partie.getScoreEq1()!= null && partie.getScoreEq2() != null )
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        if(partie.getDateTime().isBefore(currentDateTime))
         {
             model.addAttribute("title", "Match already played");
             return "reservation/matchPlayed";
         }
         if(partie.getPrix()== null )
         {
-            model.addAttribute("title", "Match already played");
+            model.addAttribute("title", "Match Not Bookable yet");
             return "reservation/matchNoReservable";
         }
         if(partie.getStade().getCapacite() == 0)
@@ -171,11 +173,7 @@ public class ReservationController {
         UserDetails currentUser = (UserDetails) auth.getPrincipal();
 
         User user = userRepository.findByUsername(currentUser.getUsername());
-       /* if (user == null) {
-            // handle error
-        }
 
-        */
 
         //if nbr_place > of capacity of stade
         long remainingSeats =  partie.getStade().getCapacite() - nbr_places;

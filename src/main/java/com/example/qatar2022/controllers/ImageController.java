@@ -1,15 +1,17 @@
 package com.example.qatar2022.controllers;
 
 import com.example.qatar2022.entities.Image;
+import com.example.qatar2022.entities.Ticket;
 import com.example.qatar2022.service.ImageService;
+import com.example.qatar2022.service.TicketService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,15 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,10 +37,13 @@ public class ImageController {
 
     private final ImageService imageService;
 
+    private final TicketService ticketService;
+
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public ImageController(ImageService imageService) {
+    public ImageController(ImageService imageService, TicketService ticketService) {
         this.imageService = imageService;
+        this.ticketService = ticketService;
     }
 
 
@@ -54,10 +55,9 @@ public class ImageController {
     */
 
     @PostMapping("/image/saveImageDetails")
-    public
-    String createImage(
-                                  Model model, HttpServletRequest request
-            ,  @RequestParam("image") MultipartFile file, BindingResult result) {
+    public String createImage(
+            Model model, HttpServletRequest request
+            , @RequestParam("image") MultipartFile file, BindingResult result) {
         try {
 
             String uploadDirectory = request.getServletContext().getRealPath(uploadFolder);
@@ -69,9 +69,6 @@ public class ImageController {
                 model.addAttribute("invalid", "Sorry! Filename contains invalid path sequence \" + fileName");
                 // return new ResponseEntity<>("Sorry! Filename contains invalid path sequence " + fileName, HttpStatus.BAD_REQUEST);
             }
-
-
-
 
 
             try {
@@ -110,20 +107,14 @@ public class ImageController {
     }
 
 
-
-
-
-
-
     @GetMapping("/image/display/{id}")
-
     void showImage(@PathVariable("id") Long id, HttpServletResponse response, Optional<Image> image)
             throws ServletException, IOException {
         log.info("Id :: " + id);
         image = imageService.getImageById(id);
         response.setContentType("image/jpg");
         response.getOutputStream().write(image.get().getImageByte());
-        response.getOutputStream().close();
+
 
     }
 
@@ -134,5 +125,8 @@ public class ImageController {
         map.addAttribute("images", images);
         return "images";
     }
+
+
 }
+
 

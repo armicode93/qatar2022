@@ -1,6 +1,7 @@
 package com.example.qatar2022.service;
 
 
+import com.example.qatar2022.entities.Reservation;
 import com.example.qatar2022.entities.Ticket;
 import com.example.qatar2022.repository.TicketRepository;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,12 @@ public class TicketService {
     {
         ticketRepository.save(ticket);
     }
+
+    public List<Ticket> getTicketsByReservation(Reservation reservation) {
+
+        return ticketRepository.findByReservation(reservation);
+    }
+
     public void deleteTicket(Long codeTicket)
     {
         boolean exists = ticketRepository.existsById(codeTicket);

@@ -1,4 +1,4 @@
-package com.example.qatar2022.entities.personne;
+/*package com.example.qatar2022.entities.personne;
 
 import javax.persistence.*;
 
@@ -60,3 +60,5 @@ public class    RoleUser {
                 '}';
     }
 }
+
+ */

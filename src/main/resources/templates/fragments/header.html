@@ -24,23 +24,28 @@
                         <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/registration}">Inscription</a>
+                        <a class="nav-link" th:unless="${#authorization.expression('isAuthenticated()')}" th:href="@{/registration}">Inscription</a>
                     </li>
                     <li sec:authorize="isAuthenticated()" class="nav-item">
-                        <a class="nav-link" th:href="@{/profile/index}">Profile</a>
+                        <a class="nav-link" th:href="@{/profile/index}" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">Profile</a>
                     </li>
-                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+                    <li th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-item">
                         <a class="nav-link" href="#">Admin</a>
                     </li>
-                    <li class="nav-item">
+
+                    <!-- Success message in header -->
+                    <li>
+                    <div th:if="${param.success}">
+                        <div class="alert alert-info" style="text-align: center; margin-bottom: 0;">You are successfully registered</div>
+                    </div>
+                    </li>
+                    <!--<li class="nav-item">
                         <a class ="nav-link" sec:authorize= 'isAuthenticated()' th:href="@{/reservation/index}">Reservations</a>
                     </li>
-                    <li class="nav-item">
-                        <a class ="nav-link"  th:href="@{/groupe}">Groupe</a>
-                    </li>
-                   <!-- <li class="nav-item">
-                        <a class="collapse navbar-collapse justify-content-end" > Welcome  [[${#httpServletRequest.remoteUser}]]</a>
-                        -->
+                    -->
+
+
+
 
 
                         <!-- print username id -->
