@@ -18,6 +18,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +35,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -209,15 +211,7 @@ public class PaypalController {
         }
         return "redirect:/";
     }
-    //to show the qrcode
-    @GetMapping("/qrcode/{codeTicket}")
-    void  getQRCodeImage(@PathVariable("codeTicket") Long codeTicket, HttpServletResponse response) throws IOException {
-        Ticket ticket = ticketService.getTicketById(codeTicket);
-        response.setContentType("qrCode/png");
-        response.getOutputStream().write(ticket.getBarCode());
-        response.getOutputStream().close();
 
-    }
 
 
 
@@ -240,7 +234,7 @@ public class PaypalController {
                 contentStream.beginText();
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
                 contentStream.newLineAtOffset(100, 700);
-                contentStream.showText("Ticket for reservation " + reservation.getCodeReservation());
+                contentStream.showText("Ticket for reservation: " + reservation.getCodeReservation());
                 contentStream.newLineAtOffset(0, -20);
                 contentStream.showText("FirstName: " + t.getReservation().getUser().getNom());
                 contentStream.newLineAtOffset(0, -20);
@@ -257,9 +251,30 @@ public class PaypalController {
                 contentStream.showText("Date: " + t.getReservation().getPartie().getDateTimeAsString());
                 contentStream.newLineAtOffset(0, -20);
                 contentStream.showText("Stadium: " + t.getReservation().getPartie().getStade().getNomStade());
+
+
                 contentStream.newLineAtOffset(0, -20);
+
                 contentStream.endText();
+
+
+                byte[] qrCodeBytes = t.getBarCode(); // Assuming the QR code bytes are in PNG format
+
+                //here i will create a new object pdimagexobject , this object will rapresent the qrcode image into the pdf document
+                //i use this object because he is the one in charge of the insertionof a pictures into a pdf
+                // i use the method createFromByteArray  with this method i can create an object  from a byte array
+                PDImageXObject qrCodeImage = PDImageXObject.createFromByteArray(document, qrCodeBytes, "png");
+
+                //instane of pdpagecontentstream, i use it to draw into a pdf file
+                contentStream.drawImage(qrCodeImage, 50, 50);
+
                 contentStream.close();
+
+                // Generazione e inserimento del codice QR nel PDF
+
+
+
+
 
                 document.save(baos);    // i use baos to save the document
 
@@ -267,6 +282,8 @@ public class PaypalController {
 
             document.close();
             // Generate a QR code image for each ticket
+
+
 
 
             // Invio della mail con il PDF come allegato
@@ -279,11 +296,23 @@ public class PaypalController {
             ByteArrayDataSource dataSource = new ByteArrayDataSource(baos.toByteArray(), "application/pdf");
             helper.addAttachment("Ticket.pdf", dataSource);
             emailSender.send(message);
+
+
             return "ticket/ticketSent";
         } catch (MessagingException | IOException e) {
             e.printStackTrace();
             return "ticket/ticketNotSent";
         }
+    }
+
+    //to show the qrcode
+    @GetMapping("/qrcode/{codeTicket}")
+    void  getQRCodeImage(@PathVariable("codeTicket") Long codeTicket, HttpServletResponse response) throws IOException {
+        Ticket ticket = ticketService.getTicketById(codeTicket);
+        response.setContentType("qrCode/png");
+        response.getOutputStream().write(ticket.getBarCode());
+        response.getOutputStream().close();
+
     }
 
 

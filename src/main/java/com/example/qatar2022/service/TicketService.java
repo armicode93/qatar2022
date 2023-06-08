@@ -6,10 +6,12 @@ import com.example.qatar2022.entities.Ticket;
 import com.example.qatar2022.repository.TicketRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class TicketService {
 
     private final TicketRepository ticketRepository;
