@@ -1,14 +1,13 @@
 package com.example.qatar2022.dto;
 
+import com.example.qatar2022.config.annotation.UniqueEmail;
+import com.example.qatar2022.config.annotation.UniqueUsername;
 import com.example.qatar2022.entities.personne.Role;
-import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.util.List;
-
 
 
 public class UserRegistrationDto {
@@ -21,12 +20,12 @@ public class UserRegistrationDto {
 
 
     @Size(min = 3, max = 60 , message = "Firstname should have at least 3 characters and max 60 characters")
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "Only Alphabet characters")
+    @Pattern(regexp = "[a-zA-Z\\s]+", message = "Only Alphabet characters")
     @NotEmpty(message="Nom value is required and can t be empty")
     private String nom;
 
     @Size(min = 3, max = 60, message= "LastName should have at least 3 characters and max 60 characters")
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "Only Alphabet characters")
+    @Pattern(regexp = "[a-zA-Z\\s]+", message = "Only Alphabet characters")
     @NotEmpty(message = "Value is required and can t be empty")
 
     private String prenom;
@@ -40,14 +39,17 @@ public class UserRegistrationDto {
 
     @Size(min =4 , max = 60,message= "Username should have at least 3 characters and max 60 characters")
     @NotEmpty(message = "Value is required and can t be empty")
+    @UniqueUsername(message = "Username already exists")
     private String username;
 
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$",message="Password should contain at least one lowercase letter, one uppercase letter, and one digit")
-    @Size(min=4,max=15, message= "Password should have at least 4 characters and max 15 characters")
+    @Size(min=4,max=15, message = "Password should have at least 4 characters and max 15 characters")
     private String password;
 
     @Email(message = "Insert email ")
     @NotNull(message= "Value is required and can t be empty")
+    @UniqueEmail(message = "Email already exists")
+
     private String email;
 
     @NumberFormat

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 public interface UserService extends UserDetailsService {
     User save(UserRegistrationDto registrationDto);
 
+
+
 }
 
 

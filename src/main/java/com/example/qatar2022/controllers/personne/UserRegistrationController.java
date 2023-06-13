@@ -2,6 +2,7 @@ package com.example.qatar2022.controllers.personne;
 
 
 import com.example.qatar2022.dto.UserRegistrationDto;
+import com.example.qatar2022.repository.personne.UserRepository;
 import com.example.qatar2022.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,8 @@ public class UserRegistrationController {
 
     @Autowired
     private UserService userService; //interface implementation
+    @Autowired
+    private UserRepository userRepository;
 
     public UserRegistrationController(UserService userService) {
         super();
@@ -47,6 +50,14 @@ public class UserRegistrationController {
     @PostMapping("/registration/new")
     public String registerUserAccount(@Valid @ModelAttribute("user") UserRegistrationDto registrationDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            return "registration";
+        }
+        if (userService.loadUserByUsername(registrationDto.getUsername()) != null) {
+            result.rejectValue("username", "error.user");
+            return "registration";
+        }
+        if (userRepository.existsByEmail(registrationDto.getEmail())) {
+            result.rejectValue("email", "error.email");
             return "registration";
         }
         userService.save(registrationDto);
