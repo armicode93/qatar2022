@@ -234,6 +234,8 @@ public class Partie implements Serializable {
 
 
 
+
+
     @Override
     public String toString() {
         return "Partie{" +

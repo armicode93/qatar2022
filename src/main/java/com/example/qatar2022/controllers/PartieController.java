@@ -119,6 +119,7 @@ public class PartieController {
         return "partie/add";
     }
 
+
     @GetMapping("/showJoueurByPartie/{idPartie}")
     public String showJoueurByPartie (Model model, @PathVariable(name="idPartie")Long idPartie)
     {
@@ -191,6 +192,11 @@ public class PartieController {
     }
 
 
+
+
+
+
+
     @DeleteMapping(path = "/delete/{idPartie}")
     public String deletePartie(@PathVariable("idPartie")Long idPartie,Model model)
     {
@@ -252,7 +258,7 @@ public class PartieController {
         model.addAttribute("partie", partie);
 
 // Crea una nuova Partie per il successivo giro del torneo utilizzando il tour recuperato
-            partieService.creaPartitaSuccessiva(tour);
+
         return "redirect:/";
 
 

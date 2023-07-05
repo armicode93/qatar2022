@@ -2,6 +2,7 @@ package com.example.qatar2022.service;
 
 
 import com.example.qatar2022.entities.*;
+import com.example.qatar2022.repository.EquipeRepository;
 import com.example.qatar2022.repository.PartieRepository;
 import com.example.qatar2022.repository.ReservationRepository;
 import com.example.qatar2022.repository.TourRepository;
@@ -23,15 +24,17 @@ public class PartieService {
     private final PartieRepository partieRepository;
     private final TourRepository tourRepository;
     private final ReservationRepository reservationRepository;
+    private final EquipeRepository equipeRepository ;
 
 
 
     @Autowired
-    public PartieService(PartieRepository partieRepository, TourRepository tourRepository, ReservationRepository reservationRepository) {
+    public PartieService(PartieRepository partieRepository, TourRepository tourRepository, ReservationRepository reservationRepository, EquipeRepository equipeRepository) {
         this.partieRepository = partieRepository;
         this.tourRepository = tourRepository;
 
         this.reservationRepository = reservationRepository;
+        this.equipeRepository = equipeRepository;
     }
 
 
@@ -99,6 +102,7 @@ public class PartieService {
         partie.setPrix(prix);
         partieRepository.save(partie);
     }
+
     @Transactional
     public void creaPartitaSuccessiva(Tour tour) {
         List<Partie> parties = partieRepository.findByTour(tour);
@@ -132,6 +136,9 @@ public class PartieService {
         }
     }
 
+
+
+
     private Tour calcolaGironeSuccessivo(Tour gironeCorrente) {
         String nomTour = gironeCorrente.getNomTour();
         switch(nomTour) {
@@ -147,6 +154,7 @@ public class PartieService {
         }
     }
 
+
     private int calcolaNumPartiteSuccessive(Tour gironeCorrente) {
         String nomTour = gironeCorrente.getNomTour();
         switch(nomTour) {
@@ -160,6 +168,31 @@ public class PartieService {
                 // gestisci il caso in cui il girone corrente non sia valido
                 throw new IllegalArgumentException("Girone corrente non valido: " + nomTour);
         }
+    }
+
+
+public void createMatches() {
+    List<Equipe> teams = equipeRepository.findAll();
+    if (teams.size() >= 4) {
+        Tour tour = new Tour("Ottavi di finale");
+        createMatch(teams.get(0), teams.get(1), tour);
+        createMatch(teams.get(0), teams.get(2), tour);
+        createMatch(teams.get(0), teams.get(3), tour);
+        createMatch(teams.get(1), teams.get(2), tour);
+        createMatch(teams.get(1), teams.get(3), tour);
+        createMatch(teams.get(2), teams.get(3), tour);
+    } else {
+
+    }
+}
+
+    public Partie createMatch(Equipe team1, Equipe team2, Tour tour) {
+        Partie match = new Partie();
+        match.setEq1(team1);
+        match.setEq2(team2);
+        match.setTour(tour);
+
+        return partieRepository.save(match);
     }
 
     public LocalDateTime convertStringToLocalDateTime(String dateTime) {

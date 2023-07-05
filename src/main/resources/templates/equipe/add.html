@@ -28,7 +28,7 @@
 
 <div class="container">
 
-        <form action="# " th:action="@{'/equipe/add'}" th:object="${equipe}" method="post" class="form" > <!-- th:object ci serve per fare collegamento con il model -->
+        <form action="#" th:action="@{'/equipe/add'}" th:object="${equipe}" method="post"   enctype="multipart/form-data"> <!-- th:object ci serve per fare collegamento con il model -->
             <!-- <h1 th:text="|${artist.firstname} ${artist.lastname}|">ARMEN sulu</h1> -->
             <!--<div class="form-group">
                 <strong> <label for="id">id</label></strong>
@@ -54,9 +54,9 @@
 
             <div class="form-group">Drapeau</label></strong>
                 <!-- th field permette di recuperare il nome selezionato -->
-                <input class="form-control" type="file"  th:field="*{drapeau}"  id="drapeau" placeholder="" enctype="multipart/form-data" />
+                <input class="form-control" type="file"  name="drapeau" th:field="*{drapeau}"  id="drapeau" placeholder="drapeau"  />
                 <!-- place holder suggerimento allinterno del box -->
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('drapeau')}" th:errors="*{drapeau}" th:errorclass="error"></div>
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('drapeau')}" th:errors="*{drapeau}" th:errorclass="error" ></div>
             </div>
 
 

@@ -13,10 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -90,6 +92,7 @@ public class EquipeController {
     @GetMapping("/{idEquipe}")
     public ResponseEntity findEquipeById(@PathVariable(name = "idEquipe") Long idEquipe)
     {
+
         if(idEquipe==null){
             return ResponseEntity.badRequest().body("Empty parametre");
         }
@@ -105,53 +108,40 @@ public class EquipeController {
             return  ResponseEntity.notFound().build();
         }
     }
+
    @GetMapping("/equipe/add")
    public String equipeFormAdd(Model model)
    {
        model.addAttribute(new Equipe());
-       model.addAttribute(new Image());
 
        return"equipe/add";
    }
 
    @PostMapping("/equipe/add")
-   public String equipeSubmitAdd(@Valid @ModelAttribute("equipe")Equipe equipe, @RequestParam("drapeau") MultipartFile file, BindingResult result, ModelMap model) throws IOException {
-       if(result.hasErrors())
-       {
+   public String equipeSubmitAdd(@Valid @ModelAttribute("equipe")Equipe equipe, @RequestParam("drapeau") MultipartFile drapeau,@RequestParam("pays") String pays,@RequestParam("nbr_points") Long nbr_points, BindingResult result, ModelMap model) throws IOException {
+
+        if (result.hasErrors()) {
            return "equipe/add";
        }
 
-       equipeService.addEquipe(equipe);
 
-       byte[] imageData = file.getBytes();
+
+       byte[] imageData = drapeau.getBytes();
        Image image = new Image();
        //
        image.setNom(image.getNom());
        image.setImageByte(imageData);
 
+       equipeService.addEquipe(equipe);
+
 
        model.addAttribute("drapeau", equipe.getDrapeau());
        model.addAttribute("equipe", "");
+
        //model.addAttribute("image", "");
 
-
-       //model.addAttribute("equipe",equipe);
-
-
-   // Image imageNew = imageService.enrImage(image);
-
-
-
-
-
-
-
-
-
-
-
-
        return  "redirect:/";
+
    }
 
     @DeleteMapping("/equipe/delete/{idEquipe}")

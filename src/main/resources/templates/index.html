@@ -72,10 +72,12 @@
 
     <thead>
     <tr>
-        <th scope="col" class="header-align-center">Calendrier des matchs</th>
+        <th scope="col" class="header-align-center">Calendrier des matches</th>
         <th></th>
         <th></th>
-        <th><a   th:href="@{'v1/partie/add'}" class="btn btn-primary" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Add New Match</a></th>
+        <th><a   th:href="@{'v1/partie/add'}" class="btn btn-primary" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Add Matches</a></th>
+
+
     </tr>
 
 

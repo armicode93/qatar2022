@@ -88,7 +88,7 @@ public class ImageController {
             byte[] imageData = file.getBytes();
             Image image = new Image();
             //
-            image.setNom(image.getNom());
+            image.setNom(file.getOriginalFilename());
             image.setImageByte(imageData);
 
 

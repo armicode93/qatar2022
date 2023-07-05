@@ -20,7 +20,7 @@ import java.io.Serializable;
 public class Image implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
@@ -41,6 +41,8 @@ public class Image implements Serializable {
     }
 
     */
+
+
 
     public Image(String nom, byte[] imageByte) {
         this.nom = nom;
