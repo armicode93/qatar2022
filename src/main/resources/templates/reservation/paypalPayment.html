@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial;
@@ -103,6 +103,7 @@
             .row {
                 flex-direction: column-reverse;
             }
+
             .col-25 {
                 margin-bottom: 20px;
             }
@@ -111,53 +112,63 @@
     </style>
 </head>
 <body>
-<form action="#" th:action="@{'/pay/'+ ${reservation.codeReservation}}" th:object="${reservation}" method="post" class="form">
-<div class="row">
-    <div class="col-75">
-        <div class="container">
-            <form method="post"  action="/pay">
-                <div class="col-50">
-                    <h3>Payment</h3>
-                    <label>Accepted Cards</label>
-                    <div class="icon-container">
-                        <i class="fa fa-cc-visa" style="color:navy;"></i>
-                        <i class="fa fa-cc-amex" style="color:blue;"></i>
-                        <i class="fa fa-cc-mastercard" style="color:red;"></i>
-                        <i class="fa fa-cc-discover" style="color:orange;"></i>
+<form action="#" class="form" method="post" th:action="@{'/pay/'+ ${reservation.codeReservation}}"
+      th:object="${reservation}">
+    <div class="row">
+        <div class="col-75">
+            <div class="container">
+                <form action="/pay" method="post">
+                    <div class="col-50">
+                        <h3>Paiement</h3>
+                        <label>Cartes acceptées</label>
+                        <div class="icon-container">
+                            <i class="fa fa-cc-visa" style="color:navy;"></i>
+                            <i class="fa fa-cc-amex" style="color:blue;"></i>
+                            <i class="fa fa-cc-mastercard" style="color:red;"></i>
+                            <i class="fa fa-cc-discover" style="color:orange;"></i>
+                        </div>
+                        <label for="price">Total</label>
+                        <input id="price" name="price" readonly th:value="${reservation.prixTotal}" type="text">
+
+                        <label for="method">Mode de paiement</label>
+                        <input id="method" name="method" placeholder="Payment Method" readonly type="text"
+                               value="Paypal">
+
+                        <label for="description">Paiment Description</label>
+                        <input id="description" name="description" placeholder="Payment Description" readonly
+                               type="text" value="tickets matches">
+
                     </div>
-                    <label for="price">Total</label>
-                    <input type="text" id="price" name="price" th:value="${reservation.prixTotal}" readonly >
 
-                    <label for="method">Payment Method</label>
-                    <input type="text" id="method" name="method" placeholder="Payment Method" value="Paypal" readonly>
+                    <input class="btn" type="submit" value="Continue to checkout">
 
-                    <label for="description">Payment Description</label>
-                    <input type="text" id="description" name="description" placeholder="Payment Description" value="tickets matches" readonly>
+                    <h5>Les conditions générales suivantes s'appliquent à l'achat de billets </h5>
+                    <p>1. Une fois le paiement effectué, les billets ne peuvent être remboursés.</p>
+                    <br/>
+                    <p>2. Il incombe à l'acheteur de s'assurer qu'il sélectionne correctement le type de billet souhaité
+                        avant de procéder au paiement.
 
-                </div>
+                        En cliquant sur le bouton "Acheter", vous confirmez que vous avez lu, compris et accepté les
+                        conditions générales d'achat des billets.
+                    </p>
+                </form>
+            </div>
+        </div>
+        <div class="col-25">
+            <div class="container">
+                <h4>Cart <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i> <b
+                        th:text="${reservation.nbr_places}"></b></b></span></h4>
+                <p><span href="#"
+                         th:text="${reservation.partie.eq1.pays} +' vs '+${reservation.partie.eq2.pays} "></span></p>
+                <p><span href="#"
+                         th:text="${#temporals.format(reservation.partie.dateTime, 'dd/MM/yyyy HH:mm')}"></span></p>
 
-                <input type="submit" value="Continue to checkout" class="btn">
-
-                <h5>Les conditions générales suivantes s'appliquent à l'achat de billets </h5>
-                <p>1. Une fois le paiement effectué, les billets ne peuvent être remboursés.</p>
-                    <br/><p>2. Il incombe à l'acheteur de s'assurer qu'il sélectionne correctement le type de billet souhaité avant de procéder au paiement.
-
-                        En cliquant sur le bouton "Acheter", vous confirmez que vous avez lu, compris et accepté les conditions générales d'achat des billets.
+                <hr>
+                <p>Total <span class="price" style="color:black"><b th:text="${reservation.prixTotal}"></b> € </span>
                 </p>
-            </form>
+            </div>
         </div>
     </div>
-    <div class="col-25">
-        <div class="container">
-            <h4>Cart <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i> <b th:text="${reservation.nbr_places}"></b></b></span></h4>
-            <p><span href="#"  th:text="${reservation.partie.eq1.pays} +' vs '+${reservation.partie.eq2.pays} "></span> </p>
-            <p><span href="#"  th:text="${#temporals.format(reservation.partie.dateTime, 'dd/MM/yyyy HH:mm')}"></span> </p>
-
-            <hr>
-            <p>Total <span class="price" style="color:black"><b th:text="${reservation.prixTotal}"></b> € </span></p>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>

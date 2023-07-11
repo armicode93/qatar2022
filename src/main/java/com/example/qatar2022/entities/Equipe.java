@@ -1,107 +1,94 @@
 package com.example.qatar2022.entities;
 
-
 import com.example.qatar2022.entities.personne.Joueur;
-import lombok.*;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.*;
+import lombok.*;
 
 @Data
 @Entity
-@Table(name="equipe")
+@Table(name = "equipe")
 @Getter
 @Setter
-
-
-
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Equipe implements Serializable {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long idEquipe;
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+  private String pays;
 
+  private Long nbr_points;
 
-    private Long idEquipe;
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  private Image drapeau;
 
+  @OneToMany(mappedBy = "equipe")
+  private List<Joueur> joueur = new ArrayList<>();
 
-    private String pays;
+  public Equipe(String pays) {
+    this.pays = pays;
+  }
 
-    private Long nbr_points;
+  public Equipe(String pays, Long nbr_points, Image drapeau) {
+    this.pays = pays;
+    this.nbr_points = nbr_points;
+    this.drapeau = drapeau;
+  }
 
+  public Equipe(String pays, Long nbr_points) {
+    this.pays = pays;
+    this.nbr_points = nbr_points;
+  }
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Image drapeau;
+  public String getPays() {
+    return pays;
+  }
 
-    @OneToMany(mappedBy="equipe")
-    private List<Joueur> joueur = new ArrayList<>();
+  public void setPays(String pays) {
+    this.pays = pays;
+  }
 
+  public Long getNbr_points() {
+    return nbr_points;
+  }
 
+  public void setNbr_points(Long nbr_points) {
+    this.nbr_points = nbr_points;
+  }
 
-    public String getPays() {
-        return pays;
-    }
+  public Image getDrapeau() {
+    return drapeau;
+  }
 
-    public void setPays(String pays) {
-        this.pays = pays;
-    }
+  public void setDrapeau(Image drapeau) {
+    this.drapeau = drapeau;
+  }
 
-    public Long getNbr_points() {
-        return nbr_points;
-    }
+  public List<Joueur> getJoueur() {
+    return joueur;
+  }
 
-    public void setNbr_points(Long nbr_points) {
-        this.nbr_points = nbr_points;
-    }
+  public void setJoueur(List<Joueur> joueur) {
+    this.joueur = joueur;
+  }
 
-
-    public Image getDrapeau() {
-        return drapeau;
-    }
-
-    public void setDrapeau(Image drapeau) {
-        this.drapeau = drapeau;
-    }
-
-    public List<Joueur> getJoueur() {
-        return joueur;
-    }
-
-    public void setJoueur(List<Joueur> joueur) {
-        this.joueur = joueur;
-    }
-
-
-
-    public Equipe(String pays) {
-        this.pays = pays;
-    }
-
-    public Equipe(String pays, Long nbr_points, Image drapeau) {
-        this.pays = pays;
-        this.nbr_points = nbr_points;
-        this.drapeau = drapeau;
-    }
-
-    public Equipe(String pays, Long nbr_points) {
-        this.pays = pays;
-        this.nbr_points = nbr_points;
-    }
-
-    @Override
-    public String toString() {
-        return "Equipe{" +
-                "idEquipe=" + idEquipe +
-                ", pays='" + pays + '\'' +
-                ", nbr_points=" + nbr_points +
-                ", drapeau=" + drapeau +
-
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "Equipe{"
+        + "idEquipe="
+        + idEquipe
+        + ", pays='"
+        + pays
+        + '\''
+        + ", nbr_points="
+        + nbr_points
+        + ", drapeau="
+        + drapeau
+        + '}';
+  }
 }
-

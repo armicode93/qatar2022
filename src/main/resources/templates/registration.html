@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html   lang="fr"
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
-        xmlns:th="http://www.thymeleaf.org"
-        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
 <head>
 
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
-    <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
-    <link href="../static/css/index/index/index.css" th:href="@{/css/index/index.css}" rel="stylesheet" />
+    <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
+    <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/index/index.css}"/>
 
     <title>Header fragment</title>
 </head>
@@ -36,83 +35,78 @@
                 </div>
 
 
-
                 <h1> Registration </h1>
-                <form action="# " th:action="@{'/registration/new'}" method="post" th:object="${user}">
+                <form action="# " method="post" th:action="@{'/registration'}" th:object="${user}">
                     <div class="form-group">
 
 
-
-
-
-
-
-
-
-
-
-                    <div class="form-group">
-                        <label class="control-label" for="nom"> LastName </label> <input
-                            id="nom" class="form-control" th:field="*{nom}"
-                            required autofocus="autofocus" />
-                        <div class="alert alert-warning" th:if="${#fields.hasErrors('nom')}"  th:errors="*{nom}" th:errorclass="error"></div>
-                    </div>
-
-                    <div class="form-group">
-                    <label class="control-label" for="prenom"> First Name </label>
-                    <input id="prenom" class="form-control" th:field="*{prenom}"
-                           required autofocus="autofocus" />
-                    <div class="alert alert-warning" th:if="${#fields.hasErrors('prenom')}"  th:errors="*{prenom}" th:errorclass="error"></div>
-
-                    </div>
                         <div class="form-group">
-                            <label class="control-label" for="dateNaiss"> Date Naiss </label>
-                            <input id="dateNaiss" class="form-control" th:field="*{dateNaiss}" type="date"
-                                   required autofocus="autofocus" />
-                            <div class="alert alert-warning" th:if="${#fields.hasErrors('dateNaiss')}"  th:errors="*{dateNaiss}" th:errorclass="error"></div>
+                            <label class="control-label" for="nom"> Nom </label> <input
+                                autofocus="autofocus" class="form-control" id="nom"
+                                required th:field="*{nom}"/>
+                            <div class="alert alert-warning" th:errorclass="error" th:errors="*{nom}"
+                                 th:if="${#fields.hasErrors('nom')}"></div>
                         </div>
 
-                    <div class="form-group">
-                        <label class="control-label" for="email"> Email </label> <input
-                            id="email" class="form-control" type="email" field="*{email}" name="email" required
-                            autofocus="autofocus" />
-                        <div class="alert alert-warning" th:if="${#fields.hasErrors('email')}"  th:errors="*{email}" th:errorclass="error"></div>
-                    </div>
+                        <div class="form-group">
+                            <label class="control-label" for="prenom"> Prenom </label>
+                            <input autofocus="autofocus" class="form-control" id="prenom"
+                                   required th:field="*{prenom}"/>
+                            <div class="alert alert-warning" th:errorclass="error"
+                                 th:errors="*{prenom}" th:if="${#fields.hasErrors('prenom')}"></div>
 
-                    <div class="form-group">
-                        <label class="control-label" for="gsm"> GSM </label>
-                        <input  id="gsm" class="form-control" type="number" name="gsm"
-                            th:field="*{gsm}"  required autofocus="autofocus"  />
-                        <div class="alert alert-warning" th:if="${#fields.hasErrors('gsm')}"  th:errors="*{gsm}" th:errorclass="error"></div>
-                    </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="dateNaiss"> Date Naiss </label>
+                            <input autofocus="autofocus" class="form-control" id="dateNaiss" required
+                                   th:field="*{dateNaiss}" type="date"/>
+                            <div class="alert alert-warning" th:errorclass="error"
+                                 th:errors="*{dateNaiss}" th:if="${#fields.hasErrors('dateNaiss')}"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="email"> Email </label> <input
+                                autofocus="autofocus" class="form-control" field="*{email}" id="email" name="email" required
+                                type="email"/>
+                            <div class="alert alert-warning" th:errorclass="error" th:errors="*{email}"
+                                 th:if="${#fields.hasErrors('email')}"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="gsm"> GSM </label>
+                            <input autofocus="autofocus" class="form-control" id="gsm" name="gsm"
+                                   required th:field="*{gsm}" type="number"/>
+                            <div class="alert alert-warning" th:errorclass="error" th:errors="*{gsm}"
+                                 th:if="${#fields.hasErrors('gsm')}"></div>
+                        </div>
 
 
+                        <div class="form-group">
+                            <label class="control-label" for="username"> Username </label>
+                            <input autofocus="autofocus" class="form-control" id="username"
+                                   required th:field="*{username}"/>
+                            <div class="alert alert-warning" th:errorclass="error"
+                                 th:errors="*{username}" th:if="${#fields.hasErrors('username')}"></div>
 
-                    <div class="form-group">
-                        <label class="control-label" for="username"> Username </label>
-                        <input id="username" class="form-control" th:field="*{username}"
-                               required autofocus="autofocus" />
-                        <div class="alert alert-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}" th:errorclass="error"></div>
-
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="password"> Password </label> <input
-                            id="password" class="form-control" type="password"
-                            th:field="*{password}" required autofocus="autofocus" />
-                        <div class="alert alert-warning" th:if="${#fields.hasErrors('password')}"  th:errors="*{password}" th:errorclass="error"></div>
-                    </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="password"> Password </label> <input
+                                autofocus="autofocus" class="form-control" id="password"
+                                required th:field="*{password}" type="password"/>
+                            <div class="alert alert-warning" th:errorclass="error"
+                                 th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></div>
+                        </div>
 
 
+                        <div class="form-group">
+                            <button class="btn btn-success" type="submit">S'inscrire</button>
+                            <span>Already registered? <a href="/" th:href="@{/login}">Login
+								ici</a></span>
+                            <br/>
 
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success">Register</button>
-                        <span>Already registered? <a href="/" th:href="@{/login}">Login
-								here</a></span>
-                        <br/>
-
-                        <a href="/" th:href="@{/}">Back to HomePage
+                            <a href="/" th:href="@{/}">Back to HomePage
                             </a></span>
-                    </div>
+                        </div>
 
                     </div>
 

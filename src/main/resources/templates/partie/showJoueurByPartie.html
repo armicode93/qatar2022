@@ -1,30 +1,30 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout">
+<html>
 <head>
 
 
     <title>Match detail </title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
-    <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
-    <link href="../static/css/index/index/index.css" th:href="@{/css/index/index.css}" rel="stylesheet" />
+    <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
+    <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/index/index.css}"/>
 </head>
 <header th:insert="fragments/header.html :: nav"></header>
 
 
-<table class="table"   >
-<thead>
+<table class="table">
+    <thead>
 
 
-<tr>
-    <th scope="col" th:text="${partie.eq1.pays +' Team '}"></th>
-    <th scope="col"></th>
-    <th scope="col" th:text="${partie.eq2.pays +' Team '}"></th>
+    <tr>
+        <th scope="col" th:text="${partie.eq1.pays +' Team '}"></th>
+        <th scope="col"></th>
+        <th scope="col" th:text="${partie.eq2.pays +' Team '}"></th>
 
-</tr>
-</thead>
+    </tr>
+    </thead>
     <tbody>
     <tr>
         <td>
@@ -43,19 +43,21 @@
         <td>
             <h5>Staff</h5>
             <ul>
-                <li th:each="staff : ${eq1Staff}" th:text="${staff.nom + ' ' + staff.prenom + ' (' + staff.fonction + ')'}"></li>
+                <li th:each="staff : ${eq1Staff}"
+                    th:text="${staff.nom + ' ' + staff.prenom + ' (' + staff.fonction + ')'}"></li>
             </ul>
         </td>
         <td></td>
         <td>
             <h5>Staff</h5>
             <ul>
-                <li th:each="staff : ${eq2Staff}" th:text="${staff.nom + ' ' + staff.prenom + ' (' + staff.fonction + ')'}"></li>
+                <li th:each="staff : ${eq2Staff}"
+                    th:text="${staff.nom + ' ' + staff.prenom + ' (' + staff.fonction + ')'}"></li>
             </ul>
         </td>
     </tr>
     // scrivere cio nel onenote
-   <a th:href="@{${'~/v1/partie/show/'+ partie.idPartie}}">Back </a>
+    <a th:href="@{${'~/partie/'+ partie.idPartie}}">Back </a>
     </tbody>
 </table>
 

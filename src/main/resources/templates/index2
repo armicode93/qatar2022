@@ -59,7 +59,7 @@
 
         <th scope="col">#</th>
         <th  scope="col">Pays</th>
-        <th><a  th:href="@{'/equipe/add'}"  class="btn btn-primary">Add New Equipe</a></th>
+        <th><a  th:href="@{'/equipe'}"  class="btn btn-primary">Add New Equipe</a></th>
 
 
     </tr>
@@ -74,11 +74,11 @@
 
         <td  valign="middle"  th:text="${equipe.pays}" >Equipe</td>
         <td valign="middle" align="center">
-            <img  th:src="@{${'v1/image/display/' + equipe.drapeau.id}}" width="100"></td>
+            <img  th:src="@{${'/display/' + equipe.drapeau.id}}" width="100"></td>
         <!-- delete form -->
         <td>
             <form  th:id="|deleteForm-${equipe.idEquipe}|"
-                   th:action="@{'/equipe/delete/'+ ${equipe.idEquipe}}" th:method="delete">
+                   th:action="@{'/equipe/'+ ${equipe.idEquipe}}" th:method="delete">
                 <!--delete form -->
 
                 <a href="#"  sec:authorize= 'hasRole("admin")' th:onclick="|if(confirm('Confirm delete equipe #${equipe.idEquipe}'))
@@ -124,7 +124,7 @@
         <th scope="col" class="header-align-center">Calendrier des matchs</th>
         <th></th>
         <th></th>
-        <th><a   th:href="@{'v1/partie/add'}" class="btn btn-primary">Add New Match</a></th>
+        <th><a   th:href="@{'partie'}" class="btn btn-primary">Add New Match</a></th>
     </tr>
 
 
@@ -146,7 +146,7 @@
 
                         <div class="container h-100">
                             <div class="row justify-content-center align-self-center">
-                                <img height="32px" th:src="@{${'v1/image/display/' + partie.eq1.drapeau.id}}">
+                                <img height="32px" th:src="@{${'/display/' + partie.eq1.drapeau.id}}">
                             </div>
                             <div class="row justify-content-center align-items-center">
                                 <p class="text-uppercase font-weight-bold">
@@ -243,7 +243,7 @@
                                         <div th:text="${partie.dateTime}"></div>
                                         <ul>
 
-                                            <li> <a th:href="@{${'v1/partie/show/'+ partie.idPartie}}" >Detail</a></li>
+                                            <li> <a th:href="@{${'/partie'+ partie.idPartie}}" >Detail</a></li>
                                         </ul>
 
                                     </div>
@@ -261,7 +261,7 @@
 
                         <div class="container h-100">
                             <div class="row justify-content-center align-items-center">
-                                <img height="32px" th:src="@{${'v1/image/display/' + partie.eq2.drapeau.id}}">
+                                <img height="32px" th:src="@{${'/display/' + partie.eq2.drapeau.id}}">
                             </div>
                             <div class="row justify-content-center align-items-center">
                                 <p class="text-uppercase font-weight-bold">

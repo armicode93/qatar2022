@@ -9,14 +9,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-//it's a DTO class
-public class  Order {
+// it's a DTO class
+public class Order {
 
-    private double price;
-    private String currency;
-    private String method;
-    private String intent;
-    private String description;
-
+  private double price;
+  private String currency;
+  private String method;
+  private String intent;
+  private String description;
 }
-

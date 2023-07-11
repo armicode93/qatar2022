@@ -1,37 +1,30 @@
 package com.example.qatar2022.entities.personne;
 
 import com.example.qatar2022.entities.Equipe;
-import lombok.*;
-
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
+import lombok.*;
 
 @Entity
 @Data
-@Table(name="staff")
-
+@Table(name = "staff")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-
-
 public class Staff implements Serializable {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long idStaff;
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long idStaff;
+  private String nom;
 
-    private String nom ;
+  private String prenom;
 
-    private String prenom;
+  @ManyToOne
+  @JoinColumn(name = "equipe_id_equipe")
+  private Equipe equipe;
 
-    @ManyToOne
-    @JoinColumn(name="equipe_id_equipe")
-    private Equipe equipe;
-
-    private String fonction;
-
+  private String fonction;
 }
-

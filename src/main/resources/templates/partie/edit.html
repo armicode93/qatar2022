@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html   lang="fr"
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
-        xmlns:th="http://www.thymeleaf.org">
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
-    <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
-    <link href="../static/css/index/index/index.css" th:href="@{/css/index/index.css}" rel="stylesheet" />
+    <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
+    <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/index/index.css}"/>
     <title>Fiche d'un artiste</title>
     <!--colore errore messaggi-->
     <style>
-        .error{
-            color:red;
+        .error {
+            color: red;
         }
     </style>
 </head>
@@ -28,59 +28,54 @@
 
 <div class="container">
     <div layout:fragment="content">
-        <form action="# " th:action="@{'/v1/partie/edit/'+ ${partie.idPartie}}" th:object="${partie}" method="post" class="form"> <!-- th:object ci serve per fare collegamento con il model -->
+        <form action="# " class="form" method="post" th:action="@{'/partie/edit/'+ ${partie.idPartie}}"
+              th:object="${partie}"> <!-- th:object ci serve per fare collegamento con il model -->
 
 
-
-
-
-
-            <div  class="form-group" th:unless="${#lists.isEmpty(stades)} ">
-                <strong><label >Stade</label></strong>
-                <select class="form-control" th:field="*{stade}"  id="stade">
-                    <option value="0">--- Please choose stadium --- </option>
+            <div class="form-group" th:unless="${#lists.isEmpty(stades)} ">
+                <strong><label>Stade</label></strong>
+                <select class="form-control" id="stade" th:field="*{stade}">
+                    <option value="0">--- Please choose stadium ---</option>
                     <option th:each="stade: ${stades}"
-                            th:value="${stade.idStade}"
-                            th:text="${stade.nomStade}"></option>
+                            th:text="${stade.nomStade}"
+                            th:value="${stade.idStade}"></option>
                 </select>
             </div>
 
 
-
             <div class="form-group">
                 <strong><label for="dateTime">Date Time</label></strong>
-                <input class="form-control" type="datetime-local" th:field="*{dateTime}" id="dateTime" >
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('dateTime')}" th:errors="*{dateTime}" th:errorclass="error"></div>
+                <input class="form-control" id="dateTime" th:field="*{dateTime}" type="datetime-local">
+                <div class="alert alert-warning" th:errorclass="error" th:errors="*{dateTime}"
+                     th:if="${#fields.hasErrors('dateTime')}"></div>
             </div>
 
 
             <div class="form-group">
                 <strong><label for="arbitre_principal">Arbitre Principal</label></strong>
                 <!-- th field permette di recuperare il nome selezionato -->
-                <input class="form-control" type="text" th:field="*{arbitre_principal}"  id="arbitre_principal" placeholder="arbitre_principal">
+                <input class="form-control" id="arbitre_principal" placeholder="arbitre_principal" th:field="*{arbitre_principal}"
+                       type="text">
                 <!-- place holder suggerimento allinterno del box -->
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('arbitre_principal')}" th:errors="*{arbitre_principal}" th:errorclass="error"></div>
+                <div class="alert alert-warning" th:errorclass="error"
+                     th:errors="*{arbitre_principal}" th:if="${#fields.hasErrors('arbitre_principal')}"></div>
             </div>
-
 
 
             <div class="form-group">
                 <strong><label for="prix">Prix</label></strong>
                 <!-- th field permette di recuperare il nome selezionato -->
-                <input class="form-control" type="number" th:field="*{prix}"  id="prix" placeholder="prix">
+                <input class="form-control" id="prix" placeholder="prix" th:field="*{prix}" type="number">
                 <!-- place holder suggerimento allinterno del box -->
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('prix')}" th:errors="*{prix}" th:errorclass="error"></div>
+                <div class="alert alert-warning" th:errorclass="error" th:errors="*{prix}"
+                     th:if="${#fields.hasErrors('prix')}"></div>
             </div>
-
-
-
-
 
 
             <!-- th:errorclass="error" serve per indicare lo style del errore, il colore che ho definito sopra -->
             <br/>
 
-            <input class="btn btn-primary" type="submit" value="Submit" /><br/><br/>
+            <input class="btn btn-primary" type="submit" value="Submit"/><br/><br/>
             <!-- class="btn btn-primary" serve per il design del bottone -->
 
 

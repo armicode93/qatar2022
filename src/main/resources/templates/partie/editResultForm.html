@@ -1,75 +1,74 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:th="http://www.thymeleaf.org"
+>
 <head>
 
 
     <title>Match detail </title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
-    <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
-    <link href="../static/css/index/index/index.css" th:href="@{/css/index/index.css}" rel="stylesheet" />
+    <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
+    <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/index/index.css}"/>
 </head>
 
 
 <body>
 <div class="container">
     <div layout:fragment="content">
-        <form action="# " th:action="@{'/v1/partie/editResult/'+ ${partie.idPartie}}" th:object="${partie}"  method="post" class="form"> <!-- th:object ci serve per fare collegamento con il model -->
-
-
-
+        <form action="# " class="form" method="post"
+              th:action="@{'/editResult/'+ ${partie.idPartie}}" th:object="${partie}"> <!-- th:object ci serve per fare collegamento con il model -->
 
 
             <div class="form-group">
                 <strong><label for="scoreEq1">score Eq1</label></strong>
 
 
-                <input class="form-control" type="number" th:field="*{scoreEq1}"  id="scoreEq1" th:value="${partie.scoreEq1}" required >
+                <input class="form-control" id="scoreEq1" required th:field="*{scoreEq1}"
+                       th:value="${partie.scoreEq1}" type="number">
 
 
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('scoreEq1')}" th:errors="*{scoreEq1}" th:errorclass="error" ></div>
+                <div class="alert alert-warning" th:errorclass="error" th:errors="*{scoreEq1}"
+                     th:if="${#fields.hasErrors('scoreEq1')}"></div>
             </div>
 
 
             <div class="form-group">
                 <strong><label for="scoreEq2">score Eq2</label></strong>
 
-                <input class="form-control" type="number" th:field="*{scoreEq2}"  id="scoreEq2" th:value="${partie.scoreEq1}" required>
+                <input class="form-control" id="scoreEq2" required th:field="*{scoreEq2}"
+                       th:value="${partie.scoreEq1}" type="number">
 
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('scoreEq2')}" th:errors="*{scoreEq2}" th:errorclass="error" ></div>
+                <div class="alert alert-warning" th:errorclass="error" th:errors="*{scoreEq2}"
+                     th:if="${#fields.hasErrors('scoreEq2')}"></div>
             </div>
 
             <div class="form-group">
                 <strong><label for="scoreEq2">Prolongation</label></strong>
 
-                <input class="form-control"  th:field="*{prolongation}"  id="prolungation"  required>
+                <input class="form-control" id="prolungation" required th:field="*{prolongation}">
 
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('prolongation')}" th:errors="*{prolongation}" th:errorclass="error" ></div>
+                <div class="alert alert-warning" th:errorclass="error"
+                     th:errors="*{prolongation}" th:if="${#fields.hasErrors('prolongation')}"></div>
             </div>
 
             <div class="form-group">
                 <strong><label for="scoreEq2">Total Time</label></strong>
 
-                <input class="form-control"  th:field="*{totalTime}"  id="totalTime" required>
+                <input class="form-control" id="totalTime" required th:field="*{totalTime}">
 
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('totalTime')}" th:errors="*{totalTime}" th:errorclass="error" ></div>
+                <div class="alert alert-warning" th:errorclass="error" th:errors="*{totalTime}"
+                     th:if="${#fields.hasErrors('totalTime')}"></div>
             </div>
-
-
-
-
-
 
 
             <!-- th:errorclass="error" serve per indicare lo style del errore, il colore che ho definito sopra -->
             <br/>
 
-            <input class="btn btn-primary" type="submit" value="Submit" /><br/><br/>
+            <input class="btn btn-primary" type="submit" value="Submit"/><br/><br/>
             <!-- class="btn btn-primary" serve per il design del bottone -->
 
 

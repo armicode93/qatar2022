@@ -3,147 +3,144 @@ package com.example.qatar2022.dto;
 import com.example.qatar2022.config.annotation.UniqueEmail;
 import com.example.qatar2022.config.annotation.UniqueUsername;
 import com.example.qatar2022.entities.personne.Role;
+import java.time.LocalDate;
+import javax.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
-import javax.validation.constraints.*;
-import java.time.LocalDate;
-
-
 public class UserRegistrationDto {
 
+  @Size(
+      min = 3,
+      max = 60,
+      message = "Firstname should have at least 3 characters and max 60 characters")
+  @Pattern(regexp = "[a-zA-Z\\s]+", message = "Only Alphabet characters")
+  @NotEmpty(message = "Nom value is required and can t be empty")
+  private String nom;
 
+  @Size(
+      min = 3,
+      max = 60,
+      message = "LastName should have at least 3 characters and max 60 characters")
+  @Pattern(regexp = "[a-zA-Z\\s]+", message = "Only Alphabet characters")
+  @NotEmpty(message = "Value is required and can t be empty")
+  private String prenom;
 
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+  private LocalDate dateNaiss;
 
+  @Size(
+      min = 4,
+      max = 60,
+      message = "Username should have at least 3 characters and max 60 characters")
+  @NotEmpty(message = "Value is required and can t be empty")
+  @UniqueUsername(message = "Username already exists")
+  private String username;
 
+  @Pattern(
+      regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$",
+      message =
+          "Password should contain at least one lowercase letter, one uppercase letter, and one digit")
+  @Size(
+      min = 4,
+      max = 15,
+      message = "Password should have at least 4 characters and max 15 characters")
+  private String password;
 
+  @Email(message = "Insert email ")
+  @NotNull(message = "Value is required and can t be empty")
+  @UniqueEmail(message = "Email already exists")
+  private String email;
 
+  @NumberFormat
+  @NotNull(message = "value is required and can t be empty")
+  private Long gsm;
 
-    @Size(min = 3, max = 60 , message = "Firstname should have at least 3 characters and max 60 characters")
-    @Pattern(regexp = "[a-zA-Z\\s]+", message = "Only Alphabet characters")
-    @NotEmpty(message="Nom value is required and can t be empty")
-    private String nom;
+  private Role role;
 
-    @Size(min = 3, max = 60, message= "LastName should have at least 3 characters and max 60 characters")
-    @Pattern(regexp = "[a-zA-Z\\s]+", message = "Only Alphabet characters")
-    @NotEmpty(message = "Value is required and can t be empty")
+  public UserRegistrationDto(
+      String nom,
+      String prenom,
+      LocalDate dateNaiss,
+      String username,
+      String password,
+      String email,
+      Long gsm,
+      Role role) {
+    this.nom = nom;
+    this.prenom = prenom;
+    this.dateNaiss = dateNaiss;
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.gsm = gsm;
 
-    private String prenom;
+    this.role = role;
+  }
 
+  public UserRegistrationDto() {}
 
+  public String getNom() {
+    return nom;
+  }
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+  public void setNom(String nom) {
+    this.nom = nom;
+  }
 
+  public String getPrenom() {
+    return prenom;
+  }
 
-    private LocalDate dateNaiss;
+  public void setPrenom(String prenom) {
+    this.prenom = prenom;
+  }
 
-    @Size(min =4 , max = 60,message= "Username should have at least 3 characters and max 60 characters")
-    @NotEmpty(message = "Value is required and can t be empty")
-    @UniqueUsername(message = "Username already exists")
-    private String username;
+  public LocalDate getDateNaiss() {
+    return dateNaiss;
+  }
 
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$",message="Password should contain at least one lowercase letter, one uppercase letter, and one digit")
-    @Size(min=4,max=15, message = "Password should have at least 4 characters and max 15 characters")
-    private String password;
+  public void setDateNaiss(LocalDate dateNaiss) {
+    this.dateNaiss = dateNaiss;
+  }
 
-    @Email(message = "Insert email ")
-    @NotNull(message= "Value is required and can t be empty")
-    @UniqueEmail(message = "Email already exists")
+  public String getUsername() {
+    return username;
+  }
 
-    private String email;
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-    @NumberFormat
+  public String getPassword() {
+    return password;
+  }
 
-    @NotNull(message= "value is required and can t be empty")
-    private Long gsm;
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-    private Role role;
+  public String getEmail() {
+    return email;
+  }
 
-    public UserRegistrationDto(String nom, String prenom, LocalDate dateNaiss, String username, String password, String email, Long gsm,Role role) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.dateNaiss = dateNaiss;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.gsm = gsm;
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-        this.role= role;
+  public Long getGsm() {
+    return gsm;
+  }
 
-    }
+  public void setGsm(Long gsm) {
+    this.gsm = gsm;
+  }
 
+  public Role getRole() {
+    return role;
+  }
 
-
-    public UserRegistrationDto() {
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
-
-    public LocalDate getDateNaiss() {
-        return dateNaiss;
-    }
-
-    public void setDateNaiss(LocalDate dateNaiss) {
-        this.dateNaiss = dateNaiss;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Long getGsm() {
-        return gsm;
-    }
-
-    public void setGsm(Long gsm) {
-        this.gsm = gsm;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-
+  public void setRole(Role role) {
+    this.role = role;
+  }
 }
-
-
-
-

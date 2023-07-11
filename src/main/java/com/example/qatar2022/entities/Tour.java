@@ -1,10 +1,9 @@
 package com.example.qatar2022.entities;
 
-import lombok.*;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.*;
+import lombok.*;
 
 @Entity
 @Data
@@ -15,32 +14,26 @@ import java.util.List;
 @NoArgsConstructor
 public class Tour {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idTour;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long idTour;
 
-    private String nomTour;
+  private String nomTour;
 
+  @OneToMany(mappedBy = "tour")
+  private List<Partie> partie = new ArrayList<>();
 
+  public Tour(String nomTour) {
+    this.nomTour = nomTour;
+  }
 
-    @OneToMany(mappedBy = "tour")
-    private List<Partie> partie = new ArrayList<>();
+  public List<Partie> getPartie() {
 
-    public List<Partie> getPartie() {
+    return partie;
+  }
 
-        return partie;
-    }
-
-    public Tour(String nomTour) {
-        this.nomTour = nomTour;
-    }
-
-    @Override
-    public String toString() {
-        return "Tour{" +
-                "nomTour='" + nomTour + '\'' +
-                '}';
-    }
-
-
+  @Override
+  public String toString() {
+    return "Tour{" + "nomTour='" + nomTour + '\'' + '}';
+  }
 }

@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
 <head>
 
 
-
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
-    <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
-    <link href="../static/css/index/index/index.css" th:href="@{/css/index/index.css}" rel="stylesheet" />
+    <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
+    <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/index/index.css}"/>
 
     <title>Header fragment</title>
 </head>
@@ -19,13 +18,13 @@
 <body>
 
 
-
 <div class="container">
     <div layout:fragment="content">
-        <form action="#" th:action="@{'/reservation/reservationPartie/' + ${partie.idPartie}}" th:object="${reservations}" method="post" class="form">
+        <form action="#" class="form"
+              method="post" th:action="@{'/reservationPartie/' + ${partie.idPartie}}" th:object="${reservations}">
 
 
-        <table class="table">
+            <table class="table">
 
                 <thead>
                 <tr>
@@ -38,28 +37,36 @@
                 <tbody>
                 <tr>
                     <th scope="row"></th>
-                    <td th:text="${partie.eq1.pays}"> </td>
+                    <td th:text="${partie.eq1.pays}"></td>
                     <td></td>
                     <td th:text="${partie.eq2.pays}"></td>
                 </tr>
 
 
                 <tr>
-                    <th scope="row"><a valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:href="@{${'/v1/partie/showJoueurByPartie/' + partie.idPartie }}">Team Composition </a></th>
+                    <th scope="row"><a align="center" class="col-sm text-muted" style="font-size: small;"
+                                       th:href="@{${'/joueur/' + partie.idPartie }}"
+                                       valign="middle">Team
+                        Composition </a></th>
                     <td>
-                        <img class="picture" th:src="@{${'/v1/image/display/' + partie.eq1.drapeau.id}}" width="100"></td>
+                        <img class="picture" th:src="@{${'/display/' + partie.eq1.drapeau.id}}" width="100">
+                    </td>
                     <td></td>
                     <td>
-                        <img class="picture" th:src="@{${'/v1/image/display/' + partie.eq2.drapeau.id}}" width="100"></td>
+                        <img class="picture" th:src="@{${'/display/' + partie.eq2.drapeau.id}}" width="100">
+                    </td>
                     <td>
-                        <a valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:href="@{${'/v1/partie/showJoueurByPartie/' + partie.idPartie }}">Team Composition </a></td>
+                        <a align="center" class="col-sm text-muted" style="font-size: small;" th:href="@{${'/joueur/' + partie.idPartie }}"
+                           valign="middle">Team Composition </a>
+                    </td>
                 </tr>
 
                 <tr>
-                    <th scope="row" >Stadium</th>
+                    <th scope="row">Stade</th>
                     <td></td>
 
-                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:if="${partie.stade != null}">
+                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:if="${partie.stade != null}"
+                        valign="middle">
                         <div th:text="${partie.stade.nomStade}"></div>
                         <div th:if="${partie.stade.nomStade == null}">
 
@@ -69,22 +76,25 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <th scope="row" >Date Time</th>
+                    <th scope="row">Date Heure</th>
                     <td></td>
-                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${#temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:text="${#temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm')}"
+                        valign="middle"></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th scope="row" >Arbitre</th>
+                    <th scope="row">Arbitre</th>
                     <td></td>
-                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${partie.arbitre_principal}"></td>
+                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:text="${partie.arbitre_principal}"
+                        valign="middle"></td>
                     <td></td>
                 </tr>
 
                 <tr>
-                    <th scope="row" >Price</th>
+                    <th scope="row">Price</th>
                     <td></td>
-                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:if="${partie.prix != null}">
+                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:if="${partie.prix != null}"
+                        valign="middle">
                         <div th:text="${partie.prix}"></div>
                         <div th:if="${partie.stade.nomStade == null}">
 
@@ -96,8 +106,8 @@
                 </tr>
                 <tr>
                     <td>
-                        <select class="form-control"  name="nbr_places" id="nbr_places" th:value="${nbr_places}">
-                            <option value="0">--Number of places--</option>
+                        <select class="form-control" id="nbr_places" name="nbr_places" th:value="${nbr_places}">
+                            <option value="0">--Nombre des places--</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -114,10 +124,10 @@
                 <tr>
 
 
-                        <!-- altri campi del form -->
+                    <!-- altri campi del form -->
 
                     <td>
-                        <input class="btn btn-primary" type="submit" value="Submit" /><br/><br/>
+                        <input class="btn btn-primary" type="submit" value="Valider"/><br/><br/>
                     </td>
                 </tr>
                 </tbody>

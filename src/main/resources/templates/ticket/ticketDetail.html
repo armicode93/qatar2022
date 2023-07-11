@@ -2,31 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org"
 
 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+>
 <head>
 
 
-
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
-    <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
-    <link href="../static/css/index/index/index.css" th:href="@{/css/ticket/ticketDetail.css}" rel="stylesheet" />
+    <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
+    <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/ticket/ticketDetail.css}"/>
     <title>Payment accepted</title>
 </head>
 <body>
 
 
-
-
-    <div class="container" th:each="ticket : ${tickets}">
-        <div class="ticket" >
-            <div class="ticket-header">
-                <h2>Ticket Details</h2>
-            </div>
-            <div class="container" >
+<div class="container" th:each="ticket : ${tickets}">
+    <div class="ticket">
+        <div class="ticket-header">
+            <h2>Ticket Details</h2>
+        </div>
+        <div class="container">
             <div class="ticket-content">
 
                 <p>
@@ -39,7 +35,7 @@
                 </p>
                 <h2>Payment Details</h2>
                 <p>
-                    <span class="ticket-label">Payment ID:</span>
+                    <span class="ticket-label">Paiement ID:</span>
                     <span class="ticket-value" th:text="${paymentId}"></span>
                 </p>
                 <p>
@@ -47,102 +43,108 @@
                     <span class="ticket-value" th:text="${payerId}"></span>
                 </p>
                 <p>
-                    <span class="ticket-label">Payment Method:</span>
+                    <span class="ticket-label">Paiement Method:</span>
                     <span class="ticket-value">PayPal</span>
                 </p>
                 <p>
-                    <span class="ticket-label">Number of Ticket : </span>
+                    <span class="ticket-label">Nombre de Ticket : </span>
                     <span class="ticket-value" th:text="${ticket.reservation.nbr_places}"></span>
                 </p>
                 <p>
-                    <span class="ticket-label">Amount:</span>
+                    <span class="ticket-label">Montant:</span>
                     <span class="ticket-value" th:text="${ticket.reservation.partie.prix}"></span>
                 </p>
                 <table>
-                <tbody>
-                <tr>
-                    <th scope="row"></th>
-                    <td th:text="${ticket.reservation.partie.eq1.pays}"> </td>
-                    <td></td>
-                    <td th:text="${ticket.reservation.partie.eq2.pays}"></td>
-                </tr>
+                    <tbody>
+                    <tr>
+                        <th scope="row"></th>
+                        <td th:text="${ticket.reservation.partie.eq1.pays}"></td>
+                        <td></td>
+                        <td th:text="${ticket.reservation.partie.eq2.pays}"></td>
+                    </tr>
 
 
-                <tr>
+                    <tr>
 
-                    <td>
-                        <img class="picture" th:src="@{${'/v1/image/display/' + ticket.reservation.partie.eq1.drapeau.id}}" width="100"></td>
-                    <td></td>
-                    <td>
-                        <img class="picture" th:src="@{${'/v1/image/display/' + ticket.reservation.partie.eq2.drapeau.id}}" width="100"></td>
-                    <td>
+                        <td>
+                            <img class="picture"
+                                 th:src="@{${'/display/' + ticket.reservation.partie.eq1.drapeau.id}}"
+                                 width="100"></td>
+                        <td></td>
+                        <td>
+                            <img class="picture"
+                                 th:src="@{${'/display/' + ticket.reservation.partie.eq2.drapeau.id}}"
+                                 width="100"></td>
+                        <td>
 
-                </tr>
+                    </tr>
 
-                <tr>
-                    <th>
-                    <span class="ticket-label" >Stadium</span>
-                    </th>
-                    <td></td>
+                    <tr>
+                        <th>
+                            <span class="ticket-label">Stade</span>
+                        </th>
+                        <td></td>
 
-                    <td>
-                        <div class="ticket-value"th:text="${ticket.reservation.partie.stade.nomStade}"></div>
-                    </td>
+                        <td>
+                            <div class="ticket-value" th:text="${ticket.reservation.partie.stade.nomStade}"></div>
+                        </td>
 
-
-                        </div>
-                    </td>
-
-                    <td></td>
-                </tr>
-                </tbody>
-                </table>
-                <tr>
-                    <th>
-                    <span class="ticket-label" >Date Time</span>
-                    </th>
-                    <td></td>
-                    <td class="ticket-value" th:text="${#temporals.format(ticket.reservation.partie.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
-                    <td></td>
-                </tr>
-
-
-                <p>
-                    <span class="ticket-label">First Name:</span>
-                    <span class="ticket-value" th:text="${ticket.reservation.user.prenom}"></span>
-                </p>
-                <p>
-                    <span class="ticket-label">Last Name:</span>
-                    <span class="ticket-value" th:text="${ticket.reservation.user.nom}"></span>
-                </p>
 
             </div>
+            </td>
+
+            <td></td>
+            </tr>
+            </tbody>
+            </table>
+            <tr>
+                <th>
+                    <span class="ticket-label">Date Heure</span>
+                </th>
+                <td></td>
+                <td class="ticket-value"
+                    th:text="${#temporals.format(ticket.reservation.partie.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
+                <td></td>
+            </tr>
+
+
             <p>
-                <span class="ticket-label"></span>
-                <img th:src="@{${'/qrcode/' + ticket.codeTicket }}" alt="QR Code" />
-
-
+                <span class="ticket-label">Nom:</span>
+                <span class="ticket-value" th:text="${ticket.reservation.user.prenom}"></span>
             </p>
-            </div>
-            <!--<div class="ticket-footer">
-                <form action="#" th:action="@{'/sendTicket/'+${ticket.codeTicket}}" th:object="${ticket}" method="post" class="form">
-                    <button type="submit" class="btn btn-primary">Send Ticket Email</button>
-                    <a href="/" class="btn btn-secondary">Home Page</a>
-                </form>
+            <p>
+                <span class="ticket-label">Prenom:</span>
+                <span class="ticket-value" th:text="${ticket.reservation.user.nom}"></span>
+            </p>
 
-            </div>
-            -->
         </div>
-    <form action="#" th:action="@{'/sendTicket/' + ${reservation.codeReservation}}" th:object="${reservation}" method="post" class="form">
-        <div class="ticket-footer">
+        <p>
+            <span class="ticket-label"></span>
+            <img alt="QR Code" th:src="@{${'/qrCode/' + ticket.codeTicket }}"/>
+
+
+        </p>
+    </div>
+    <!--<div class="ticket-footer">
+        <form action="#" th:action="@{'/sendTicket/'+${ticket.codeTicket}}" th:object="${ticket}" method="post" class="form">
             <button type="submit" class="btn btn-primary">Send Ticket Email</button>
             <a href="/" class="btn btn-secondary">Home Page</a>
-        </div>
-    </form>
+        </form>
+
     </div>
+    -->
+</div>
+<form action="#" class="form" method="post" th:action="@{'/sendTicket/' + ${reservation.codeReservation}}"
+      th:object="${reservation}">
+    <div class="ticket-footer">
+        <button class="btn btn-primary" type="submit">Envoyer le billet par e-mail</button>
+        <a class="btn btn-secondary" href="/">Home Page</a>
+    </div>
+</form>
+</div>
 
 </div>
-    </form>
+</form>
 
 </body>
 </html>

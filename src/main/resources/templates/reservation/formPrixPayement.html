@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html   lang="fr"
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
-        xmlns:th="http://www.thymeleaf.org">
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
-    <link href="../static/js/bootstrap.js" rel="stylesheet" type="text/javascript" th:href="@{/js/bootstrap.js}"/>
-    <link href="../static/css/index/index/index.css" th:href="@{/css/index/index.css}" rel="stylesheet" />
+    <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
+    <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/index/index.css}"/>
     <title>Fiche d'un artiste</title>
     <!--colore errore messaggi-->
     <style>
-        .error{
-            color:red;
+        .error {
+            color: red;
         }
     </style>
 </head>
@@ -28,36 +28,40 @@
 
 <div class="container">
     <div layout:fragment="content">
-        <form action="# " th:action="@{'/pay/'+ ${reservation.codeReservation}}" th:object="${reservation}" method="get" class="form"> <!-- th:object ci serve per fare collegamento con il model -->
+        <form action="# " class="form" method="get" th:action="@{'/pay/'+ ${reservation.codeReservation}}"
+              th:object="${reservation}"> <!-- th:object ci serve per fare collegamento con il model -->
 
 
             <div class="form-group">
-                <strong><label for="nom">LastName</label></strong>
+                <strong><label for="nom">Nom</label></strong>
                 <!-- th field permette di recuperare il nome selezionato -->
-                <input  class="form-control" id="nom" name="nom" th:value="${reservation.user.nom}" readonly>
+                <input class="form-control" id="nom" name="nom" readonly th:value="${reservation.user.nom}">
                 <!-- place holder suggerimento allinterno del box -->
                 <!--<div class="alert alert-warning" th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" th:errorclass="error"></div> -->
             </div>
 
 
             <div class="form-group">
-                <strong><label for="prenom">FirstName</label></strong>
+                <strong><label for="prenom">Prenom</label></strong>
                 <!-- th field permette di recuperare il nome selezionato -->
-                <input  class="form-control" id="prenom" name="prenom" th:value="${reservation.user.prenom}" readonly>
+                <input class="form-control" id="prenom" name="prenom" readonly th:value="${reservation.user.prenom}">
                 <!-- place holder suggerimento allinterno del box -->
-                 <!--<div class="alert alert-warning" th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" th:errorclass="error"></div> -->
+                <!--<div class="alert alert-warning" th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" th:errorclass="error"></div> -->
             </div>
             <div class="form-group">
-                <strong><label for="prix_total">Number of Ticket:</label></strong>
-                <input  class="form-control" id="nbr_places" name="nbr_places" th:value="${reservation.nbr_places}" readonly>
+                <strong><label for="prix_total">Nombre des places:</label></strong>
+                <input class="form-control" id="nbr_places" name="nbr_places" readonly
+                       th:value="${reservation.nbr_places}">
             </div>
             <div class="form-group">
-                <strong><label for="prix_total">Total Price:</label></strong>
-                <input  class="form-control" id="prix_total" name="prix_total" th:value="${reservation.prixTotal}" readonly>
+                <strong><label for="prix_total">Prix total:</label></strong>
+                <input class="form-control" id="prix_total" name="prix_total" readonly
+                       th:value="${reservation.prixTotal}">
             </div>
             <div class="form-group">
-                <strong><label for="date_achat">Date of puchase:</label></strong>
-                <input type="text" class="form-control" id="date_achat" name="date_achat" th:value="${reservation.dateAchat}" readonly>
+                <strong><label for="date_achat">Date d'achat:</label></strong>
+                <input class="form-control" id="date_achat" name="date_achat" readonly
+                       th:value="${reservation.dateAchat}" type="text">
             </div>
 
             <table class="table">
@@ -73,7 +77,7 @@
                 <tbody>
                 <tr>
                     <th scope="row"></th>
-                    <td th:text="${reservation.partie.eq1.pays}"> </td>
+                    <td th:text="${reservation.partie.eq1.pays}"></td>
                     <td></td>
                     <td th:text="${reservation.partie.eq2.pays}"></td>
                 </tr>
@@ -82,19 +86,22 @@
                 <tr>
 
                     <td>
-                        <img class="picture" th:src="@{${'/v1/image/display/' + reservation.partie.eq1.drapeau.id}}" width="100"></td>
+                        <img class="picture" th:src="@{${'/display/' + reservation.partie.eq1.drapeau.id}}"
+                             width="100"></td>
                     <td></td>
                     <td>
-                        <img class="picture" th:src="@{${'/v1/image/display/' + reservation.partie.eq2.drapeau.id}}" width="100"></td>
+                        <img class="picture" th:src="@{${'/display/' + reservation.partie.eq2.drapeau.id}}"
+                             width="100"></td>
                     <td>
 
                 </tr>
 
                 <tr>
-                    <th scope="row" >Stadium</th>
+                    <th scope="row">Stade</th>
                     <td></td>
 
-                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:if="${reservation.partie.stade != null}">
+                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:if="${reservation.partie.stade != null}"
+                        valign="middle">
                         <div th:text="${reservation.partie.stade.nomStade}"></div>
                         <div th:if="${reservation.partie.stade.nomStade == null}">
 
@@ -104,27 +111,31 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <th scope="row" >Date Time</th>
+                    <th scope="row">Date Heure</th>
                     <td></td>
-                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${#temporals.format(reservation.partie.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row" >Arbitre</th>
-                    <td></td>
-                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${reservation.partie.arbitre_principal}"></td>
+                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:text="${#temporals.format(reservation.partie.dateTime, 'dd/MM/yyyy HH:mm')}"
+                        valign="middle"></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th scope="row" >Total Time</th>
+                    <th scope="row">Arbitre</th>
                     <td></td>
-                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:text="${reservation.partie.totalTime}"></td>
+                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:text="${reservation.partie.arbitre_principal}"
+                        valign="middle"></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th scope="row" >Price</th>
+                    <th scope="row">Total Time</th>
                     <td></td>
-                    <td valign="middle" align="center" class="col-sm text-muted" style="font-size: small;" th:if="${reservation.partie.prix != null}">
+                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:text="${reservation.partie.totalTime}"
+                        valign="middle"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row">Prix</th>
+                    <td></td>
+                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:if="${reservation.partie.prix != null}"
+                        valign="middle">
                         <div th:text="${reservation.partie.prix}"></div>
                         <div th:if="${reservation.partie.stade.nomStade == null}">
 
@@ -136,20 +147,15 @@
                 </tr>
 
 
+                <!-- th:errorclass="error" serve per indicare lo style del errore, il colore che ho definito sopra -->
+                <br/>
+
+                <input class="btn btn-primary" type="submit" value="Payer"/><br/><br/>
+                <!-- class="btn btn-primary" serve per il design del bottone -->
 
 
-
-
-
-            <!-- th:errorclass="error" serve per indicare lo style del errore, il colore che ho definito sopra -->
-            <br/>
-
-            <input class="btn btn-primary" type="submit" value="Pay" /><br/><br/>
-            <!-- class="btn btn-primary" serve per il design del bottone -->
-
-
-            <!-- <div><a th:href="@{/artists/{id}}">annuler</a></div> -->
-            <nav><a th:href="@{/}">Annuler</a></nav>
+                <!-- <div><a th:href="@{/artists/{id}}">annuler</a></div> -->
+                <nav><a th:href="@{/}">Annuler</a></nav>
                 </tbody>
             </table>
 
