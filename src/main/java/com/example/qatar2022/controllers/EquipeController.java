@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
+
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,16 +73,14 @@ public class EquipeController {
   }
 
   @PostMapping("/equipe")
-  // une chose simple /equipe
   public String equipeSubmitAdd(
       @Valid @ModelAttribute("equipe") Equipe equipe,
       BindingResult result,
+
       @RequestParam("drapeau") MultipartFile drapeau,
       @RequestParam("pays") String pays,
       @RequestParam("nbr_points") Long nbr_points,
-
-      ModelMap model)
-      throws IOException {
+      ModelMap model) throws IOException {
 
     if (result.hasErrors()) {
       return "equipe/add";

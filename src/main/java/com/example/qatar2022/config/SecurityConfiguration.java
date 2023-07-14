@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -41,14 +42,18 @@ public class SecurityConfiguration
   @Override // like this passiamo authentificationProvider to the config methode
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
+
     auth.authenticationProvider(authenticationProvider());
 
 
   }
 
+
   @Override // we are going to override config methods
   protected void configure(HttpSecurity http) throws Exception { // we have a config method
 
+
+    http.csrf().disable(); // disable csrf
     http.authorizeRequests()
         .antMatchers(
             "/registration",
@@ -60,6 +65,7 @@ public class SecurityConfiguration
             "partie/show",
             "equipe")
         .permitAll()
+
 
         // authenticate anyRequest to this url
         .and()
@@ -99,4 +105,7 @@ public class SecurityConfiguration
         .accessDeniedPage(
             "/403"); // redirection quando non possiamo accedere ad una pagina offlimits,
   }
+
+
+
 }
