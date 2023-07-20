@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +96,28 @@ public class PartieService {
     partie.setPrix(prix);
     partieRepository.save(partie);
   }
+  @Transactional //one note see
+  public void createInitialKnockoutMatches(List<Equipe> equipes) {
 
+
+    // Create the initial tour for the knockout stage
+    Tour initialTour = new Tour("Huitième de finale");
+    tourRepository.save(initialTour);
+
+
+
+    // Create 8 matches from the first 16 teams
+    for (int i = 0; i < 8; i++) {
+      Partie match = new Partie();
+      match.setEq1(equipes.get(i * 2));
+      match.setEq2(equipes.get(i * 2 + 1));
+      match.setTour(initialTour);
+
+      partieRepository.save(match);
+    }
+  }
+
+/*
   @Transactional
   public void créerPartieSuivante(Tour tour) {
     List<Partie> parties = partieRepository.findByTour(tour);
@@ -182,6 +204,8 @@ public class PartieService {
 
     return partieRepository.save(match);
   }
+
+ */
 
   public LocalDateTime convertStringToLocalDateTime(String dateTime) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");

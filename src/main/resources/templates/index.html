@@ -28,8 +28,14 @@
         <th scope="col">Equipes</th>
         <th><a class="btn btn-primary" th:href="@{'/equipe'}"
                th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Ajouter nouvelle équipe</a></th>
-
-
+       <th>
+        <form method="post" th:action="@{/createParties}">
+            <button type="submit" class="btn btn-primary"
+                    th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                Création de matches
+            </button>
+        </form>
+       </th>
     </tr>
 
     </thead>

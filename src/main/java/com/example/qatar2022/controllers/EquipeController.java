@@ -36,6 +36,7 @@ public class EquipeController {
   private final PartieService partieService;
   private final TourService tourService;
 
+
   public EquipeController(
       EquipeService equipeService,
       ImageService imageService,
@@ -70,14 +71,16 @@ public class EquipeController {
     model.addAttribute(new Equipe());
 
     return "equipe/add";
+
   }
 
-  @PostMapping("/equipe")
+  @PostMapping(value = "/equipe", consumes={MediaType.MULTIPART_FORM_DATA_VALUE})
+  //for multipart file, we have to use RequestPart et non requestParam
   public String equipeSubmitAdd(
-      @Valid @ModelAttribute("equipe") Equipe equipe,
+      @ModelAttribute("equipe") Equipe equipe,
       BindingResult result,
 
-      @RequestParam("drapeau") MultipartFile drapeau,
+      @RequestPart(value = "drapeau") MultipartFile drapeau,
       @RequestParam("pays") String pays,
       @RequestParam("nbr_points") Long nbr_points,
       ModelMap model) throws IOException {
@@ -86,17 +89,22 @@ public class EquipeController {
       return "equipe/add";
     }
 
-    byte[] imageData = drapeau.getBytes();
+  /* byte[] imageData = drapeau.getBytes();
     Image image = new Image();
     //
     image.setNom(image.getNom());
     image.setImageByte(imageData);
-    imageService.saveImage(image);
+
+   */
+
+      Image image = imageService.saveImage(drapeau);
+    equipe.setDrapeau(image);
 
     equipeService.addEquipe(equipe);
 
-    model.addAttribute("drapeau", equipe.getDrapeau());
-    model.addAttribute("equipe", "");
+
+    model.addAttribute("equipe", equipe);
+    model.addAttribute("image", image);
 
     // model.addAttribute("image", "");
 

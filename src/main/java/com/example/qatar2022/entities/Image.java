@@ -24,12 +24,7 @@ public class Image implements Serializable {
   @Column(name = "image", length = 1000)
   private byte[] imageByte;
 
-  /*public String generateBase64Image()
-  {
-      return Base64.encodeBase64String(this.imageByte);
-  }
 
-  */
 
   public Image(String nom, byte[] imageByte) {
     this.nom = nom;

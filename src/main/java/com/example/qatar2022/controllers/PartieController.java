@@ -250,4 +250,24 @@ public class PartieController {
 
     return "redirect:/";
   }
+
+
+
+  @PostMapping("/createParties")
+  public String createParties(
+          @ModelAttribute("partie") Partie partie,
+          Model model) {
+
+    List<Equipe> equipes = equipeService.getAllEquipe();
+    if (equipes == null || equipes.size() < 16) {
+      return "partie/partieError";
+    }
+    partieService.createInitialKnockoutMatches(equipes);
+
+
+    model.addAttribute("partie", partie);
+
+    return "redirect:/";
+  }
+
 }

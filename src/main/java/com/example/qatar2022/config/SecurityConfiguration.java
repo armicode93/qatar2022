@@ -85,7 +85,7 @@ public class SecurityConfiguration
     http.authorizeRequests().antMatchers("/profile/**").authenticated();
     http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/equipe/edit/**").hasRole("ADMIN");
-    http.authorizeRequests().antMatchers("/equipe").hasRole("ADMIN");
+    //http.authorizeRequests().antMatchers("/equipe").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/partie").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/partie/edit/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/editResult/**").hasRole("ADMIN");

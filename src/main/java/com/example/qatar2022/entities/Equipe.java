@@ -24,7 +24,7 @@ public class Equipe implements Serializable {
 
   private Long nbr_points;
 
-  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Image drapeau;
 
   @OneToMany(mappedBy = "equipe")
