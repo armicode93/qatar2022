@@ -79,16 +79,10 @@ public class Equipe implements Serializable {
 
   @Override
   public String toString() {
-    return "Equipe{"
-        + "idEquipe="
-        + idEquipe
-        + ", pays='"
-        + pays
-        + '\''
-        + ", nbr_points="
-        + nbr_points
-        + ", drapeau="
-        + drapeau
-        + '}';
+    return "Equipe{" +
+            "pays='" + pays + '\'' +
+            ", drapeau=" + drapeau +
+            '}';
   }
+
 }

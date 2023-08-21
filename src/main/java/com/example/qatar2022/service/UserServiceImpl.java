@@ -21,6 +21,7 @@ public class UserServiceImpl implements UserService {
   @Autowired private RoleRepository roleRepository;
   @Autowired private BCryptPasswordEncoder passwordEncoder;
 
+
   public UserServiceImpl(UserRepository userRepository) {
     super();
 
@@ -88,4 +89,6 @@ public class UserServiceImpl implements UserService {
     authorities.add(new SimpleGrantedAuthority(role.getName()));
     return authorities;
   }
+
+
 }

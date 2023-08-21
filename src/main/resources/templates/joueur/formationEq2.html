@@ -1,0 +1,42 @@
+<!<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dettagli della Squadra</title>
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <!-- Altri stili personalizzati -->
+    <link href="../static/css/equipe/detail.css" rel="stylesheet" th:href="@{/css/details.css}">
+</head>
+<body>
+
+<header th:insert="fragments/header.html :: nav"></header>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <img class="d-block mx-auto mb-4" th:src="@{${'/display/' + equipe.drapeau.id}}" width="150">
+        </div>
+        <div class="col-md-8" >
+            <h2 class="mb-3">Détails du match  : <span th:text="${equipe.pays}"></span></h2>
+            <h3>Joueurs :</h3>
+            <ul class="list-group">
+                <li class="list-group-item" th:each="joueur : ${joueurs}">
+                    <span th:text="${joueur.nom}"></span> <span th:text="${joueur.prenom}"></span>
+
+
+                    <a th:href="@{'/addPosteEq2/' + ${joueur.idJoueur}}">AddRole</a></td>
+                </li>
+            </ul>
+            </form>
+        </div>
+        </li>
+
+        </ul>
+
+    </div>
+</div>
+</div>
+
+</body>
+</html>

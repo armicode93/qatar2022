@@ -96,116 +96,141 @@ public class PartieService {
     partie.setPrix(prix);
     partieRepository.save(partie);
   }
+  //ok
   @Transactional //one note see
   public void createInitialKnockoutMatches(List<Equipe> equipes) {
 
-
-    // Create the initial tour for the knockout stage
-    Tour initialTour = new Tour("Huitième de finale");
-    tourRepository.save(initialTour);
-
-
-
-    // Create 8 matches from the first 16 teams
+    Tour tour = new Tour("HUITIEME_DE_FINALE");
     for (int i = 0; i < 8; i++) {
       Partie match = new Partie();
       match.setEq1(equipes.get(i * 2));
       match.setEq2(equipes.get(i * 2 + 1));
-      match.setTour(initialTour);
+
+      match.setTour(tour);
+
+      partieRepository.save(match);
+    }
+  }
+//
+  @Transactional
+  public void createQuarts(List<Equipe> currentTourWinners) {
+
+   // List<Equipe> quarterFinalWinners = calculateGroupWinners(parties,"HUITIEME_DE_FINALE");
+
+    Tour tour = new Tour("QUARTS_DE_FINALE");
+
+
+
+
+    for (int i = 0; i < 4; i++) {
+
+      Partie match = new Partie();
+      match.setEq1(currentTourWinners.get(i * 2));
+      match.setEq2(currentTourWinners.get(i * 2 + 1));
+      match.setTour(tour);
 
       partieRepository.save(match);
     }
   }
 
-/*
+
   @Transactional
-  public void créerPartieSuivante(Tour tour) {
-    List<Partie> parties = partieRepository.findByTour(tour);
-    boolean tutteCompletate = true;
-    for (Partie partie : parties) {
-      if (partie.getScoreEq1() == null || partie.getScoreEq2() == null) {
-        tutteCompletate = false;
-        break;
+  public void createDemiFinal(List<Equipe> currentTourWinners) {
+
+   // List<Equipe> demiFinalWinners = calculateGroupWinners(parties,"QUARTS_DE_FINALE");
+
+    Tour tour = new Tour("DEMI_FINAL");
+
+
+    for (int i = 0; i < 2; i++) {
+      Partie match = new Partie();
+      match.setEq1(currentTourWinners.get(i * 2));
+      match.setEq2(currentTourWinners.get(i * 2 + 1));
+      match.setTour(tour);
+
+      partieRepository.save(match);
+    }
+  }
+
+  @Transactional
+  public void createFinal(List<Equipe> currentTourWinners) {
+
+   // List<Equipe> finalWinners = calculateGroupWinners(parties,"DEMI_FINAL");
+
+    Tour tour = new Tour("FINAL");
+
+
+    Partie finaleMatch = new Partie();
+    finaleMatch.setEq1(currentTourWinners.get(0));
+    finaleMatch.setEq2(currentTourWinners.get(1));
+    finaleMatch.setTour(tour);
+
+    partieRepository.save(finaleMatch);
+
+  }
+  public List<Equipe> calculateGroupWinners(List<Partie> parties, String prochainTourName) {
+    Tour currentTour = null;
+    List<Equipe> groupWinners = new ArrayList<>();
+
+    if(prochainTourName.equals("QUARTS_DE_FINALE"))
+    {
+      currentTour = tourRepository.findByNomTour("HUITIEME_DE_FINALE");
+    } else if (prochainTourName.equals("DEMI_FINAL")) {
+
+      currentTour = tourRepository.findByNomTour("QUARTS_DE_FINALE");
+    }
+    else if (prochainTourName.equals("FINAL")) {
+
+      currentTour = tourRepository.findByNomTour("DEMI_FINAL");
+    }
+
+
+    List<Partie> currentTourParties = partieRepository.findByTour(currentTour);
+
+    for (int i = 0; i < currentTourParties.size(); i++) {
+      Partie partieTour = currentTourParties.get(i);
+      Equipe winner = getWinner(partieTour);
+
+      if (winner != null) {
+        System.out.println("Added winner: " + winner);
+        groupWinners.add(winner);
+      } else {
+        System.out.println("No winner for partie: " + parties);
       }
     }
-    if (tutteCompletate) {
-      // Recupera i vincitori delle partite del girone corrente
-      List<Equipe> vincitori = new ArrayList<>();
-      for (Partie partie : parties) {
-        if (partie.getScoreEq1() > partie.getScoreEq2()) {
-          vincitori.add(partie.getEq1());
-        } else {
-          vincitori.add(partie.getEq2());
-        }
-      }
-      // Crea le partite successive per il girone successivo
-      Tour gironeSuccessivo = calcolaGironeSuccessivo(tour);
-      int numPartiteSuccessive = calcolaNumPartiteSuccessive(tour);
-      for (int i = 0; i < numPartiteSuccessive; i++) {
-        Partie partitaSuccessiva = new Partie();
-        partitaSuccessiva.setTour(gironeSuccessivo);
-        partitaSuccessiva.setEq1(vincitori.get(i * 2));
-        partitaSuccessiva.setEq2(vincitori.get(i * 2 + 1));
-        partieRepository.save(partitaSuccessiva);
-      }
+
+
+
+
+/*
+    if (groupWinners.isEmpty()) {
+      throw new RuntimeException("groupwinnerisEmpty");
     }
-  }
-
-  private Tour calcolaGironeSuccessivo(Tour gironeCorrente) {
-    String nomTour = gironeCorrente.getNomTour();
-    switch (nomTour) {
-      case "Huitième de finale":
-        return new Tour("Quarts de finale");
-      case "Quarts de finale":
-        return new Tour("Demi-finales");
-      case "Demi-finales":
-        return new Tour("Finale");
-      default:
-        // gestisci il caso in cui il girone corrente non sia valido
-        throw new IllegalArgumentException("Le tour actuel n'est pas valide: " + nomTour);
-    }
-  }
-
-  private int calcolaNumPartiteSuccessive(Tour gironeCorrente) {
-    String nomTour = gironeCorrente.getNomTour();
-    switch (nomTour) {
-      case "Huitième de finale ":
-        return 4; // ci sono 4 partite nei quarti di finale
-      case "Quarts de finale":
-        return 2; // ci sono 2 partite nelle semifinali
-      case "Demi-finales":
-        return 1; // c'è 1 partita nella finale
-      default:
-        // gestisci il caso in cui il girone :corrente non sia valido
-        throw new IllegalArgumentException("Le tour actuel n'est pas valide : " + nomTour);
-    }
-  }
-
-  public void createMatches() {
-    List<Equipe> teams = equipeRepository.findAll();
-    if (teams.size() >= 4) {
-      Tour tour = new Tour("Huitième de finale");
-      createMatch(teams.get(0), teams.get(1), tour);
-      createMatch(teams.get(0), teams.get(2), tour);
-      createMatch(teams.get(0), teams.get(3), tour);
-      createMatch(teams.get(1), teams.get(2), tour);
-      createMatch(teams.get(1), teams.get(3), tour);
-      createMatch(teams.get(2), teams.get(3), tour);
-    } else {
-
-    }
-  }
-
-  public Partie createMatch(Equipe team1, Equipe team2, Tour tour) {
-    Partie match = new Partie();
-    match.setEq1(team1);
-    match.setEq2(team2);
-    match.setTour(tour);
-
-    return partieRepository.save(match);
-  }
 
  */
+
+    return groupWinners;
+  }
+  public Equipe getWinner(Partie partie) {
+
+    int scoreEq1 = partie.getScoreEq1();
+    int scoreEq2 = partie.getScoreEq2();
+
+    if (scoreEq1 < 0 || scoreEq2 < 0) {
+      throw new RuntimeException("Invalid scores: " + scoreEq1 + ", " + scoreEq2);
+    }
+
+    if (scoreEq1 > scoreEq2) {
+      return partie.getEq1();
+    } else if (scoreEq2 > scoreEq1) {
+      return partie.getEq2();
+    }
+
+
+    return null;
+
+
+  }
 
   public LocalDateTime convertStringToLocalDateTime(String dateTime) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");

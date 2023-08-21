@@ -44,23 +44,27 @@
     <tr th:each="equipe : ${equipes}">
 
 
-        <td scope="row" th:text="${equipe.idEquipe}"></td>
 
-        <td th:text="${equipe.pays}" valign="middle">Teams</td>
+
+        <td th:text="${equipe.pays}" valign="middle">Equipe</td>
         <td align="center" valign="middle">
             <img th:src="@{${'/display/' + equipe.drapeau.id}}" width="100"></td>
         <!-- delete form -->
         <td>
+            <!--delete form -->
             <form th:action="@{'/equipe/'+ ${equipe.idEquipe}}"
                   th:id="|deleteForm-${equipe.idEquipe}|" th:method="delete">
-                <!--delete form -->
+
 
                 <a href="#" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" th:onclick="|if(confirm('Confirm delete equipe #${equipe.idEquipe}'))
                 document.getElementById('deleteForm-${equipe.idEquipe}').submit();
                     return false;|">Delete</a> <!-- alert with javascript -->
 
             </form>
+            <!-- Details -->
+            <a th:href="@{${'/equipe/'+ equipe.idEquipe}}">Détails</a>
         </td>
+
 
     </tr>
 
@@ -72,11 +76,13 @@
 
 <thead>
 <tr>
-    <th class="header-align-center" scope="col">Calendrier des matchs </th>
+    <th class="header-align-center" scope="col"><b>Calendrier des matchs </th>
     <th></th>
     <th></th>
-    <th><a class="btn btn-primary" th:href="@{'/partie'}"
-           th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Ajouter des matches</a></th>
+
+    <th><a class="btn btn-primary" th:href="@{/createParties}"
+           th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Création prochain tour</a></th>
+    </th>
 
 
 </tr>
@@ -93,11 +99,11 @@
 
 
             <div class="total">
-                <div class="tour-container" th:each="tour : ${tours}">
+                <div class="tour-container" >
                     <div class="tour-frame">
                         <h2 th:text="${tour.nomTour}"></h2>
-                        <div th:each="partie: ${parties}">
-                            <div class="match-container" th:if="${partie.tour.idTour == tour.idTour}">
+
+                            <div th:each="partie: ${parties}" th:if="${partie.tour.idTour == tour.idTour}">
                                 <table aria-label="Elements" class="full-width-table">
                                     <thead>
                                     <tr>

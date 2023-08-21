@@ -1,13 +1,17 @@
 package com.example.qatar2022.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
 import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import com.example.qatar2022.entities.personne.Joueur;
 import lombok.Data;
 import org.springframework.lang.Nullable;
 
@@ -31,6 +35,7 @@ public class Partie implements Serializable {
   // @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "stade_id_stade")
+
   private Stade stade;
 
   // @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
@@ -38,13 +43,19 @@ public class Partie implements Serializable {
   @JoinColumn(name = "tour_id_tour")
   private Tour tour;
 
+  //mappedby si riferisce a il campo in joueur quello fatto co nset
+  @OneToMany(mappedBy = "partie")
+  private Set <Poste> postes;
+
+
   @Nullable private Integer scoreEq1;
 
   @Nullable private Integer scoreEq2;
 
-
+  @FutureOrPresent(message = "DateTime cannot be less than the current date")
   private LocalDateTime dateTime;
 
+  @Size(min = 2, max = 20, message = "Put a valid name")
   private String arbitre_principal;
 
   @Pattern(regexp = "^\\d{1,3}:\\d{2}$", message = "Total time should be in the format HH:MM")
@@ -53,7 +64,9 @@ public class Partie implements Serializable {
   @Size(min = 2, max = 3, message = "Prolongation can be only two value YES or NO")
   private String prolongation;
 
+  @NotNull(message= "Put a valid price")
   private BigDecimal prix; // its better its more precisely
+
 
   public Partie(
       Equipe eq1,
@@ -221,13 +234,12 @@ public class Partie implements Serializable {
     this.prolongation = prolongation;
   }
 
-  public Equipe getVincitore() {
-    if (scoreEq1 > scoreEq2) {
-      return eq1;
-    } else if (scoreEq2 > scoreEq1) {
-      return eq2;
-    }
-    return null;
+  public Set<Poste> getPostes() {
+    return postes;
+  }
+
+  public void setPostes(Set<Poste> postes) {
+    this.postes = postes;
   }
 
   @Override
@@ -239,8 +251,7 @@ public class Partie implements Serializable {
         + eq2
         + ", stade="
         + stade
-        + ", tour="
-        + tour
+
         + ", scoreEq1="
         + scoreEq1
         + ", scoreEq2="

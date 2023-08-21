@@ -13,17 +13,17 @@ public class UserRegistrationDto {
   @Size(
       min = 3,
       max = 60,
-      message = "Firstname should have at least 3 characters and max 60 characters")
-  @Pattern(regexp = "[a-zA-Z\\s]+", message = "Only Alphabet characters")
-  @NotEmpty(message = "Nom value is required and can t be empty")
+      message = "Le nom doit comporter au moins 3 caractères et au maximum 60 caractères.")
+  @Pattern(regexp = "[a-zA-Z\\s]+", message = "Uniquement les caractères alphabétiques")
+
   private String nom;
 
   @Size(
       min = 3,
       max = 60,
-      message = "LastName should have at least 3 characters and max 60 characters")
-  @Pattern(regexp = "[a-zA-Z\\s]+", message = "Only Alphabet characters")
-  @NotEmpty(message = "Value is required and can t be empty")
+      message = "Le prénom should have at least 3 characters and max 60 characters")
+  @Pattern(regexp = "[a-zA-Z\\s]+", message = "Uniquement les caractères alphabétiques")
+
   private String prenom;
 
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -32,24 +32,24 @@ public class UserRegistrationDto {
   @Size(
       min = 4,
       max = 60,
-      message = "Username should have at least 3 characters and max 60 characters")
-  @NotEmpty(message = "Value is required and can t be empty")
-  @UniqueUsername(message = "Username already exists")
+      message = "Le nom d'utilisateur doit comporter au moins 3 caractères et au maximum 60 caractères")
+
+  @UniqueUsername(message = "Le nom d'utilisateur existe déjà")
   private String username;
 
   @Pattern(
       regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$",
       message =
-          "Password should contain at least one lowercase letter, one uppercase letter, and one digit")
+          "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule et un chiffre.")
   @Size(
       min = 4,
       max = 15,
-      message = "Password should have at least 4 characters and max 15 characters")
+      message = "Le mot de passe doit comporter au moins 4 caractères et au maximum 15 caractères.")
   private String password;
 
-  @Email(message = "Insert email ")
-  @NotNull(message = "Value is required and can t be empty")
-  @UniqueEmail(message = "Email already exists")
+  @Email(message = "Insérer un e-mail ")
+  @NotNull(message = "Email obligatoire et ne peut être vide")
+  @UniqueEmail(message = "Email existe déjà")
   private String email;
 
   @NumberFormat

@@ -118,8 +118,8 @@ navbar ul li a{
      cursor: pointer;
  }
  .match {
-     float: right;
-     margin-right: 3%;
+     width: 50%;
+     float: left;
 
 
  }

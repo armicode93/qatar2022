@@ -53,7 +53,7 @@ public class SecurityConfiguration
   protected void configure(HttpSecurity http) throws Exception { // we have a config method
 
 
-    http.csrf().disable(); // disable csrf
+    //http.csrf().disable(); // disable csrf
     http.authorizeRequests()
         .antMatchers(
             "/registration",

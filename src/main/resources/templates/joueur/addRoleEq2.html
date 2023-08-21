@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dettagli della Squadra</title>
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <!-- Altri stili personalizzati -->
+    <link href="../static/css/equipe/detail.css" rel="stylesheet" th:href="@{/css/details.css}">
+</head>
+<body>
+
+<header th:insert="fragments/header.html :: nav"></header>
+
+<div class="container mt-5">
+    <form action="# " class="form" method="post" th:action="@{'/addPosteEq2/'+ ${idJoueur}}" th:object="${poste}">
+
+        <div class="row">
+
+            <div class="col-md-8" >
+                <div class="form-group" >
+
+                    <strong><label >Poste</label></strong>
+                    <!-- th field permette di recuperare il nome selezionato -->
+                    <input class="form-control" id="nomPoste" placeholder="poste" th:field="*{nomPoste}"
+                           type="text">
+                    <!-- place holder suggerimento allinterno del box -->
+                    <div class="alert alert-warning" th:errorclass="error"
+                         th:errors="*{nomPoste}" th:if="${#fields.hasErrors('nomPoste')}"></div>
+                    <input class="btn btn-primary" type="submit" value="Valider"/><br/><br/>
+
+                </div></div></div>
+    </form>
+</div>
+</body>
+</html>

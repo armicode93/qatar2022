@@ -30,6 +30,9 @@ public class PartieController {
   private final StaffService staffService;
 
   private final JoueurService joueurService;
+  private boolean isQuartsCreated = false;
+  private boolean isDemiFinalCreated = false;
+  private boolean isFinalCreated = false;
 
   public PartieController(
       PartieService partieService,
@@ -92,7 +95,7 @@ public class PartieController {
 
     return "partie/add";
   }
-
+/*
   @GetMapping("/joueur/{idPartie}")
   public String showJoueurByPartie(Model model, @PathVariable(name = "idPartie") Long idPartie) {
     Partie partie = partieService.getPartieById(idPartie);
@@ -114,6 +117,9 @@ public class PartieController {
 
     return "partie/showJoueurByPartie";
   }
+
+ */
+
 
   @PostMapping("/partie")
   public String partieSubmitAdd(
@@ -227,24 +233,35 @@ public class PartieController {
     return "partie/edit";
   }
 
+//@ConntrollerAdvice to handler all error together
+
   @PostMapping("partie/edit/{idPartie}")
   public String edit(
-      @Valid @ModelAttribute("partie") Partie partie,
-      BindingResult result,
-      @PathVariable("idPartie") Long idPartie,
-      @RequestParam("stade") Stade stade,
-      @RequestParam("dateTime") String dateTime,
-      @RequestParam("arbitre_principal") String arbitre_principal,
-      @RequestParam("prix") BigDecimal prix,
-      Model model) {
+          @Valid @ModelAttribute("partie") Partie partie,
+          BindingResult result,
+          @PathVariable("idPartie") Long idPartie,
+            @RequestParam("stade") Stade stade,
+          @RequestParam("dateTime") String dateTime,
+          @RequestParam("arbitre_principal") String arbitre_principal,
+          @RequestParam("prix") BigDecimal prix,
+
+          Model model) {
 
     if (result.hasErrors()) {
-      return "/partie/edit/{idPartie}";
+      return "redirect:/partie/edit/" + idPartie ;
     }
+
+
+
+
     LocalDateTime dateTimeString =
-        partieService.convertStringToLocalDateTime(partie.getDateTimeAsString());
+            partieService.convertStringToLocalDateTime(partie.getDateTimeAsString());
 
     partieService.editPartie(idPartie, stade, dateTimeString, arbitre_principal, prix);
+
+
+    model.addAttribute("stade", stade);
+
 
     model.addAttribute("partie", partie);
 
@@ -252,14 +269,24 @@ public class PartieController {
   }
 
 
+  @GetMapping("/createParties")
+  public String createNextParties( Model model) {
+
+    List<Tour> tours = tourService.getallTour();
+
+    model.addAttribute("tours",tours);
+
+    return "partie/createParties";
+  }
 
   @PostMapping("/createParties")
   public String createParties(
           @ModelAttribute("partie") Partie partie,
           Model model) {
-
+    List<Tour> tours = tourService.getallTour();
     List<Equipe> equipes = equipeService.getAllEquipe();
-    if (equipes == null || equipes.size() < 16) {
+
+    if (equipes == null || equipes.size() < 16 || !tours.isEmpty()) {
       return "partie/partieError";
     }
     partieService.createInitialKnockoutMatches(equipes);
@@ -268,6 +295,55 @@ public class PartieController {
     model.addAttribute("partie", partie);
 
     return "redirect:/";
+
   }
+
+  @PostMapping("/createNextParties")
+  public String createNextParties(@ModelAttribute("partie")Partie partie,BindingResult result, @RequestParam("nomTour") String nomTour,Model model)
+  {
+
+    List<Partie> parties = partieService.getAllPartie();
+
+
+
+  List<Equipe> currentTourWinners = partieService.calculateGroupWinners(parties, nomTour);
+
+
+  if (currentTourWinners.isEmpty() ) {
+      return "partie/partieAddError";
+    }
+    else if(currentTourWinners.size()==8 && isQuartsCreated ==false)
+    {
+      partieService.createQuarts(currentTourWinners);
+      isQuartsCreated = true;
+    }
+    else if(currentTourWinners.size()==4 && isDemiFinalCreated==false  )
+    {
+      partieService.createDemiFinal(currentTourWinners);
+      isDemiFinalCreated = true;
+    }
+    else if(currentTourWinners.size()==2 && isFinalCreated==false)
+    {
+      partieService.createFinal(currentTourWinners);
+      isFinalCreated = true;
+
+    }
+    else  {
+      return "partie/partieAddError";
+    }
+
+
+
+
+    model.addAttribute("partie", partie);
+
+    return "redirect:/";
+
+
+
+  }
+
+
+
 
 }

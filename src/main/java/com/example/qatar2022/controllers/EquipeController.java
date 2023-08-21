@@ -1,20 +1,15 @@
 package com.example.qatar2022.controllers;
 
-import com.example.qatar2022.entities.Equipe;
-import com.example.qatar2022.entities.Image;
-import com.example.qatar2022.entities.Partie;
-import com.example.qatar2022.entities.Tour;
-import com.example.qatar2022.service.EquipeService;
-import com.example.qatar2022.service.ImageService;
-import com.example.qatar2022.service.PartieService;
-import com.example.qatar2022.service.TourService;
+import com.example.qatar2022.entities.*;
+import com.example.qatar2022.entities.personne.Joueur;
+import com.example.qatar2022.service.*;
+
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import javax.validation.Valid;
 
+import com.example.qatar2022.service.personne.JoueurService;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -35,17 +30,21 @@ public class EquipeController {
   private final ImageService imageService;
   private final PartieService partieService;
   private final TourService tourService;
+  private final JoueurService joueurService;
+  private final PosteService posteService;
 
 
   public EquipeController(
-      EquipeService equipeService,
-      ImageService imageService,
-      PartieService partieService,
-      TourService tourService) {
+          EquipeService equipeService,
+          ImageService imageService,
+          PartieService partieService,
+          TourService tourService, JoueurService joueurService, PosteService posteService) {
     this.equipeService = equipeService;
     this.imageService = imageService;
     this.partieService = partieService;
     this.tourService = tourService;
+    this.joueurService = joueurService;
+    this.posteService = posteService;
   }
 
   @GetMapping("/")
@@ -62,6 +61,22 @@ public class EquipeController {
     model.addAttribute("title", "Liste des equipe");
 
     return "index";
+  }
+  @GetMapping("/equipe/{idEquipe}")
+
+  public String equipeDetail(@PathVariable("idEquipe") Long idEquipe, Model model) {
+
+    Equipe equipe = equipeService.getEquipeById(idEquipe);
+    List<Joueur> joueurs = joueurService.getAllJoueurByEquipe(idEquipe);
+    List<Poste> postes = posteService.getAllPoste();
+
+
+    model.addAttribute("equipe", equipe);
+    model.addAttribute("joueurs", joueurs);
+    model.addAttribute("postes", postes);
+
+
+    return "equipe/detail";
   }
 
 

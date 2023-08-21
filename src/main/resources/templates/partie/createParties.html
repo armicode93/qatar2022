@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
+    <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/index/index.css}"/>
+    <title>Fiche d'un artiste</title>
+    <!--colore errore messaggi-->
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<div class="container">
+    <div layout:fragment="content">
+
+        <form action="# " class="form" method="post" th:action="@{'/createNextParties'}" th:object="${partie}">
+            <label for="nomTour">Tour : </label>
+            <select name="nomTour" id="nomTour">
+
+                <option value="QUARTS_DE_FINALE">Quarts de finale</option>
+                <option value="DEMI_FINAL">Demi-finale</option>
+                <option value="FINAL">Finale</option>
+            </select>
+            <br>
+            <input type="submit" value="Invia">
+        </form>
+
+
+            <!-- <div><a th:href="@{/artists/{id}}">annuler</a></div> -->
+            <nav><a th:href="@{/}">Annuler</a></nav>
+
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

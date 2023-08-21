@@ -38,7 +38,7 @@
 
 
     <tr>
-        <th scope="row"><a align="center" class="col-sm text-muted" style="font-size: small;" th:href="@{${'/joueur/' + partie.idPartie }}"
+        <th scope="row"><a align="center" class="col-sm text-muted" style="font-size: small;" th:href="@{'/joueurEq1/' + ${partie.eq1.idEquipe }}"
                            valign="middle">Team Composition </a>
         </th>
 
@@ -53,7 +53,7 @@
             <img class="picture" th:src="@{${'/display/' + partie.eq2.drapeau.id}}" width="100"></td>
 
         <td>
-            <a align="center" class="col-sm text-muted" style="font-size: small;" th:href="@{${'/joueur/' + partie.idPartie }}"
+            <a align="center" class="col-sm text-muted" style="font-size: small;" th:href="@{${'/joueurEq2/' + partie.eq2.idEquipe }}"
                valign="middle">Team Composition </a></td>
 
     </tr>
