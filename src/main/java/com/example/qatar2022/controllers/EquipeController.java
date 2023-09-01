@@ -1,5 +1,6 @@
 package com.example.qatar2022.controllers;
 
+import com.example.qatar2022.config.FileUploadUtil;
 import com.example.qatar2022.entities.*;
 import com.example.qatar2022.entities.personne.Joueur;
 import com.example.qatar2022.service.*;
@@ -13,8 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.util.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -27,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class EquipeController {
 
   private final EquipeService equipeService;
-  private final ImageService imageService;
+ // private final ImageService imageService;
   private final PartieService partieService;
   private final TourService tourService;
   private final JoueurService joueurService;
@@ -36,11 +39,11 @@ public class EquipeController {
 
   public EquipeController(
           EquipeService equipeService,
-          ImageService imageService,
+         // ImageService imageService,
           PartieService partieService,
           TourService tourService, JoueurService joueurService, PosteService posteService) {
     this.equipeService = equipeService;
-    this.imageService = imageService;
+    //this.imageService = imageService;
     this.partieService = partieService;
     this.tourService = tourService;
     this.joueurService = joueurService;
@@ -50,14 +53,14 @@ public class EquipeController {
   @GetMapping("/")
   public String index(Model model) {
     List<Equipe> equipes = equipeService.getAllEquipe();
-    List<Image> images = imageService.getAllImage();
+   // List<Image> images = imageService.getAllImage();
     List<Partie> parties = partieService.getAllPartie();
     List<Tour> tours = tourService.getallTour();
 
     model.addAttribute("parties", parties);
     model.addAttribute("tours", tours);
     model.addAttribute("equipes", equipes);
-    model.addAttribute("images", images);
+    //model.addAttribute("images", images);
     model.addAttribute("title", "Liste des equipe");
 
     return "index";
@@ -89,37 +92,35 @@ public class EquipeController {
 
   }
 
-  @PostMapping(value = "/equipe", consumes={MediaType.MULTIPART_FORM_DATA_VALUE})
+  @PostMapping(value = "/equipe")
   //for multipart file, we have to use RequestPart et non requestParam
   public String equipeSubmitAdd(
       @ModelAttribute("equipe") Equipe equipe,
       BindingResult result,
 
-      @RequestPart(value = "drapeau") MultipartFile drapeau,
+      @RequestParam("image") MultipartFile multipartFile,
       @RequestParam("pays") String pays,
-      @RequestParam("nbr_points") Long nbr_points,
+
       ModelMap model) throws IOException {
 
     if (result.hasErrors()) {
       return "equipe/add";
     }
 
-  /* byte[] imageData = drapeau.getBytes();
-    Image image = new Image();
-    //
-    image.setNom(image.getNom());
-    image.setImageByte(imageData);
 
-   */
-
-      Image image = imageService.saveImage(drapeau);
-    equipe.setDrapeau(image);
+    String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+    equipe.setDrapeau(fileName);
+    equipe.setPays(equipe.getPays());
 
     equipeService.addEquipe(equipe);
 
+    String uploadDir = "/images/equipe/" + equipe.getIdEquipe();
+
+    FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+
 
     model.addAttribute("equipe", equipe);
-    model.addAttribute("image", image);
+    //model.addAttribute("drapeau", multipartFile);
 
     // model.addAttribute("image", "");
 

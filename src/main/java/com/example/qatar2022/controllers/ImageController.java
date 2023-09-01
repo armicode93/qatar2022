@@ -1,4 +1,4 @@
-package com.example.qatar2022.controllers;
+/*package com.example.qatar2022.controllers;
 
 import com.example.qatar2022.entities.Image;
 import com.example.qatar2022.service.ImageService;
@@ -83,9 +83,10 @@ public class ImageController {
       /*log.info("HttpStatus===" + new ResponseEntity<>(HttpStatus.OK));
       return new ResponseEntity<>("Product Saved With File - " + fileName, HttpStatus.OK);
 
-       */
 
-    } catch (Exception e) {
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;} catch (Exception e) {
       e.printStackTrace();
       log.info("Exception: " + e);
       // return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -109,3 +110,4 @@ public class ImageController {
     return "images";
   }
 }
+*/

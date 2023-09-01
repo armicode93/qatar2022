@@ -9,6 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 @Data
@@ -22,7 +24,12 @@ public class Poste implements Serializable {
 
 
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long idPoste;
+
+
+
+
 
   @ManyToOne
   @JoinColumn(name="joueur_id_joueur")
@@ -32,7 +39,7 @@ public class Poste implements Serializable {
   @JoinColumn(name="partie_id_partie")
   private Partie partie;
 
-  @Pattern(regexp = "DEFENSEUR|MILIEU|GARDIEN|ATTAQUANT|BANC",
+  @Pattern(regexp = "GARDIEN|DEFENSEUR|MILIEU|GARDIEN|ATTAQUANT|BANC",
           message="Les seules valeurs autorisées sont : DEFENSEUR, MILIEU, GARDIEN, ATTAQUANT, BANC")
   public String nomPoste;
 
@@ -42,9 +49,13 @@ public class Poste implements Serializable {
   private LocalTime tempsSortie;
 
 
+  @Override
+  public String toString() {
+    return "Poste{" +
 
-
-
-
-
+            ", nomPoste='" + nomPoste + '\'' +
+            ", tempsEntree=" + tempsEntree +
+            ", tempsSortie=" + tempsSortie +
+            '}';
+  }
 }

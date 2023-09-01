@@ -25,6 +25,7 @@ public class EquipeService {
     List<Equipe> equipes = new ArrayList<>();
 
     equipeRepository.findAll().forEach(equipes::add);
+
     return equipes;
   }
 
@@ -35,7 +36,6 @@ public class EquipeService {
   public void addEquipe(Equipe equipe) {
 
     equipe.setPays(equipe.getPays());
-    equipe.setNbr_points(equipe.getNbr_points());
     equipe.setDrapeau(equipe.getDrapeau());
 
     equipeRepository.save(equipe);

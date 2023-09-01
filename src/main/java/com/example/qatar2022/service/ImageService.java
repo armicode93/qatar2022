@@ -1,4 +1,4 @@
-package com.example.qatar2022.service;
+/*package com.example.qatar2022.service;
 
 import com.example.qatar2022.entities.Image;
 import com.example.qatar2022.repository.ImageRepository;
@@ -51,3 +51,5 @@ public class ImageService {
     return imageRepository.save(image);
   }
 }
+
+ */

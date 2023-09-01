@@ -3,7 +3,8 @@ package com.example.qatar2022.controllers.personne;
 import com.example.qatar2022.entities.*;
 import com.example.qatar2022.entities.personne.Joueur;
 import com.example.qatar2022.service.EquipeService;
-import com.example.qatar2022.service.ImageService;
+//import com.example.qatar2022.service.ImageService;
+import com.example.qatar2022.service.PartieService;
 import com.example.qatar2022.service.PosteService;
 import com.example.qatar2022.service.personne.JoueurService;
 
@@ -15,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -25,13 +27,15 @@ public class JoueurController {
   private final JoueurService joueurService;
   private final EquipeService equipeService;
   private final PosteService posteService;
-  private final ImageService imageService;
+  //private final ImageService imageService;
+  private final PartieService partieService;
 
-  public JoueurController(JoueurService joueurService, EquipeService equipeService, PosteService posteService, ImageService imageService) {
+  public JoueurController(JoueurService joueurService, EquipeService equipeService, PosteService posteService , PartieService partieService) {
     this.joueurService = joueurService;
     this.equipeService = equipeService;
     this.posteService = posteService;
-    this.imageService = imageService;
+
+    this.partieService = partieService;
   }
 
   @GetMapping("/addJoueur/{idEquipe}")
@@ -82,16 +86,22 @@ public class JoueurController {
     return "redirect:/";
   }
 
-  @GetMapping("/joueurEq1/{idEquipe}")
-  public String joueurIndexEq1( Model model, @PathVariable("idEquipe") Long idEquipe) {
-    List<Image> images = imageService.getAllImage();
-    Equipe equipe = equipeService.getEquipeById(idEquipe);
-    List <Joueur> joueurs = joueurService.getAllJoueurByEquipe(idEquipe);
+  @GetMapping("/joueurEq1/{idPartie}")
+  public String joueurIndexEq1(HttpSession session, Model model, @PathVariable("idPartie") Long idPartie) {
+    //List<Image> images = imageService.getAllImage();
+    Equipe equipe = partieService.getEq1ByPartieId(idPartie);
+    List <Joueur> joueurs = equipe.getJoueur();
+    List<JoueurPostes> joueursAndPostes = posteService.getJoueursAndPostesByPartieEq1(idPartie);
+
+
 
 
 
     model.addAttribute("equipe", equipe);
-    model.addAttribute("images", images);
+    session.setAttribute("idPartie",idPartie);
+   // model.addAttribute("images", images);
+    model.addAttribute("joueursAndPostes", joueursAndPostes);
+
     model.addAttribute("joueurs", joueurs);
 
 
@@ -101,58 +111,75 @@ public class JoueurController {
   }
 
   @GetMapping("/addPosteEq1/{idJoueur}")
-  public String posteIndexEq1(Model model) {
+  public String posteIndexEq1(HttpSession session, Model model, @PathVariable("idJoueur") Long idJoueur) {
 
 
+    Joueur joueur = joueurService.getJoueurById(idJoueur);
+
+    // Recupera idPartie de cette session
+    Long idPartie = (Long) session.getAttribute("idPartie");
 
 
+    model.addAttribute("joueur",joueur);
+
+    model.addAttribute("idPartie",idPartie);
     model.addAttribute("poste",new Poste());
 
 
 
-    return "joueur/adRoleEq1";
+    return "joueur/addPosteEq1";
+
   }
+
   @PostMapping("/addPosteEq1/{idJoueur}")
   public String posteEq1SubmitAdd(
           @Valid @ModelAttribute("poste") Poste poste,
           BindingResult result,
-          @ModelAttribute("partie") Partie partie ,
+
           @PathVariable(name = "idJoueur") Long idJoueur,
+
+          HttpSession session,
           ModelMap model) {
 
     if (result.hasErrors()) {
-      return "joueur/addRoleEq1";
+      return "joueur/addPosteEq1";
     }
 
 
 
     Joueur joueur = joueurService.getJoueurById(idJoueur);
-    //Partie partie = partie
+    Long idPartie = (Long) session.getAttribute("idPartie");
+    Partie partie = partieService.getPartieById(idPartie);
 
-            poste.setJoueur(joueur);
-    poste.setPartie(poste.getPartie());
+    poste.setJoueur(joueur);
+    poste.setPartie(partie);
     poste.setNomPoste(poste.getNomPoste());
-    // Imposta gli altri campi del poste
+
 
     posteService.addPoste(poste);
 
     model.addAttribute("poste", poste);
+    model.addAttribute("partie",partie);
 
 
 
-    return "joueur/formationEq1";
+    return "partie/show";
   }
 
-  @GetMapping("/joueurEq2/{idEquipe}")
-  public String joueurIndexEq2( Model model, @PathVariable("idEquipe") Long idEquipe) {
-    List<Image> images = imageService.getAllImage();
-    Equipe equipe = equipeService.getEquipeById(idEquipe);
-    List <Joueur> joueurs = joueurService.getAllJoueurByEquipe(idEquipe);
+  @GetMapping("/joueurEq2/{idPartie}")
+  public String joueurIndexEq2(HttpSession session, Model model, @PathVariable("idPartie") Long idPartie) {
+    //List<Image> images = imageService.getAllImage();
+    Equipe equipe = partieService.getEq2ByPartieId(idPartie);
+    List <Joueur> joueurs = equipe.getJoueur();
+    List<JoueurPostes> joueursAndPostes = posteService.getJoueursAndPostesByPartieEq2(idPartie);
 
 
 
     model.addAttribute("equipe", equipe);
-    model.addAttribute("images", images);
+    session.setAttribute("idPartie",idPartie);
+   // model.addAttribute("images", images);
+    model.addAttribute("joueursAndPostes", joueursAndPostes);
+
     model.addAttribute("joueurs", joueurs);
 
 
@@ -162,45 +189,83 @@ public class JoueurController {
   }
 
   @GetMapping("/addPosteEq2/{idJoueur}")
-  public String posteIndexEq2(Model model) {
+  public String posteIndexEq2(Model model,@PathVariable("idJoueur")Long idJoueur, HttpSession session) {
 
 
+    Joueur joueur = joueurService.getJoueurById(idJoueur);
+    Long idPartie = (Long) session.getAttribute("idPartie");
 
 
+    model.addAttribute("joueur",joueur);
+
+    model.addAttribute("idPartie",idPartie);
     model.addAttribute("poste",new Poste());
 
 
 
-    return "joueur/addRoleEq2";
+    return "joueur/addPosteEq2";
   }
   @PostMapping("/addPosteEq2/{idJoueur}")
   public String posteEq2SubmitAdd(
           @Valid @ModelAttribute("poste") Poste poste,
           BindingResult result,
-          @ModelAttribute("partie") Partie partie ,
           @PathVariable(name = "idJoueur") Long idJoueur,
+          HttpSession session,
           ModelMap model) {
 
     if (result.hasErrors()) {
-      return "joueur/addRoleEq1";
+      return "addPosteEq2";
     }
 
 
 
     Joueur joueur = joueurService.getJoueurById(idJoueur);
-    //Partie partie = partie
+    Long idPartie = (Long) session.getAttribute("idPartie");
+    Partie partie = partieService.getPartieById(idPartie);
 
     poste.setJoueur(joueur);
-    poste.setPartie(poste.getPartie());
+    poste.setPartie(partie);
     poste.setNomPoste(poste.getNomPoste());
-    // Imposta gli altri campi del poste
+
 
     posteService.addPoste(poste);
 
     model.addAttribute("poste", poste);
+    model.addAttribute("partie",partie);
 
 
 
-    return "joueur/formationEq2";
+
+    return "partie/show";
   }
+  @DeleteMapping("/deletePosteEq1/{idPoste}")
+  public String deletePosteEq1(@PathVariable("idPoste") Long idPoste, HttpSession session,Model model ) {
+    //List<Image> images = imageService.getAllImage();
+    Poste existing = posteService.getPosteByid(idPoste);
+    Long idPartie = (Long) session.getAttribute("idPartie");
+    if (existing != null) {
+
+
+      posteService.deletePoste(idPoste);
+    }
+    session.setAttribute("idPartie",idPartie);
+   // model.addAttribute("images", images);
+    return "redirect:/";
+  }
+  @DeleteMapping("/deletePosteEq2/{idPoste}")
+  public String deletePosteEq2(@PathVariable("idPoste") Long idPoste) {
+
+    Poste existing = posteService.getPosteByid(idPoste);
+
+
+    if (existing != null) {
+
+
+      posteService.deletePoste(idPoste);
+    }
+
+    return "partie/show";
+  }
+
+
 }

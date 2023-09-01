@@ -100,12 +100,17 @@ public class PartieService {
   @Transactional //one note see
   public void createInitialKnockoutMatches(List<Equipe> equipes) {
 
+    BigDecimal defaultPrix = new BigDecimal("50.00");
+    LocalDateTime currentDateTime = LocalDateTime.now().plusDays(1);
+
     Tour tour = new Tour("HUITIEME_DE_FINALE");
     for (int i = 0; i < 8; i++) {
       Partie match = new Partie();
       match.setEq1(equipes.get(i * 2));
       match.setEq2(equipes.get(i * 2 + 1));
 
+      match.setPrix(defaultPrix);
+      match.setDateTime(currentDateTime);
       match.setTour(tour);
 
       partieRepository.save(match);
@@ -118,6 +123,8 @@ public class PartieService {
    // List<Equipe> quarterFinalWinners = calculateGroupWinners(parties,"HUITIEME_DE_FINALE");
 
     Tour tour = new Tour("QUARTS_DE_FINALE");
+    BigDecimal defaultPrix = new BigDecimal("50.00");
+    LocalDateTime currentDateTime = LocalDateTime.now().plusDays(2);
 
 
 
@@ -127,6 +134,8 @@ public class PartieService {
       Partie match = new Partie();
       match.setEq1(currentTourWinners.get(i * 2));
       match.setEq2(currentTourWinners.get(i * 2 + 1));
+      match.setPrix(defaultPrix);
+      match.setDateTime(currentDateTime);
       match.setTour(tour);
 
       partieRepository.save(match);
@@ -140,12 +149,16 @@ public class PartieService {
    // List<Equipe> demiFinalWinners = calculateGroupWinners(parties,"QUARTS_DE_FINALE");
 
     Tour tour = new Tour("DEMI_FINAL");
+    BigDecimal defaultPrix = new BigDecimal("50.00");
+    LocalDateTime currentDateTime = LocalDateTime.now().plusDays(2);
 
 
     for (int i = 0; i < 2; i++) {
       Partie match = new Partie();
       match.setEq1(currentTourWinners.get(i * 2));
       match.setEq2(currentTourWinners.get(i * 2 + 1));
+      match.setPrix(defaultPrix);
+      match.setDateTime(currentDateTime);
       match.setTour(tour);
 
       partieRepository.save(match);
@@ -158,11 +171,15 @@ public class PartieService {
    // List<Equipe> finalWinners = calculateGroupWinners(parties,"DEMI_FINAL");
 
     Tour tour = new Tour("FINAL");
+    BigDecimal defaultPrix = new BigDecimal("50.00");
+    LocalDateTime currentDateTime = LocalDateTime.now().plusDays(2);
 
 
     Partie finaleMatch = new Partie();
     finaleMatch.setEq1(currentTourWinners.get(0));
     finaleMatch.setEq2(currentTourWinners.get(1));
+    finaleMatch.setPrix(defaultPrix);
+    finaleMatch.setDateTime(currentDateTime);
     finaleMatch.setTour(tour);
 
     partieRepository.save(finaleMatch);
@@ -240,5 +257,21 @@ public class PartieService {
   public String formatDateTime(LocalDateTime dateTime) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     return dateTime.format(formatter);
+  }
+
+  public Equipe getEq1ByPartieId(Long idPartie) {
+    Partie partie = partieRepository.findById(idPartie).orElse(null);
+    if (partie != null) {
+      return partie.getEq1();
+    }
+    return null;
+  }
+
+  public Equipe getEq2ByPartieId(Long idPartie) {
+    Partie partie = partieRepository.findById(idPartie).orElse(null);
+    if (partie != null) {
+      return partie.getEq2();
+    }
+    return null;
   }
 }

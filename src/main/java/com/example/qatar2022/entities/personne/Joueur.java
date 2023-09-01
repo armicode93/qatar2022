@@ -14,6 +14,8 @@ import javax.validation.constraints.Size;
 import com.example.qatar2022.entities.Partie;
 import com.example.qatar2022.entities.Poste;
 import com.example.qatar2022.entities.Ticket;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Entity
@@ -33,7 +35,7 @@ public class Joueur implements Serializable {
           max = 60,
           message = "Le prénom doit comporter au moins 3 caractères et au maximum 60 caractères.")
   @Pattern(regexp = "[a-zA-Z\\s]+", message = "Uniquement les caractères alphabétiques")
-  @NotEmpty(message = "nOMobligatoire et ne peut être vide")
+  @NotEmpty(message = "Nom obligatoire et ne peut être vide")
   public String nom;
 
   @Size(
@@ -51,9 +53,14 @@ public class Joueur implements Serializable {
   @JoinColumn(name = "equipe_id_equipe")
   private Equipe equipe;
 
-
+/*
   @OneToMany(mappedBy = "joueur")
   private Set <Poste> postes;
+
+ */
+
+
+
 
 
 

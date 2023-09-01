@@ -109,10 +109,11 @@ public class ReservationController {
       model.addAttribute("title", "Match already played");
       return "reservation/matchPlayed";
     }
-    if (partie.getPrix() == null) {
+    if (partie.getPrix() == null || partie.getStade() == null) {
       model.addAttribute("title", "Match Not Bookable yet");
       return "reservation/matchNoReservable";
     }
+
     if (partie.getStade().getCapacite() == 0) {
       model.addAttribute("title", "Match sold out");
       return "reservation/MatchSoldOut";

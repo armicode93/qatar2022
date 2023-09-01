@@ -6,12 +6,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 import com.example.qatar2022.entities.personne.Joueur;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.lang.Nullable;
 
@@ -32,10 +30,11 @@ public class Partie implements Serializable {
   @ManyToOne(cascade = CascadeType.PERSIST) // (cascade = {CascadeType.ALL})
   private Equipe eq2;
 
+
   // @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   @ManyToOne(cascade = CascadeType.PERSIST)
-  @JoinColumn(name = "stade_id_stade")
 
+  @JoinColumn(name = "stade_id_stade")
   private Stade stade;
 
   // @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
@@ -44,28 +43,32 @@ public class Partie implements Serializable {
   private Tour tour;
 
   //mappedby si riferisce a il campo in joueur quello fatto co nset
+  /*
   @OneToMany(mappedBy = "partie")
   private Set <Poste> postes;
+
+   */
 
 
   @Nullable private Integer scoreEq1;
 
   @Nullable private Integer scoreEq2;
 
-  @FutureOrPresent(message = "DateTime cannot be less than the current date")
+  @FutureOrPresent(message = "DateTime ne peut être inférieure à la date du jour")
   private LocalDateTime dateTime;
 
-  @Size(min = 2, max = 20, message = "Put a valid name")
+  @Size(min = 2, max = 20, message = " Mettez un nom valide ")
+  @Pattern(regexp = "^[a-zA-Z]+$", message = "Mettez un nom valide contenant uniquement des lettres")
   private String arbitre_principal;
 
-  @Pattern(regexp = "^\\d{1,3}:\\d{2}$", message = "Total time should be in the format HH:MM")
+  @Pattern(regexp = "^\\d{1,3}:\\d{2}$", message = "La durée totale doit être indiquée au format HH:MM")
   private String totalTime;
 
-  @Size(min = 2, max = 3, message = "Prolongation can be only two value YES or NO")
+  @Size(min = 2, max = 3, message = "La prolongation ne peut avoir que deux valeurs : YES ou NO")
   private String prolongation;
 
-  @NotNull(message= "Put a valid price")
-  private BigDecimal prix; // its better its more precisely
+
+  private BigDecimal prix;
 
 
   public Partie(
@@ -130,6 +133,11 @@ public class Partie implements Serializable {
     this.dateTime = dateTime;
     this.arbitre_principal = arbitre_principal;
     this.prix = prix;
+  }
+
+  public Partie(Equipe eq1, Equipe eq2) {
+    this.eq1 = eq1;
+    this.eq2 = eq2;
   }
 
   public Integer getScoreEq1() {
@@ -234,13 +242,22 @@ public class Partie implements Serializable {
     this.prolongation = prolongation;
   }
 
-  public Set<Poste> getPostes() {
-    return postes;
+  @Transient
+  public String getPhotosImagePathEquipe1() {
+    if (eq1 == null || eq1.getDrapeau() == null || eq1.getIdEquipe() == null)
+      return null;
+
+    return "/images/equipe/" + eq1.getIdEquipe() + "/" + eq1.getDrapeau();
   }
 
-  public void setPostes(Set<Poste> postes) {
-    this.postes = postes;
+  @Transient
+  public String getPhotosImagePathEquipe2() {
+    if (eq2 == null || eq2.getDrapeau() == null || eq2.getIdEquipe() == null)
+      return null;
+
+    return "/images/equipe/" + eq2.getIdEquipe() + "/" + eq2.getDrapeau();
   }
+
 
   @Override
   public String toString() {

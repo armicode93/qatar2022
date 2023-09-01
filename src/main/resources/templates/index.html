@@ -18,7 +18,7 @@
 <header th:insert="fragments/header.html :: nav"></header>
 
 
-<table class="table table-equipe" th:unless="${#lists.isEmpty(equipes)} ">
+<table class="table table-equipe" >
 
     <thead>
 
@@ -48,7 +48,7 @@
 
         <td th:text="${equipe.pays}" valign="middle">Equipe</td>
         <td align="center" valign="middle">
-            <img th:src="@{${'/display/' + equipe.drapeau.id}}" width="100"></td>
+            <img th:src="@{${equipe.getPhotosImagePath()}}" width="100"></td>
         <!-- delete form -->
         <td>
             <!--delete form -->
@@ -72,7 +72,6 @@
     </tbody>
 
 </table>
-
 
 <thead>
 <tr>
@@ -103,118 +102,119 @@
                     <div class="tour-frame">
                         <h2 th:text="${tour.nomTour}"></h2>
 
-                            <div th:each="partie: ${parties}" th:if="${partie.tour.idTour == tour.idTour}">
-                                <table aria-label="Elements" class="full-width-table">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Match</th>
-                                        <th class="mat-header-cell" scope="col"></th>
-                                        <th>Stade</th>
-                                        <th></th>
-                                        <th>Date</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
+                        <div th:each="partie: ${parties}" th:if="${partie.tour.idTour == tour.idTour}">
+                            <table aria-label="Elements" class="full-width-table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Match</th>
+                                    <th class="mat-header-cell" scope="col"></th>
+                                    <th>Stade</th>
+                                    <th></th>
+                                    <th>Date</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
 
-                                        <!-- Partie/Flags -->
-                                        <td class="mat-cell">
-                                            <div class="container h-100">
-                                                <div class="row justify-content-center align-self-center">
-                                                    <div class="team-container">
-                                                        <img height="32px"
-                                                             th:src="@{${'/display/' + partie.eq1.drapeau.id}}">
-                                                    </div>
-                                                </div>
-                                                <div class="row justify-content-center align-items-center">
-                                                    <p class="text-uppercase font-weight-bold"
-                                                       th:text="${partie.eq1.pays}"></p>
+                                    <!-- Partie/Flags -->
+                                    <td class="mat-cell">
+                                        <div class="container h-100">
+                                            <div class="row justify-content-center align-self-center">
+                                                <div class="team-container">
+                                                    <img height="32px"
+                                                         th:src="@{${partie.eq1.getPhotosImagePath()}}"
+                                                         >
                                                 </div>
                                             </div>
-                                        </td>
+                                            <div class="row justify-content-center align-items-center">
+                                                <p class="text-uppercase font-weight-bold"
+                                                   th:text="${partie.eq1.pays}"></p>
+                                            </div>
+                                        </div>
+                                    </td>
 
-                                        <!-- Results -->
-                                        <td>
-                                            <div class="container h-100">
-                                                <div class="row justify-content-center align-items-center font-weight-bold"
-                                                     th:if="${partie.scoreEq1} != null">
-                                                    <div class="col-sm">
-                                                        <div th:text="${partie.scoreEq1}"></div>
-                                                    </div>
-                                                    <div class="col-sm">
-                                                        :
-                                                    </div>
-                                                    <div class="col-sm">
-                                                        <div th:text="${partie.scoreEq2}"></div>
-
-                                                    </div>
+                                    <!-- Results -->
+                                    <td>
+                                        <div class="container h-100">
+                                            <div class="row justify-content-center align-items-center font-weight-bold"
+                                                 th:if="${partie.scoreEq1} != null">
+                                                <div class="col-sm">
+                                                    <div th:text="${partie.scoreEq1}"></div>
                                                 </div>
-                                                <div class="row justify-content-center align-items-center font-weight-bold"
-                                                     th:unless="${partie.scoreEq1}!= null">
-                                                    <div class="col-sm">
-                                                        <p>Match à jouer</p>
-                                                    </div>
+                                                <div class="col-sm">
+                                                    :
+                                                </div>
+                                                <div class="col-sm">
+                                                    <div th:text="${partie.scoreEq2}"></div>
+
                                                 </div>
                                             </div>
-                                        </td>
-
-                                        <!-- Flags -->
-                                        <td class="mat-cell">
-                                            <div class="container h-100">
-                                                <div class="row justify-content-center align-items-center">
-                                                    <div class="team-container">
-                                                        <img height="32px"
-                                                             th:src="@{${'/display/' + partie.eq2.drapeau.id}}">
-                                                    </div>
-                                                </div>
-                                                <div class="row justify-content-center align-items-center">
-                                                    <p class="text-uppercase font-weight-bold"
-                                                       th:text="${partie.eq2.pays}"></p>
+                                            <div class="row justify-content-center align-items-center font-weight-bold"
+                                                 th:unless="${partie.scoreEq1}!= null">
+                                                <div class="col-sm">
+                                                    <p>Match à jouer</p>
                                                 </div>
                                             </div>
-                                        </td>
+                                        </div>
+                                    </td>
 
-
-                                        <!-- Stade -->
-                                        <td>
-
-
-                                            <div th:if="${partie.stade != null}">
-                                                <div th:text="${partie.stade.nomStade}"></div>
-                                                <div th:if="${partie.stade.nomStade == null}">
-                                                    <p> A' définir </p>
+                                    <!-- Flags -->
+                                    <td class="mat-cell">
+                                        <div class="container h-100">
+                                            <div class="row justify-content-center align-items-center">
+                                                <div class="team-container">
+                                                    <img height="32px"
+                                                         th:src="@{${partie.eq2.getPhotosImagePath()}}">
                                                 </div>
                                             </div>
-
-                                        </td>
-                                        <!-- Date -->
-                                        <br/>
-                                        <td>
-                                            <div class="col-sm text-muted" style="font-size: small;">
-                                                <div th:if="${partie.dateTime != null}"
-                                                     th:text="${#temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm')}"></div>
-                                                <div th:if="${partie.dateTime == null}">
-                                                    <p>A' définir</p>
-                                                </div>
-                                                <ul>
-
-                                                    <li><a th:href="@{${'/partie/'+ partie.idPartie}}">Détails</a>
-                                                    </li>
-                                                </ul>
-
+                                            <div class="row justify-content-center align-items-center">
+                                                <p class="text-uppercase font-weight-bold"
+                                                   th:text="${partie.eq2.pays}"></p>
                                             </div>
-                                        </td>
-                                    </tr>
+                                        </div>
+                                    </td>
 
 
-                                    </tbody>
-                                </table>
-                            </div>
+                                    <!-- Stade -->
+                                    <td>
+
+
+                                        <div th:if="${partie.stade != null}">
+                                            <div th:text="${partie.stade.nomStade}"></div>
+                                            <div th:if="${partie.stade.nomStade == null}">
+                                                <p> A' définir </p>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                    <!-- Date -->
+                                    <br/>
+                                    <td>
+                                        <div class="col-sm text-muted" style="font-size: small;">
+                                            <div th:if="${partie.dateTime != null}"
+                                                 th:text="${#temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm')}"></div>
+                                            <div th:if="${partie.dateTime == null}">
+                                                <p>A' définir</p>
+                                            </div>
+                                            <ul>
+
+                                                <li><a th:href="@{${'/partie/'+ partie.idPartie}}">Détails</a>
+                                                </li>
+                                            </ul>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 </tbody></table></div></div></div></div></div>
 </thead>
 

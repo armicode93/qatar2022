@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class PartieController {
 
   private final PartieService partieService;
-  private final ImageService imageService;
+  //private final ImageService imageService;
   private final EquipeService equipeService;
   private final StadeService stadeService;
   private final TourService tourService;
@@ -36,7 +36,7 @@ public class PartieController {
 
   public PartieController(
       PartieService partieService,
-      ImageService imageService,
+     // ImageService imageService,
       EquipeService equipeService,
       StadeService stadeService,
       TourService tourService,
@@ -44,7 +44,7 @@ public class PartieController {
       StaffService staffService,
       JoueurService joueurService) {
     this.partieService = partieService;
-    this.imageService = imageService;
+   // this.imageService = imageService;
     this.equipeService = equipeService;
     this.stadeService = stadeService;
     this.tourService = tourService;
@@ -57,13 +57,13 @@ public class PartieController {
   public String index(
       Model model) {
 
-    List<Image> images = imageService.getAllImage();
+    //List<Image> images = imageService.getAllImage();
 
     List<Partie> parties = partieService.getAllPartie();
 
     model.addAttribute("parties", parties);
     // model.addAttribute("tours", tours);
-    model.addAttribute("images", images);
+   // model.addAttribute("images", images);
     model.addAttribute("title", "Liste des matches");
     // recupera tutti i turni
 
@@ -73,10 +73,11 @@ public class PartieController {
   @GetMapping("/partie/{idPartie}")
   public String show(Model model, @PathVariable(name = "idPartie") Long idPartie) {
 
+    List <Equipe> equipe = equipeService.getAllEquipe();
     Partie partie = partieService.getPartieById(idPartie);
 
     model.addAttribute("partie", partie);
-
+    model.addAttribute("equipe",equipe);
     model.addAttribute("title", "Detail Partie");
 
     return "partie/show";
@@ -211,7 +212,7 @@ public class PartieController {
 
     model.addAttribute("partie", partie);
 
-    // Crea una nuova Partie per il successivo giro del torneo utilizzando il tour recuperato
+
 
     return "redirect:/";
   }
@@ -248,7 +249,7 @@ public class PartieController {
           Model model) {
 
     if (result.hasErrors()) {
-      return "redirect:/partie/edit/" + idPartie ;
+      return "partie/edit";
     }
 
 
@@ -270,7 +271,7 @@ public class PartieController {
 
 
   @GetMapping("/createParties")
-  public String createNextParties( Model model) {
+  public String createParties( Model model) {
 
     List<Tour> tours = tourService.getallTour();
 
@@ -289,6 +290,7 @@ public class PartieController {
     if (equipes == null || equipes.size() < 16 || !tours.isEmpty()) {
       return "partie/partieError";
     }
+
     partieService.createInitialKnockoutMatches(equipes);
 
 

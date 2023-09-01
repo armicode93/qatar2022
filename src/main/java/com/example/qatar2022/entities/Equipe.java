@@ -22,10 +22,14 @@ public class Equipe implements Serializable {
 
   private String pays;
 
-  private Long nbr_points;
 
+/*
    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Image drapeau;
+
+ */
+@Column(nullable = true, length = 64)
+   private String drapeau;
 
   @OneToMany(mappedBy = "equipe")
   private List<Joueur> joueur = new ArrayList<>();
@@ -34,16 +38,12 @@ public class Equipe implements Serializable {
     this.pays = pays;
   }
 
-  public Equipe(String pays, Long nbr_points, Image drapeau) {
+  public Equipe(String pays, String drapeau) {
     this.pays = pays;
-    this.nbr_points = nbr_points;
+
     this.drapeau = drapeau;
   }
 
-  public Equipe(String pays, Long nbr_points) {
-    this.pays = pays;
-    this.nbr_points = nbr_points;
-  }
 
   public String getPays() {
     return pays;
@@ -53,19 +53,14 @@ public class Equipe implements Serializable {
     this.pays = pays;
   }
 
-  public Long getNbr_points() {
-    return nbr_points;
-  }
 
-  public void setNbr_points(Long nbr_points) {
-    this.nbr_points = nbr_points;
-  }
 
-  public Image getDrapeau() {
+
+  public String getDrapeau() {
     return drapeau;
   }
 
-  public void setDrapeau(Image drapeau) {
+  public void setDrapeau(String drapeau) {
     this.drapeau = drapeau;
   }
 
@@ -76,6 +71,14 @@ public class Equipe implements Serializable {
   public void setJoueur(List<Joueur> joueur) {
     this.joueur = joueur;
   }
+
+  @Transient
+    public String getPhotosImagePath() {
+    if (drapeau == null || idEquipe == null)
+      return null;
+
+    return "/images/equipe/" + idEquipe + "/" + drapeau;
+    }
 
   @Override
   public String toString() {

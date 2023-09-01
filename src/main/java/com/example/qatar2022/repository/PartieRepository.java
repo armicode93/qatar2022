@@ -15,6 +15,8 @@ public interface PartieRepository extends JpaRepository<Partie, Long> {
 
   List<Partie> findByTour(Tour tour);
 
+
+
   // List<Partie>findByTourOrOrderByScoreEq1DescScoreEq2Desc(Tour tour);
 
 }

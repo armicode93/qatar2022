@@ -15,20 +15,40 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-4">
-            <img class="d-block mx-auto mb-4" th:src="@{${'/display/' + equipe.drapeau.id}}" width="150">
+            <img class="d-block mx-auto mb-4" th:src="@{${equipe.getPhotosImagePath()}}" width="150">
         </div>
         <div class="col-md-8">
             <h2 class="mb-3">Détails de l'équipe : <span th:text="${equipe.pays}"></span></h2>
-            <h3>Joueurs :</h3>
-            <ul class="list-group">
-                <li class="list-group-item" th:each="joueur : ${joueurs}">>
-                    <span th:text="${joueur.nom}"></span> <span th:text="${joueur.prenom}"></span>
-                </li>
-            </ul>
-            <a class="btn btn-primary mt-3" th:href="@{${'/addJoueur/'+ equipe.idEquipe}}">Ajouter joueurs</a>
+
+            <table class="table">
+                <tr>
+                    <td>
+                        <h3>Joueurs :</h3>
+                        <ul class="list-group">
+                            <li class="list-group-item" th:each="joueur : ${joueurs}">
+                                <span th:text="${joueur.nom}"></span> <span th:text="${joueur.prenom}"></span>
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <h3>Blessures :</h3>
+                        <ul class="list-group">
+                            <li class="list-group-item" th:each="joueur : ${joueurs}" th:if="${joueur.blessure}">
+                                <span th:text=" oui "></span>
+                            </li>
+
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+
+            <a class="btn btn-primary mt-3" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"  th:href="@{${'/addJoueur/'+ equipe.idEquipe}}">Ajouter joueurs</a>
         </div>
+
     </div>
+
 </div>
+
 
 </body>
 </html>

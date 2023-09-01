@@ -1,5 +1,7 @@
 package com.example.qatar2022.service.personne;
 
+import com.example.qatar2022.entities.Equipe;
+import com.example.qatar2022.entities.Poste;
 import com.example.qatar2022.entities.personne.Joueur;
 import com.example.qatar2022.repository.EquipeRepository;
 import com.example.qatar2022.repository.personne.JoueurRepository;
@@ -52,4 +54,5 @@ public class JoueurService {
     }
     joueurRepository.deleteById(cin);
   }
+
 }
