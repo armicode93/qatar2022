@@ -103,6 +103,11 @@
                     </div>
 
 
+                    <div th:if="${messageP}" class="alert alert-success">
+                        <div class="alert alert-info">Vous avez changé votre mot de passe avec succès</div>
+                    </div>
+
+
                     <!-- Login Controls -->
                     <div class="form-group">
                         <label for="username">Username</label>
@@ -136,6 +141,10 @@
                     <div class="form-group">
 						<span>Nouveau utilisateur ? <a href="/" th:href="@{/registration}">S'inscrire
 								ici</a></span>
+                    </div>
+
+                    <div class="form-group">
+                        <a th:href="@{/forgot_password}">Mot de passe oublié ?</a>
                     </div>
 
 

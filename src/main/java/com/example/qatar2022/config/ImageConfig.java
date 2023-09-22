@@ -13,7 +13,8 @@ public class ImageConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    exposeDirectory("/images/equipe/", registry);
+        registry.addResourceHandler("/images/equipe/**").addResourceLocations("file:./src/main/resources/static/images/equipe/");
+
     }
 
     private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {

@@ -54,7 +54,7 @@
                        th:value="${reservation.nbr_places}">
             </div>
             <div class="form-group">
-                <strong><label for="prix_total">Prix total:</label></strong>
+                <strong><label for="prix_total">Prix total: € </label></strong>
                 <input class="form-control" id="prix_total" name="prix_total" readonly
                        th:value="${reservation.prixTotal}">
             </div>
@@ -62,7 +62,9 @@
                 <strong><label for="date_achat">Date d'achat:</label></strong>
                 <input class="form-control" id="date_achat" name="date_achat" readonly
                        th:value="${reservation.dateAchat}" type="text">
+
             </div>
+
 
             <table class="table">
 
@@ -86,11 +88,11 @@
                 <tr>
 
                     <td>
-                        <img class="picture" th:src="@{${'/display/' + reservation.partie.eq1.drapeau.id}}"
-                             width="100"></td>
+                        <img class="picture" th:src="@{${reservation.partie.getPhotosImagePathEquipe1()}}"
+                             width="100"  ></td>
                     <td></td>
                     <td>
-                        <img class="picture" th:src="@{${'/display/' + reservation.partie.eq2.drapeau.id}}"
+                        <img class="picture" th:src="@{${reservation.partie.getPhotosImagePathEquipe2()}}"
                              width="100"></td>
                     <td>
 
@@ -124,19 +126,13 @@
                         valign="middle"></td>
                     <td></td>
                 </tr>
-                <tr>
-                    <th scope="row">Total Time</th>
-                    <td></td>
-                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:text="${reservation.partie.totalTime}"
-                        valign="middle"></td>
-                    <td></td>
-                </tr>
+
                 <tr>
                     <th scope="row">Prix</th>
                     <td></td>
                     <td align="center" class="col-sm text-muted" style="font-size: small;" th:if="${reservation.partie.prix != null}"
                         valign="middle">
-                        <div th:text="${reservation.partie.prix}"></div>
+                        <div th:text="${reservation.partie.prix}+ ' € ' "></div>
                         <div th:if="${reservation.partie.stade.nomStade == null}">
 
 
@@ -150,7 +146,7 @@
                 <!-- th:errorclass="error" serve per indicare lo style del errore, il colore che ho definito sopra -->
                 <br/>
 
-                <input class="btn btn-primary" type="submit" value="Payer"/><br/><br/>
+                <input class="btn btn-primary" type="submit" value="Valider"/><br/><br/>
                 <!-- class="btn btn-primary" serve per il design del bottone -->
 
 

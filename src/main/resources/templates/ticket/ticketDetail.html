@@ -68,12 +68,12 @@
 
                         <td>
                             <img class="picture"
-                                 th:src="@{${'/display/' + ticket.reservation.partie.eq1.drapeau.id}}"
+                                 th:src="@{${ticket.reservation.partie.getPhotosImagePathEquipe1()}}"
                                  width="100"></td>
                         <td></td>
                         <td>
                             <img class="picture"
-                                 th:src="@{${'/display/' + ticket.reservation.partie.eq2.drapeau.id}}"
+                                 th:src="@{${ticket.reservation.partie.getPhotosImagePathEquipe2()}}"
                                  width="100"></td>
                         <td>
 
@@ -134,12 +134,14 @@
     </div>
     -->
 </div>
+<div>
 <form action="#" class="form" method="post" th:action="@{'/sendTicket/' + ${reservation.codeReservation}}"
       th:object="${reservation}">
     <div class="ticket-footer">
         <button class="btn btn-primary" type="submit">Envoyer le billet par e-mail</button>
         <a class="btn btn-secondary" href="/">Home Page</a>
     </div>
+    <div>
 </form>
 </div>
 

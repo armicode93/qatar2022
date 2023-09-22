@@ -19,10 +19,11 @@
 
 <body>
 <div class="container">
-    <h1>Only few tickets left</h1>
-    <p Malheureusement, il ne reste que th:text="${remaining}" billets></p>
+    <h1>Il ne reste que quelques ticket</h1>
+    <p>Malheureusement, il ne reste que <span th:text="${remaining}"></span> billets</p>
+
     <a href="/" th:href="@{'/selectPlace/' + ${partie.idPartie}}">Retour à la réservation</a>
-    <a href="/" th:href="@{/}">Home Page</a>
+    <a href="/" th:href="@{${'/partie/'+ idPartie}}">Home Page</a>
 </div>
 </body>
 </html>

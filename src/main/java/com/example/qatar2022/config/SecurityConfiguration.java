@@ -91,6 +91,8 @@ public class SecurityConfiguration
     http.authorizeRequests().antMatchers("/editResult/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/delete/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/addJoueur/**").hasRole("ADMIN");
+    http.authorizeRequests().antMatchers("/addPosteEq1/**").hasRole("ADMIN");
+    http.authorizeRequests().antMatchers("/addPosteEq2/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/deletePosteEq1/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/deletePosteEq2/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/deletePosteEq1/**").hasRole("ADMIN");
@@ -104,7 +106,7 @@ public class SecurityConfiguration
 
     http.authorizeRequests().antMatchers("/edit").hasRole("ADMIN");
 
-    http.authorizeRequests().antMatchers("/users").hasAnyRole("ADMIN");
+
 
     http.exceptionHandling()
         .accessDeniedPage(

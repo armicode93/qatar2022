@@ -5,6 +5,8 @@ import com.example.qatar2022.entities.personne.Role;
 import com.example.qatar2022.entities.personne.User;
 import com.example.qatar2022.repository.personne.RoleRepository;
 import com.example.qatar2022.repository.personne.UserRepository;
+
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -36,13 +40,14 @@ public class UserServiceImpl implements UserService {
     // User(registrationDto.getUsername(),passwordEncoder.encode(registrationDto.getPassword()),registrationDto.getNom(),registrationDto.getPrenom(),registrationDto.getEmail(),registrationDto.getDateNaiss(),
     //   registrationDto.getGsm(),Arrays.asList(roleRepository.findByName("ROLE_USER")));
 
-    user.setUsername(registrationDto.getUsername());
-    user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
+
     user.setNom(registrationDto.getNom());
     user.setPrenom(registrationDto.getPrenom());
-    user.setEmail(registrationDto.getEmail());
     user.setDateNaiss(registrationDto.getDateNaiss());
+    user.setEmail(registrationDto.getEmail());
     user.setGsm(registrationDto.getGsm());
+    user.setUsername(registrationDto.getUsername());
+    user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
 
     // Verifica se esiste il ruolo "ROLE_USER" nel database
     Role userRole = roleRepository.findByName("ROLE_USER");
@@ -58,9 +63,47 @@ public class UserServiceImpl implements UserService {
     return userRepository.save(user);
   }
 
+  @Override
+  public void updateResetPasswordToken(String token, String email) throws UserPrincipalNotFoundException {
+
+    User user = userRepository.findByEmail(email);
+
+    if(user != null)
+    {
+      user.setResetPasswordToken(token);
+      userRepository.save(user);
+    }else {
+      throw new UserPrincipalNotFoundException("Could not find any customer with the email" + email);
+    }
+
+  }
+
+  @Override
+  public User getByResetPasswordToken(String token) {
+    return userRepository.findByResetPasswordToken(token);
+  }
+
+  @Override
+  public void updatePassword(User user, String newPassword) {
+
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    String encodedPassword = passwordEncoder.encode(newPassword);
+    user.setPassword(encodedPassword);
+
+    user.setResetPasswordToken(null); // add null to the token
+    userRepository.save(user);
+  }
+
   public boolean existsByEmail(String email) {
     return userRepository.existsByEmail(email);
   }
+
+  public boolean isUsernameUnique(String username) {
+    User user = userRepository.findByUsername(username);
+    return user == null;
+  }
+
+
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

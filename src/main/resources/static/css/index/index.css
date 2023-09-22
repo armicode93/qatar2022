@@ -85,7 +85,6 @@ navbar ul li a{
 
 
 
-
  .full-width-table2 {
      width: 100%;
      height: 50vh;
@@ -170,7 +169,76 @@ navbar ul li a{
      padding: 10px;
      margin-bottom: 20px;
  }
+ .team-logo {
+     max-width: 180px;
+     height: auto;
+ }
+ .btn-details {
+     background-color: #f8f9fa;
+     color: #6c757d;
+     border: none;
+     padding: 5px 10px;
+     cursor: pointer;
+     text-decoration: none;
+     font-weight: lighter;
+ }
+ .btn-delete {
+     background-color: #dc3545;
+     color: #fff;
+     border: none;
+     padding: 5px 10px;
+     cursor: pointer;
+     text-decoration: none;
+     font-weight: bold;
+ }
 
+ /* On hover with the mouse  */
+ .btn-delete:hover {
+     background-color: #c82333;
+ }
+.matchs-link
+{
+    font-size: 18px;
+    color: #ff5733;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+ .tour-title {
+     font-size: 24px;
+     font-weight: bold;
+ }
+ .match-details {
+     font-size: 18px;
+     font-weight: bold;
+     color: #888;
+ }
+
+ .tour {
+     border: 4px solid #000;
+     padding: 10px;
+ }
+
+ .title {
+     text-align: center;
+     font-size: 2rem;
+     font-weight: bold;
+     color: #333;
+     margin-top: 20px;
+ }
+ .team-logo2 {
+     max-width: 100px;
+     height: auto;
+ }
+ .custom-select {
+     position: relative;
+     display: inline-block;
+     width: 100%;
+     padding: 10px;
+     background-color: #fff;
+     border: 1px solid #ccc;
+     border-radius: 4px;
+     font-size: 16px;
+     min-width: 200px;
+ }
 
 
 

@@ -31,18 +31,18 @@ public class Joueur implements Serializable {
   private Long idJoueur;
 
   @Size(
-          min = 3,
+          min = 2,
           max = 60,
           message = "Le prénom doit comporter au moins 3 caractères et au maximum 60 caractères.")
-  @Pattern(regexp = "[a-zA-Z\\s]+", message = "Uniquement les caractères alphabétiques")
+  @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s'-]+$", message = "Uniquement les caractères alphabétiques")
   @NotEmpty(message = "Nom obligatoire et ne peut être vide")
   public String nom;
 
   @Size(
-          min = 3,
+          min = 2,
           max = 60,
           message = "Le prénom doit comporter au moins 3 caractères et au maximum 60 caractères.")
-  @Pattern(regexp = "[a-zA-Z\\s]+", message = "Uniquement les caractères alphabétiques")
+  @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s'-]+$", message = "Uniquement les caractères alphabétiques")
   @NotEmpty(message = "Prenom obligatoire et ne peut être vide")
   public String prenom;
 

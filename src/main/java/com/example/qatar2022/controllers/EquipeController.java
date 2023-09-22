@@ -114,7 +114,8 @@ public class EquipeController {
 
     equipeService.addEquipe(equipe);
 
-    String uploadDir = "/images/equipe/" + equipe.getIdEquipe();
+    String uploadDir = "./src/main/resources/static/images/equipe/" + equipe.getIdEquipe();
+
 
     FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 

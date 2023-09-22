@@ -23,11 +23,6 @@ public class Equipe implements Serializable {
   private String pays;
 
 
-/*
-   @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private Image drapeau;
-
- */
 @Column(nullable = true, length = 64)
    private String drapeau;
 
@@ -40,7 +35,6 @@ public class Equipe implements Serializable {
 
   public Equipe(String pays, String drapeau) {
     this.pays = pays;
-
     this.drapeau = drapeau;
   }
 

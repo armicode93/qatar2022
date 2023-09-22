@@ -17,8 +17,7 @@ public class UniqueUsernameValidator implements ConstraintValidator<UniqueUserna
     // Nessuna inizializzazione necessaria
   }
 
-  @Override
   public boolean isValid(String username, ConstraintValidatorContext context) {
-    return userService.loadUserByUsername(username) == null;
+    return userService.isUsernameUnique(username);
   }
 }

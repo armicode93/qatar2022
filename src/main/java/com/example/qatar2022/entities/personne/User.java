@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 
 @Entity
 @Data
@@ -40,13 +41,16 @@ public class User implements Serializable {
   @Column(nullable = false)
   private Long gsm;
 
-  // i have to put relationship with reservation
+
+  @Column(name="reset_password_token")
+  private String resetPasswordToken;
+  
 
   @ManyToOne
   @JoinColumn(name = "role_id")
   private Role role;
 
-  /*
+
      public User(String username, String password, String nom, String prenom, String email, LocalDate dateNaiss, Long gsm) {
          this.username = username;
          this.password = password;
@@ -57,7 +61,7 @@ public class User implements Serializable {
          this.gsm = gsm;
      }
 
-  */
+
 
   public User(
       String username,
@@ -79,6 +83,18 @@ public class User implements Serializable {
     this.role = role;
   }
 
+  public User(String username, String password, String nom, String prenom, String email, LocalDate dateNaiss, Long gsm, String resetPasswordToken, Role role) {
+    this.username = username;
+    this.password = password;
+    this.nom = nom;
+    this.prenom = prenom;
+    this.email = email;
+    this.dateNaiss = dateNaiss;
+    this.gsm = gsm;
+    this.resetPasswordToken = resetPasswordToken;
+    this.role = role;
+  }
+
   public User() {}
 
   public User(String username, String password) {
@@ -86,21 +102,6 @@ public class User implements Serializable {
     this.password = password;
   }
 
-  /*public List<String> getRoleList(){
-      if(this.roles.length() > 0){
-          return Arrays.asList(this.roles.split(","));
-      }
-      return new ArrayList<>();
-  }
-
-  public List<String> getPermissionList(){
-      if(this.permissions.length() > 0){
-          return Arrays.asList(this.permissions.split(","));
-      }
-      return new ArrayList<>();
-  }
-
-   */
 
   public Long getIdUser() {
     return id;
@@ -172,5 +173,13 @@ public class User implements Serializable {
 
   public void setRole(Role role) {
     this.role = role;
+  }
+
+  public String getResetPasswordToken() {
+    return resetPasswordToken;
+  }
+
+  public void setResetPasswordToken(String resetPasswordToken) {
+    this.resetPasswordToken = resetPasswordToken;
   }
 }

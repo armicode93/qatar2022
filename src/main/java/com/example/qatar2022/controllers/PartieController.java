@@ -7,9 +7,12 @@ import com.example.qatar2022.service.*;
 import com.example.qatar2022.service.personne.JoueurService;
 import com.example.qatar2022.service.personne.StaffService;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import javax.validation.Valid;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -53,21 +56,35 @@ public class PartieController {
     this.joueurService = joueurService;
   }
 
-  @GetMapping("/partie/")
+  @GetMapping("/partie/index")
   public String index(
-      Model model) {
+          @RequestParam(name="tourId", required = false) Long idTour,
+          @RequestParam(name= "date", required = false) @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate date,
+          Model model) {
 
-    //List<Image> images = imageService.getAllImage();
+  List<Tour> tours = tourService.getallTour();
 
-    List<Partie> parties = partieService.getAllPartie();
+    List<Partie> parties;
+
+    if(idTour != null) {
+
+        parties = partieService.getPartieByTour(idTour);
+      }
+    else if ( date != null)
+    {
+       parties = partieService.getPartiesByDate(date);
+    }
+    else {
+      parties = partieService.getAllPartie();
+    }
 
     model.addAttribute("parties", parties);
-    // model.addAttribute("tours", tours);
-   // model.addAttribute("images", images);
+    model.addAttribute("tours", tours);
+    //    //   );
     model.addAttribute("title", "Liste des matches");
     // recupera tutti i turni
 
-    return "index";
+    return "partie/partieIndex";
   }
 
   @GetMapping("/partie/{idPartie}")
@@ -96,30 +113,7 @@ public class PartieController {
 
     return "partie/add";
   }
-/*
-  @GetMapping("/joueur/{idPartie}")
-  public String showJoueurByPartie(Model model, @PathVariable(name = "idPartie") Long idPartie) {
-    Partie partie = partieService.getPartieById(idPartie);
 
-    // ho utilizzato una list perche prendo tanti giocatori in conto, cioe una lista
-    List<Joueur> eq1Joueurs = partie.getEq1().getJoueur();
-    List<Joueur> eq2Joueurs = partie.getEq2().getJoueur();
-
-    List<Staff> eq1Staff = staffService.getStaffByEquipe(partie.getEq1());
-    List<Staff> eq2Staff = staffService.getStaffByEquipe(partie.getEq2());
-
-    model.addAttribute("partie", partie);
-    model.addAttribute("eq1Joueurs", eq1Joueurs);
-    model.addAttribute("eq2Joueurs", eq2Joueurs);
-    model.addAttribute("eq1Staff", eq1Staff);
-    model.addAttribute("eq2Staff", eq2Staff);
-
-    model.addAttribute("joueurs", joueurService.getAllJoueur());
-
-    return "partie/showJoueurByPartie";
-  }
-
- */
 
 
   @PostMapping("/partie")
@@ -171,7 +165,7 @@ public class PartieController {
       }
     }
 
-    return "redirect:/";
+    return "redirect:/partie/index";
   }
 
   @GetMapping("/editResult/{idPartie}")
@@ -203,10 +197,8 @@ public class PartieController {
     if (existing == null) {
       return "redirect:/";
     }
-
     // Recupera il valore di tour dalla Partie esistente
     Tour tour = existing.getTour();
-
     // Aggiorna la Partie esistente con i nuovi punteggi
     partieService.updatePartie(idPartie, scoreEq1, scoreEq2, prolongation, totalTime);
 
@@ -214,7 +206,7 @@ public class PartieController {
 
 
 
-    return "redirect:/";
+    return "redirect:/partie/" + idPartie;
   }
 
   @GetMapping("/partie/edit/{idPartie}")
@@ -241,7 +233,7 @@ public class PartieController {
           @Valid @ModelAttribute("partie") Partie partie,
           BindingResult result,
           @PathVariable("idPartie") Long idPartie,
-            @RequestParam("stade") Stade stade,
+           @RequestParam(name = "stade", required = false) Stade stade,
           @RequestParam("dateTime") String dateTime,
           @RequestParam("arbitre_principal") String arbitre_principal,
           @RequestParam("prix") BigDecimal prix,
@@ -249,6 +241,9 @@ public class PartieController {
           Model model) {
 
     if (result.hasErrors()) {
+      List<Stade> stades = stadeService.getAllStade();
+      model.addAttribute("stades", stades);
+      model.addAttribute("dateTime", dateTime);
       return "partie/edit";
     }
 
@@ -266,7 +261,7 @@ public class PartieController {
 
     model.addAttribute("partie", partie);
 
-    return "redirect:/";
+    return "redirect:/partie/" + idPartie;
   }
 
 
@@ -290,13 +285,17 @@ public class PartieController {
     if (equipes == null || equipes.size() < 16 || !tours.isEmpty()) {
       return "partie/partieError";
     }
+    else if (equipes.size() > 16)
+    {
+      return "partie/partieErrorPlus";
+    }
 
     partieService.createInitialKnockoutMatches(equipes);
 
 
     model.addAttribute("partie", partie);
 
-    return "redirect:/";
+    return "redirect:/partie/index";
 
   }
 
@@ -310,8 +309,12 @@ public class PartieController {
 
   List<Equipe> currentTourWinners = partieService.calculateGroupWinners(parties, nomTour);
 
+  if(result.hasErrors())
+  {
+    return "partie/partieAddError";
+  }
 
-  if (currentTourWinners.isEmpty() ) {
+  else if (currentTourWinners.isEmpty() ) {
       return "partie/partieAddError";
     }
     else if(currentTourWinners.size()==8 && isQuartsCreated ==false)
@@ -339,7 +342,7 @@ public class PartieController {
 
     model.addAttribute("partie", partie);
 
-    return "redirect:/";
+    return "redirect:/partie/index";
 
 
 

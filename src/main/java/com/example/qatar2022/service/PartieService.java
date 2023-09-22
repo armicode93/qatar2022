@@ -6,6 +6,7 @@ import com.example.qatar2022.repository.PartieRepository;
 import com.example.qatar2022.repository.ReservationRepository;
 import com.example.qatar2022.repository.TourRepository;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -95,8 +96,21 @@ public class PartieService {
 
     partie.setPrix(prix);
     partieRepository.save(partie);
+    }
+
+  public List<Partie> getPartieByTour(Long idTour)
+  {
+    Tour tour = tourRepository.findById(idTour).orElse(null);
+
+
+      return partieRepository.findByTour(tour);
+
   }
-  //ok
+  public List<Partie> getPartiesByDate(LocalDate date)
+  {
+    return partieRepository.findPartieByDateTime(date);
+  }
+
   @Transactional //one note see
   public void createInitialKnockoutMatches(List<Equipe> equipes) {
 
@@ -217,25 +231,16 @@ public class PartieService {
     }
 
 
-
-
-/*
-    if (groupWinners.isEmpty()) {
-      throw new RuntimeException("groupwinnerisEmpty");
-    }
-
- */
-
     return groupWinners;
   }
   public Equipe getWinner(Partie partie) {
 
-    int scoreEq1 = partie.getScoreEq1();
-    int scoreEq2 = partie.getScoreEq2();
+    Integer scoreEq1 = partie.getScoreEq1();
+    Integer scoreEq2 = partie.getScoreEq2();
 
-    if (scoreEq1 < 0 || scoreEq2 < 0) {
-      throw new RuntimeException("Invalid scores: " + scoreEq1 + ", " + scoreEq2);
-    }
+    if (scoreEq1 == null || scoreEq2 == null) {
+    return null;
+      }
 
     if (scoreEq1 > scoreEq2) {
       return partie.getEq1();

@@ -23,105 +23,61 @@
     <div layout:fragment="content">
         <form action="#" class="form"
               method="post" th:action="@{'/reservationPartie/' + ${partie.idPartie}}" th:object="${reservations}">
+            <div class="container">
 
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>Équipe</th>
+                        <td class="team-name" th:text="${partie.eq1.pays}"></td>
+                        <td></td>
+                        <td class="team-name" th:text="${partie.eq2.pays}"></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td>
+                            <b class="result-cell"  th:if="${partie.scoreEq1 != null}" th:text="${partie.scoreEq1}"></b>
+                            <img height="32px" class="team-logo2" th:src="@{${partie.getPhotosImagePathEquipe1()}}" />
+                        </td>
+                        <td></td>
 
-            <table class="table">
+                        <td>
+                            <b class="result-cell"  th:if="${partie.scoreEq2 != null}" th:text="${partie.scoreEq2}"></b>
+                            <img height="32px" class="team-logo2" th:src="@{${partie.getPhotosImagePathEquipe2()}}" />
+                        </td>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th>Stade</th>
+                        <td  class="container text-center"colspan="3" th:text="${partie.stade != null ? partie.stade.nomStade : 'Non spécifié'}"></td>
+                    </tr>
+                    <tr>
+                        <th>Date et heure</th>
+                        <td class="container text-center" colspan="3" th:text="${partie.dateTime != null ? #temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm') : 'Non spécifié'}"></td>
+                    </tr>
+                    <tr>
+                        <th>Arbitre</th>
+                        <td class="container text-center" colspan="3" th:text="${partie.arbitre_principal != null ? partie.arbitre_principal : 'Non spécifié'}"></td>
+                    </tr>
 
-                <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-
-                <tbody>
-                <tr>
-                    <th scope="row"></th>
-                    <td th:text="${partie.eq1.pays}"></td>
-                    <td></td>
-                    <td th:text="${partie.eq2.pays}"></td>
-                </tr>
-
-
-                <tr>
-                    <th scope="row"><a align="center" class="col-sm text-muted" style="font-size: small;"
-                                       th:href="@{${'/joueur/' + partie.idPartie }}"
-                                       valign="middle">Team
-                        Composition </a></th>
-                    <td>
-                        <img class="picture" th:src="@{${'/display/' + partie.eq1.drapeau.id}}" width="100">
-                    </td>
-                    <td></td>
-                    <td>
-                        <img class="picture" th:src="@{${'/display/' + partie.eq2.drapeau.id}}" width="100">
-                    </td>
-                    <td>
-                        <a align="center" class="col-sm text-muted" style="font-size: small;" th:href="@{${'/joueur/' + partie.idPartie }}"
-                           valign="middle">Team Composition </a>
-                    </td>
-                </tr>
-
-                <tr>
-                    <th scope="row">Stade</th>
-                    <td></td>
-
-                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:if="${partie.stade != null}"
-                        valign="middle">
-                        <div th:text="${partie.stade.nomStade}"></div>
-                        <div th:if="${partie.stade.nomStade == null}">
-
-                        </div>
-                    </td>
-
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row">Date Heure</th>
-                    <td></td>
-                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:text="${#temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm')}"
-                        valign="middle"></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row">Arbitre</th>
-                    <td></td>
-                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:text="${partie.arbitre_principal}"
-                        valign="middle"></td>
-                    <td></td>
-                </tr>
-
-                <tr>
-                    <th scope="row">Price</th>
-                    <td></td>
-                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:if="${partie.prix != null}"
-                        valign="middle">
-                        <div th:text="${partie.prix}"></div>
-                        <div th:if="${partie.stade.nomStade == null}">
-
-
-                        </div>
-                    </td>
-
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>
-                        <select class="form-control" id="nbr_places" name="nbr_places" th:value="${nbr_places}">
-                            <option value="0">--Nombre des places--</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="4">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
-                    </td>
-                </tr>
+                    <tr>
+                        <th>Prix</th>
+                        <td class="container text-center" colspan="3" th:text="${partie.prix != null ? partie.prix + ' €' : 'Non spécifié'}"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label for="nbr_places"><strong>Nombre de places</strong></label>
+                                <select class="custom-select" id="nbr_places" name="nbr_places" th:value="${nbr_places}">
+                                    <option value="0">-- Sélectionnez le nombre de places --</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
                 <tr>
 
 
@@ -131,6 +87,12 @@
                         <input class="btn btn-primary" type="submit" value="Valider"/><br/><br/>
                     </td>
                 </tr>
+                    <tr>
+                        <td>
+                    <nav><a th:href="@{${'/partie/'+ partie.idPartie}}">Annuler</a></nav>
+                        </td>
+                    </tr>
+
                 </tbody>
             </table>
         </form>

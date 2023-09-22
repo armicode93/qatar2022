@@ -36,21 +36,21 @@ public class UserRegistrationController {
   // Biinding Result give me access at the result
   @PostMapping("/registration")
   public String registerUserAccount(
-      @Valid @ModelAttribute("user") UserRegistrationDto registrationDto,
-      BindingResult result,
-      Model model) {
+           @Valid @ModelAttribute("user") UserRegistrationDto registrationDto,
+          BindingResult result,
+          Model model) {
+
     if (result.hasErrors()) {
       return "registration";
     }
-    if (userService.loadUserByUsername(registrationDto.getUsername()) != null) {
-      result.rejectValue("username", "error.user");
-      return "registration";
-    }
-    if (userRepository.existsByEmail(registrationDto.getEmail())) {
-      result.rejectValue("email", "error.email");
-      return "registration";
-    }
+
+
+
+
     userService.save(registrationDto);
+
+    model.addAttribute("user", registrationDto);
+
     return "redirect:/login?success";
   }
 }

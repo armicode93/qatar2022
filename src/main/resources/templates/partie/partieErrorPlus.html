@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
+    <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/partie/matchPlayed.css}"/>
+
+    <title>Match Played</title>
+</head>
+
+
+<header th:insert="fragments/header.html :: nav"></header>
+
+<body>
+<div class="container">
+    <h1></h1>
+    <p> Plus de 16 équipes ont été créées, les huitièmes de finale ne peuvent pas être créés   </p>
+    <a href="/" th:href="@{/}">Home Page</a>
+</div>
+</body>
+</html>

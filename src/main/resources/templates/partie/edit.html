@@ -25,10 +25,9 @@
 
 <body>
 
-
 <div class="container">
     <div layout:fragment="content">
-        <form action="# " class="form" method="post" th:action="@{'/partie/edit/'+ ${idPartie}}"
+        <form action="#" class="form" method="post" th:action="@{'/partie/edit/'+ ${idPartie}}"
               th:object="${partie}"> <!-- th:object ci serve per fare collegamento con il model -->
 
             <div class="form-group">
@@ -38,55 +37,37 @@
                      th:if="${#fields.hasErrors('dateTime')}"></div>
             </div>
 
-
-
-
-
-
-
             <div class="form-group">
                 <strong><label for="arbitre_principal">Arbitre Principal</label></strong>
-                <!-- th field permette di recuperare il nome selezionato -->
                 <input class="form-control" id="arbitre_principal" required th:field="*{arbitre_principal}"
                        type="text">
-                <!-- place holder suggerimento allinterno del box -->
                 <div class="alert alert-warning" th:errorclass="error"
                      th:errors="*{arbitre_principal}" th:if="${#fields.hasErrors('arbitre_principal')}"></div>
             </div>
 
-
             <div class="form-group">
                 <strong><label for="prix">Prix</label></strong>
-                <!-- th field permette di recuperare il nome selezionato -->
                 <input class="form-control" id="prix" required th:field="*{prix}" type="number">
-                <!-- place holder suggerimento allinterno del box -->
                 <div class="alert alert-warning" th:errorclass="error" th:errors="*{prix}"
                      th:if="${#fields.hasErrors('prix')}"></div>
             </div>
 
-            <div class="form-group1" >
-                <strong><label>Stade</label></strong>
+            <div class="form-group">
+                <strong><label for="stade">Stade</label></strong>
                 <select class="form-control" id="stade" th:unless="${#lists.isEmpty(stades)} "  th:field="*{stade}">
                     <option value="0">--- Please choose stadium ---</option>
                     <option  th:each="stade: ${stades}"
                              th:text="${stade.nomStade}"
                              th:value="${stade.idStade}"></option>
-
-
-                    <div class="alert alert-warning" th:errorclass="error"
-                     th:errors="*{stade}" th:if="${#fields.hasErrors('stade')}"></div>
                 </select>
+                <div class="alert alert-warning" th:errorclass="error"
+                     th:errors="*{stade}" th:if="${#fields.hasErrors('stade')}"></div>
             </div>
 
-
-            <!-- th:errorclass="error" serve per indicare lo style del errore, il colore che ho definito sopra -->
             <br/>
 
             <input class="btn btn-primary" type="submit" value="Submit"/><br/><br/>
-            <!-- class="btn btn-primary" serve per il design del bottone -->
 
-
-            <!-- <div><a th:href="@{/artists/{id}}">annuler</a></div> -->
             <nav><a th:href="@{/}">Annuler</a></nav>
 
         </form>

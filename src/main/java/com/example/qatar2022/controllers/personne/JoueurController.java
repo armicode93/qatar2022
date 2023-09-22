@@ -248,14 +248,16 @@ public class JoueurController {
 
       posteService.deletePoste(idPoste);
     }
-    session.setAttribute("idPartie",idPartie);
+    Partie partie = partieService.getPartieById(idPartie);
+    model.addAttribute("partie", partie);
    // model.addAttribute("images", images);
     return "redirect:/";
   }
   @DeleteMapping("/deletePosteEq2/{idPoste}")
-  public String deletePosteEq2(@PathVariable("idPoste") Long idPoste) {
+  public String deletePosteEq2(@PathVariable("idPoste") Long idPoste,HttpSession session,Model model) {
 
     Poste existing = posteService.getPosteByid(idPoste);
+    Long idPartie = (Long) session.getAttribute("idPartie");
 
 
     if (existing != null) {
@@ -263,7 +265,8 @@ public class JoueurController {
 
       posteService.deletePoste(idPoste);
     }
-
+    Partie partie = partieService.getPartieById(idPartie);
+    model.addAttribute("partie", partie);
     return "partie/show";
   }
 

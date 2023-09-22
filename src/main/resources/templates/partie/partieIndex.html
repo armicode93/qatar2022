@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
+    <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/index/index.css}"/>
+    <!-- Style pour les messages d'erreur -->
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<header th:insert="fragments/header.html :: nav"></header>
+<div class="container mt-5">
+    <h1 class="title">Calendrier des matchs</h1>
+    <th>
+        <form method="post" th:action="@{/createParties}">
+            <button type="submit" class="btn btn-primary"
+                    th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                Création des matchs initiaux
+            </button>
+        </form>
+    </th>
+    <!-- Bouton pour créer le prochain tour (visible seulement pour l'administrateur) -->
+    <div class="text-center mb-3" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+        <a class="btn btn-success" th:href="@{/createParties}">Création prochain tour</a>
+    </div>
+
+    <!-- Filtre Tour -->
+    <form method="get" th:action="@{/partie/index}" class="form-inline mb-3">
+        <label for="tourId" class="mr-2">Filtrer par tour:</label>
+        <select name="tourId" id="tourId" class="form-control mr-2">
+            <option value="">Tous les tours</option>
+            <th:block th:each="tour : ${tours}">
+                <option th:value="${tour.idTour}" th:text="${tour.nomTour}"></option>
+            </th:block>
+        </select>
+        <button type="submit" class="btn btn-primary">Filtrer</button>
+    </form>
+
+    <!-- Filtre Date -->
+    <form method="get" th:action="@{/partie/index}" class="form-inline">
+        <label for="date" class="mr-2">Filtrer par date:</label>
+        <input type="date" id="date" name="date" class="form-control mr-2">
+        <button type="submit" class="btn btn-primary">Filtrer</button>
+    </form>
+    <!-- Boucle à travers les tours -->
+    <div th:each="tour : ${tours}">
+        <div class="tour">
+        <h2 class="text-center tour-title" th:text="${tour.nomTour}"></h2>
+        <!-- Boucle à travers les matchs de ce tour -->
+        <div th:each="partie: ${parties}" th:if="${partie.tour.idTour == tour.idTour}" class="mb-4 border rounded p-3">
+            <div class="row">
+                <!-- Équipe 1 -->
+                <div class="col-md-4 text-center">
+
+                    <img height="32px" th:src="@{${partie.eq1.getPhotosImagePath()}}" alt="Logo Équipe">
+                    <p class="match-details" th:text="${partie.eq1.pays}"></p>
+                </div>
+                <!-- Résultats ou message "Match à jouer" -->
+                <div class="col-md-4 text-center ">
+                    <div th:if="${partie.scoreEq1} != null">
+                        <p class="match-details" th:text="${partie.scoreEq1 + ' : ' + partie.scoreEq2}"></p>
+                    </div>
+                    <div th:unless="${partie.scoreEq1} != null">
+                        <p class="match-details" >Match à jouer</p>
+                    </div>
+                </div>
+                <!-- Équipe 2 -->
+                <div class="col-md-4 text-center ">
+                    <img height="32px" th:src="@{${partie.eq2.getPhotosImagePath()}}" alt="Logo Équipe">
+                    <p class="match-details" th:text="${partie.eq2.pays}"></p>
+                </div>
+
+            </div>
+            <!-- Stade -->
+            <div class="text-center mt-3" th:if="${partie.stade != null}">
+                <p class="match-details" th:text="${partie.stade.nomStade}"></p>
+            </div>
+            <div class="text-center mt-3 match-details" th:if="${partie.stade == null}">
+                <p class="match-details" >À définir</p>
+            </div>
+            <!-- Date -->
+            <div class="text-center mt-3 " th:if="${partie.dateTime != null}">
+                <p class="match-details" th:text="${#temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm')}"></p>
+            </div>
+            <div class="text-center mt-3 " th:if="${partie.dateTime == null}">
+                <p class="match-details" >À définir</p>
+            </div>
+            <!-- Détails -->
+            <div class="text-center mt-3 ">
+                <a class="btn btn-primary" th:href="@{${'/partie/'+ partie.idPartie}}">Détails</a>
+            </div>
+        </div>
+        <!-- Diviseur entre les tours, sauf le dernier -->
+</div>
+</div>
+</body>
+</html>

@@ -29,32 +29,38 @@ public class UserRegistrationDto {
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate dateNaiss;
 
+
+    @UniqueEmail(message = "Email existe déjà")
+    @Email(message = "Insérer un e-mail ")
+    private String email;
+
+    @NumberFormat
+    private Long gsm;
+
+
+  @UniqueUsername(message = "Le nom d'utilisateur existe déjà")
   @Size(
       min = 4,
       max = 60,
       message = "Le nom d'utilisateur doit comporter au moins 3 caractères et au maximum 60 caractères")
 
-  @UniqueUsername(message = "Le nom d'utilisateur existe déjà")
   private String username;
 
-  @Pattern(
-      regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$",
-      message =
-          "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule et un chiffre.")
+
   @Size(
       min = 4,
       max = 15,
       message = "Le mot de passe doit comporter au moins 4 caractères et au maximum 15 caractères.")
+
+  @Pattern(
+          regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$",
+          message =
+                  "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule et un chiffre.")
   private String password;
 
-  @Email(message = "Insérer un e-mail ")
-  @NotNull(message = "Email obligatoire et ne peut être vide")
-  @UniqueEmail(message = "Email existe déjà")
-  private String email;
 
-  @NumberFormat
-  @NotNull(message = "value is required and can t be empty")
-  private Long gsm;
+
+
 
   private Role role;
 
@@ -62,23 +68,34 @@ public class UserRegistrationDto {
       String nom,
       String prenom,
       LocalDate dateNaiss,
-      String username,
-      String password,
       String email,
       Long gsm,
+      String username,
+      String password,
       Role role) {
     this.nom = nom;
     this.prenom = prenom;
     this.dateNaiss = dateNaiss;
+      this.email = email;
+      this.gsm = gsm;
     this.username = username;
     this.password = password;
-    this.email = email;
-    this.gsm = gsm;
+
 
     this.role = role;
   }
 
-  public UserRegistrationDto() {}
+    public UserRegistrationDto(String nom, String prenom, LocalDate dateNaiss, String email, Long gsm, String username, String password) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.dateNaiss = dateNaiss;
+        this.email = email;
+        this.gsm = gsm;
+        this.username = username;
+        this.password = password;
+    }
+
+    public UserRegistrationDto() {}
 
   public String getNom() {
     return nom;

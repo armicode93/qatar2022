@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-md-4">
             <input type="hidden" th:name="idPartie" th:value="${idPartie}" />
-            <img class="d-block mx-auto mb-4" th:src="@{${'/display/' + equipe.drapeau.id}}" width="150">
+            <img class="d-block mx-auto mb-4" th:src="@{${equipe.getPhotosImagePath()}}"  width="150">
         </div>
         <div class="col-md-8" >
             <h2 class="mb-3">Détails du match  : <span th:text="${equipe.pays}"></span></h2>
@@ -43,6 +43,9 @@
                 </li>
             </ul>
 
+            <div class="container">
+                <a class="home-link" th:href="@{${'/partie/'+ idPartie}}">Back</a>
+            </div>
 
 
 
