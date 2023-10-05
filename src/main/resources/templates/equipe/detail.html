@@ -21,28 +21,52 @@
             <h2 class="mb-3">Détails de l'équipe : <span th:text="${equipe.pays}"></span></h2>
 
             <table class="table">
+                <thead>
                 <tr>
+                    <th>Joueurs</th>
+                    <th>Blessures</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="joueur : ${joueurs}">
                     <td>
-                        <h3>Joueurs :</h3>
                         <ul class="list-group">
-                            <li class="list-group-item" th:each="joueur : ${joueurs}">
+                            <li class="list-group-item">
                                 <span th:text="${joueur.nom}"></span> <span th:text="${joueur.prenom}"></span>
                             </li>
                         </ul>
                     </td>
                     <td>
-                        <h3>Blessures :</h3>
                         <ul class="list-group">
-                            <li class="list-group-item" th:each="joueur : ${joueurs}" th:if="${joueur.blessure}">
-                                <span th:text=" oui "></span>
+                            <li class="list-group-item" th:if="${joueur.blessure}">
+                                <span th:text="oui"></span>
                             </li>
-
                         </ul>
                     </td>
                 </tr>
+                </tbody>
             </table>
 
-            <a class="btn btn-primary mt-3" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"  th:href="@{${'/addJoueur/'+ equipe.idEquipe}}">Ajouter joueurs</a>
+            <h3>Staff</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Prenom</th>
+                    <th>Nom</th>
+                    <th>Rôle</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="staff : ${equipe.staff}">
+                    <td th:text="${staff.prenom}"></td>
+                    <td th:text="${staff.nom}"></td>
+                    <td th:text="${staff.fonction}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <a class="btn btn-primary mt-3" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+               th:href="@{${'/addJoueur/'+ equipe.idEquipe}}">Ajouter joueurs</a>
         </div>
         <div align="left">
             <a class="home-link" th:href="@{/}">Page d'accueil</a>

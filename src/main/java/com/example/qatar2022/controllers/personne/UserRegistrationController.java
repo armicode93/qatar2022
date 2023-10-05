@@ -33,19 +33,16 @@ public class UserRegistrationController {
   }
 
   // Valid is for activate the validation
-  // Biinding Result give me access at the result
+  // Biinding Result give me access to the result
   @PostMapping("/registration")
   public String registerUserAccount(
-           @Valid @ModelAttribute("user") UserRegistrationDto registrationDto,
-          BindingResult result,
-          Model model) {
+      @Valid @ModelAttribute("user") UserRegistrationDto registrationDto,
+      BindingResult result,
+      Model model) {
 
     if (result.hasErrors()) {
       return "registration";
     }
-
-
-
 
     userService.save(registrationDto);
 

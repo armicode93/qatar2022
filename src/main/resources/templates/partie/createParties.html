@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:th="http://www.thymeleaf.org">
 <head>
 
@@ -18,21 +17,21 @@
 <header th:insert="fragments/header.html :: nav"></header>
 
 <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+<meta content="width=device-width, initial-scale=1" name="viewport">
 
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-    <!-- Bootstrap core CSS -->
-    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
-    <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
-    <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/index/index.css}"/>
-    <title>Fiche d'un artiste</title>
-    <!--colore errore messaggi-->
-    <style>
-        .error {
-            color: red;
-        }
-    </style>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+<!-- Bootstrap core CSS -->
+<link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+<link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
+<link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/index/index.css}"/>
+<title>Fiche d'un artiste</title>
+
+<style>
+    .error {
+        color: red;
+    }
+</style>
 </head>
 
 
@@ -49,7 +48,7 @@
             </select>
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-primary">ENVOYER </button>
+            <button type="submit" class="btn btn-primary">ENVOYER</button>
         </div>
     </form>
     <div class="text-center mt-3">

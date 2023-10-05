@@ -1,6 +1,7 @@
 package com.example.qatar2022.service;
 
 import com.example.qatar2022.entities.Reservation;
+import com.example.qatar2022.entities.personne.User;
 import com.example.qatar2022.repository.ReservationRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,30 +15,6 @@ public class ReservationService {
   @Autowired private ReservationRepository reservationRepository;
 
   @Autowired private ModelMapper modelMapper;
-
-  /* public List<ReservationDTO> getAllReservation()
-  {
-      return reservationRepository.findAll()
-          .stream()
-          .map(this::convertEntityToDto)
-          .collect(Collectors.toList());
-  }
-
-  */
-
-  /*
-
-  private Reservation convertDtoToEntity(ReservationDTO reservationDTO)
-  {
-      modelMapper.getConfiguration()
-              .setMatchingStrategy(MatchingStrategies.LOOSE);
-
-      Reservation reservation = new Reservation();
-      reservation = modelMapper.map(reservationDTO, Reservation.class);
-      return reservation;
-  }
-
-   */
 
   public List<Reservation> getAllReservation() {
     List<Reservation> reservations = new ArrayList<>();
@@ -67,5 +44,9 @@ public class ReservationService {
   public Reservation updateReservation(Reservation reservation) {
     reservationRepository.save(reservation);
     return reservation;
+  }
+
+  public List<Reservation> getReservationByUser(User user) {
+    return reservationRepository.findAllByUser(user);
   }
 }

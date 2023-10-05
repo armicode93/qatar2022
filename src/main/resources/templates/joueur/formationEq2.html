@@ -6,7 +6,7 @@
     <title>Dettagli della Squadra</title>
     <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}">
     <!-- Altri stili personalizzati -->
-    <link href="../static/css/equipe/detail.css" rel="stylesheet" th:href="@{/css/details.css}">
+    <link href="../static/css/equipe/detail.css" rel="stylesheet" th:href="@{/css/partie/show.css}"/>
 </head>
 <body>
 
@@ -15,11 +15,11 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-4">
-            <input type="hidden" th:name="idPartie" th:value="${idPartie}" />
-            <img class="d-block mx-auto mb-4" th:src="@{${equipe.getPhotosImagePath()}}"  width="150">
+            <input type="hidden" th:name="idPartie" th:value="${idPartie}"/>
+            <img class="d-block mx-auto mb-4" th:src="@{${equipe.getPhotosImagePath()}}" width="150">
         </div>
-        <div class="col-md-8" >
-            <h2 class="mb-3">Détails du match  : <span th:text="${equipe.pays}"></span></h2>
+        <div class="col-md-8">
+            <h2 class="mb-3">Détails du match : <span th:text="${equipe.pays}"></span></h2>
             <h3>Joueurs :</h3>
             <ul class="list-group">
                 <li th:each="joueurAndPostes : ${joueursAndPostes}">
@@ -31,22 +31,32 @@
                             <span th:text="${poste.nomPoste}"></span>
 
                             <form id="deleteForm" th:action="@{'/deletePosteEq2/' + ${poste.idPoste}}" method="post">
-                                <input type="hidden" name="_method" value="DELETE" />
-                                <a href="#" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" onclick="confirmDelete(event)">Delete</a>
+                                <input type="hidden" name="_method" value="DELETE"/>
+                                <a href="#" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+                                   onclick="confirmDelete(event)">Delete</a>
                             </form>
 
                         </li>
                     </ul>
 
+                    <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') and joueurAndPostes.joueur.blessure }"
+                       th:href="@{'/changerStatutEq2/' + ${joueurAndPostes.joueur.idJoueur}}" class="btn btn-warning btn-sm float-right">Retirer Blessure</a>
 
-                    <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" th:href="@{'/addPosteEq1/' + ${joueurAndPostes.joueur.idJoueur}}">AddRole</a>
+                    <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') and !joueurAndPostes.joueur.blessure }"
+                       th:href="@{'/changerStatutEq2/' + ${joueurAndPostes.joueur.idJoueur}}" class="btn btn-ligh float-right">Définir comme Blessé</a>
+
+
+
+
+                    <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') and !joueurAndPostes.joueur.blessure and joueurAndPostes.postes.isEmpty()}"
+                       th:href="@{'/addPosteEq2/' + ${joueurAndPostes.joueur.idJoueur}}" class="btn btn-secondary float-right">Ajouter Role</a>
+
                 </li>
             </ul>
 
             <div class="container">
-                <a class="home-link" th:href="@{${'/partie/'+ idPartie}}">Back</a>
+                <a class="btn btn-info" th:href="@{${'/partie/'+ idPartie}}">Back</a>
             </div>
-
 
 
             <script>
@@ -59,12 +69,6 @@
             </script>
 
 
-
-
-
-
-
-
+        </div>
     </div>
-</div>
 </div>

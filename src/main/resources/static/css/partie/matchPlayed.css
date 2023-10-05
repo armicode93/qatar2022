@@ -4,6 +4,7 @@ body {
     padding: 0;
     background-color: #F8F8F8;
 }
+
 .container {
     max-width: 800px;
     margin: 50px auto;
@@ -13,16 +14,19 @@ body {
     border-radius: 5px;
     text-align: center;
 }
+
 h1 {
     color: #CC0000;
     font-size: 28px;
     margin-bottom: 20px;
 }
+
 p {
     font-size: 20px;
     line-height: 1.5;
     margin-bottom: 20px;
 }
+
 a {
     display: inline-block;
     padding: 10px 20px;
@@ -32,6 +36,12 @@ a {
     border-radius: 5px;
     transition: all 0.2s ease-in-out;
 }
+
 a:hover {
     background-color: #990000;
+}
+
+.error-container {
+    text-align: center;
+    padding: 100px;
 }

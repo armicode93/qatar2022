@@ -18,10 +18,11 @@
 
 </head>
 <body>
-<!-- Creation navigation bar , i'm going to add boostrap code-->
+
 
 <br>
 <br>
+
 <!-- Creation Form registration -->
 <div class="container">
     <div>
@@ -30,14 +31,14 @@
             <div class="col-md-6 col-md-offset-3">
 
                 <h1> Registration </h1>
-                <form  action="# "  class="form" method="post"  th:action="@{'/registration'}" th:object="${user}" >
+                <form action="# " class="form" method="post" th:action="@{'/registration'}" th:object="${user}">
                     <div class="form-group">
 
 
                         <div class="form-group">
                             <label class="control-label" for="nom"> Nom </label> <input
                                 autofocus="autofocus" class="form-control" id="nom"
-                                required th:field="*{nom}" type="text" >
+                                required th:field="*{nom}" type="text">
                             <div class="alert alert-warning" th:errorclass="error" th:errors="*{nom}"
                                  th:if="${#fields.hasErrors('nom')}"></div>
                         </div>
@@ -45,7 +46,7 @@
                         <div class="form-group">
                             <label class="control-label" for="prenom"> Prenom </label>
                             <input autofocus="autofocus" class="form-control" id="prenom"
-                                   required th:field="*{prenom}" type="text" >
+                                   required th:field="*{prenom}" type="text">
                             <div class="alert alert-warning" th:errorclass="error"
                                  th:errors="*{prenom}" th:if="${#fields.hasErrors('prenom')}"></div>
 
@@ -60,7 +61,8 @@
 
                         <div class="form-group">
                             <label class="control-label" for="email"> Email </label> <input
-                                autofocus="autofocus" class="form-control" th:field="*{email}" id="email" name="email" required
+                                autofocus="autofocus" class="form-control" th:field="*{email}" id="email" name="email"
+                                required
                                 type="email">
                             <div class="alert alert-warning" th:errorclass="error" th:errors="*{email}"
                                  th:if="${#fields.hasErrors('email')}"></div>
@@ -93,7 +95,7 @@
 
 
                         <div class="form-group">
-                            <input  class="btn btn-success" type="submit" >S'inscrire</button>
+                            <input class="btn btn-success" type="submit">S'inscrire</button>
                             <span>Déjà inscrit ?<a href="/" th:href="@{/login}">Login
 								ici</a></span>
                             <br/>

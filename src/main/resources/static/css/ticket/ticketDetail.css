@@ -1,6 +1,9 @@
 .container {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
 }
 
 .ticket {
@@ -42,6 +45,19 @@
 .btn {
     padding: 10px 20px;
     border: none;
+}
+.ticket-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.ticket-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
 }
 
 

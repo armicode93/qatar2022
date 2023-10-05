@@ -23,7 +23,7 @@
     <div class="row">
         <h1 class="text-center">Liste des Équipes</h1>
         <div class="text-center mb-3" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-            <a class="btn btn-primary" th:href="@{'/equipe'}">Ajouter une nouvelle équipe</a>
+            <a class="btn btn-primary" th:href="@{'/equipe/add'}">Ajouter une nouvelle équipe</a>
         </div>
         <div th:each="equipe : ${equipes}" class="col-md-4">
             <div class="card mb-4">
@@ -32,15 +32,15 @@
                     <h5 class="card-title" th:text="${equipe.pays}"></h5>
                     <a th:href="@{${'/equipe/'+ equipe.idEquipe}}" class="btn btn-light btn-details">Détails</a>
 
-                        <!-- Formulaire de suppression -->
+                    <!-- Formulaire de suppression -->
                     <!--delete form -->
-                    <form th:action="@{'/equipe/'+ ${equipe.idEquipe}}"
+                    <form th:action="@{'/equipeDelete/'+ ${equipe.idEquipe}}"
                           th:id="|deleteForm-${equipe.idEquipe}|" th:method="delete">
 
 
                         <a href="#" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" th:onclick="|if(confirm('Confirm delete equipe #${equipe.idEquipe}'))
                 document.getElementById('deleteForm-${equipe.idEquipe}').submit();
-                    return false;|" class="btn btn-light btn-delete" >Delete</a> <!-- alert with javascript -->
+                    return false;|" class="btn btn-light btn-delete">Delete</a> <!-- alert with javascript -->
 
                     </form>
 

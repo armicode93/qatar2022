@@ -11,9 +11,7 @@ import com.example.qatar2022.service.TicketService;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +25,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-
-// Rest controller invece ritorna il oggetto vero e proprio o testo
-
 @CrossOrigin(origins = "*")
 public class ReservationController {
 
@@ -141,10 +136,8 @@ public class ReservationController {
     // User currentUser = userRepository.getById(Long.parseLong(idUser));
     reservation.setPartie(partieService.getPartieByIdPartie(idPartie));
     UserDetails currentUser = (UserDetails) auth.getPrincipal();
-
     User user = userRepository.findByUsername(currentUser.getUsername());
 
-    // if nbr_place > of capacity of stade
     long remainingSeats = partie.getStade().getCapacite() - nbr_places;
 
     if (remainingSeats < 0) {
@@ -182,5 +175,4 @@ public class ReservationController {
     model.addAttribute("reservation", reservation);
     return "reservation/formPrixPayement";
   }
-
-  }
+}

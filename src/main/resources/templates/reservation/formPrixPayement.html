@@ -14,7 +14,7 @@
     <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
     <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/index/index.css}"/>
     <title>Fiche d'un artiste</title>
-    <!--colore errore messaggi-->
+
     <style>
         .error {
             color: red;
@@ -29,24 +29,22 @@
 <div class="container">
     <div layout:fragment="content">
         <form action="# " class="form" method="get" th:action="@{'/pay/'+ ${reservation.codeReservation}}"
-              th:object="${reservation}"> <!-- th:object ci serve per fare collegamento con il model -->
+              th:object="${reservation}">
 
 
             <div class="form-group">
                 <strong><label for="nom">Nom</label></strong>
-                <!-- th field permette di recuperare il nome selezionato -->
+
                 <input class="form-control" id="nom" name="nom" readonly th:value="${reservation.user.nom}">
-                <!-- place holder suggerimento allinterno del box -->
-                <!--<div class="alert alert-warning" th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" th:errorclass="error"></div> -->
+
             </div>
 
 
             <div class="form-group">
                 <strong><label for="prenom">Prenom</label></strong>
-                <!-- th field permette di recuperare il nome selezionato -->
+
                 <input class="form-control" id="prenom" name="prenom" readonly th:value="${reservation.user.prenom}">
-                <!-- place holder suggerimento allinterno del box -->
-                <!--<div class="alert alert-warning" th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" th:errorclass="error"></div> -->
+
             </div>
             <div class="form-group">
                 <strong><label for="prix_total">Nombre des places:</label></strong>
@@ -89,7 +87,7 @@
 
                     <td>
                         <img class="picture" th:src="@{${reservation.partie.getPhotosImagePathEquipe1()}}"
-                             width="100"  ></td>
+                             width="100"></td>
                     <td></td>
                     <td>
                         <img class="picture" th:src="@{${reservation.partie.getPhotosImagePathEquipe2()}}"
@@ -102,7 +100,8 @@
                     <th scope="row">Stade</th>
                     <td></td>
 
-                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:if="${reservation.partie.stade != null}"
+                    <td align="center" class="col-sm text-muted" style="font-size: small;"
+                        th:if="${reservation.partie.stade != null}"
                         valign="middle">
                         <div th:text="${reservation.partie.stade.nomStade}"></div>
                         <div th:if="${reservation.partie.stade.nomStade == null}">
@@ -115,14 +114,16 @@
                 <tr>
                     <th scope="row">Date Heure</th>
                     <td></td>
-                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:text="${#temporals.format(reservation.partie.dateTime, 'dd/MM/yyyy HH:mm')}"
+                    <td align="center" class="col-sm text-muted" style="font-size: small;"
+                        th:text="${#temporals.format(reservation.partie.dateTime, 'dd/MM/yyyy HH:mm')}"
                         valign="middle"></td>
                     <td></td>
                 </tr>
                 <tr>
                     <th scope="row">Arbitre</th>
                     <td></td>
-                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:text="${reservation.partie.arbitre_principal}"
+                    <td align="center" class="col-sm text-muted" style="font-size: small;"
+                        th:text="${reservation.partie.arbitre_principal}"
                         valign="middle"></td>
                     <td></td>
                 </tr>
@@ -130,7 +131,8 @@
                 <tr>
                     <th scope="row">Prix</th>
                     <td></td>
-                    <td align="center" class="col-sm text-muted" style="font-size: small;" th:if="${reservation.partie.prix != null}"
+                    <td align="center" class="col-sm text-muted" style="font-size: small;"
+                        th:if="${reservation.partie.prix != null}"
                         valign="middle">
                         <div th:text="${reservation.partie.prix}+ ' € ' "></div>
                         <div th:if="${reservation.partie.stade.nomStade == null}">
@@ -143,14 +145,11 @@
                 </tr>
 
 
-                <!-- th:errorclass="error" serve per indicare lo style del errore, il colore che ho definito sopra -->
                 <br/>
 
                 <input class="btn btn-primary" type="submit" value="Valider"/><br/><br/>
-                <!-- class="btn btn-primary" serve per il design del bottone -->
 
 
-                <!-- <div><a th:href="@{/artists/{id}}">annuler</a></div> -->
                 <nav><a th:href="@{/}">Annuler</a></nav>
                 </tbody>
             </table>

@@ -45,7 +45,7 @@ public class RoleController {
   public String roleSubmitAdd(
       @Valid @ModelAttribute("role") Role role,
       BindingResult result,
-      Model model) // model attribute serve per recuperare gli input dei campi riempiti
+      Model model) // model attribute pour recuper les input de les champsque on aa remplis
       {
 
     if (result.hasErrors()) {
@@ -56,15 +56,15 @@ public class RoleController {
 
     model.addAttribute(new Role());
     service.add(role);
-    // model.addAttribute("artist", artistService.getAllArtists());
-    return "redirect:/roles"; // redirection apres la sauvgarde
+
+    return "redirect:/roles";
   }
 
   @GetMapping("roles/add/{id}")
   public String roleEditForm(Model model, @PathVariable("id") String id) {
     Role role = service.getRole(id);
-    // get artist est utilie pour recuperer l'artiste dont l-id correspond,
-    // nous l-ajoutons au modele avant de renvoyer le template show.html
+
+    
     model.addAttribute("role", role);
     model.addAttribute("title", "Fiche d'un role");
 

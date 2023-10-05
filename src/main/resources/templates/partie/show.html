@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <title>Détails du match</title>
-    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}" />
-    <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript" />
-    <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/partie/show.css}" />
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
+    <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/partie/show.css}"/>
 
 </head>
 <body>
 <header th:insert="fragments/header.html :: nav"></header>
 
 <div class="container">
-    <h1 class = "align-items-center ">Détails du match</h1>
+    <h1 class="align-items-center ">Détails du match</h1>
     <table class="table">
         <tbody>
         <tr>
@@ -24,51 +24,72 @@
         </tr>
         <tr>
             <th scope="row"><a align="center" class="col-sm text-muted" style="font-size: small;"
-                                   th:href="@{${'/joueurEq1/' + partie.idPartie }}"
-                                   valign="middle">Team  Composition </a></th>
+                               th:href="@{${'/joueurEq1/' + partie.idPartie }}"
+                               valign="middle">Team Composition </a></th>
             <td>
-                <b class="result-cell"  th:if="${partie.scoreEq1 != null}" th:text="${partie.scoreEq1}"></b>
-                <img height="32px" class="team-logo" th:src="@{${partie.getPhotosImagePathEquipe1()}}" />
+                <b class="result-cell" th:if="${partie.scoreEq1 != null}" th:text="${partie.scoreEq1}"></b>
+                <img height="32px" class="team-logo" th:src="@{${partie.getPhotosImagePathEquipe1()}}"/>
             </td>
             <td></td>
 
             <td>
-                <b class="result-cell"  th:if="${partie.scoreEq2 != null}" th:text="${partie.scoreEq2}"></b>
-                <img height="32px" class="team-logo" th:src="@{${partie.getPhotosImagePathEquipe2()}}" />
+                <b class="result-cell" th:if="${partie.scoreEq2 != null}" th:text="${partie.scoreEq2}"></b>
+                <img height="32px" class="team-logo" th:src="@{${partie.getPhotosImagePathEquipe2()}}"/>
             </td>
             <th scope="row"><a align="center" class="col-sm text-muted" style="font-size: small;"
                                th:href="@{${'/joueurEq2/' + partie.idPartie }}"
-                               valign="middle">Team  Composition </a></th>
+                               valign="middle">Team Composition </a></th>
         </tr>
         <tr>
             <th>Stade</th>
-            <td  class="container text-center"colspan="3" th:text="${partie.stade != null ? partie.stade.nomStade : 'Non spécifié'}"></td>
+            <td class="container text-center" colspan="3"
+                th:text="${partie.stade != null ? partie.stade.nomStade : 'Non spécifié'}"></td>
         </tr>
         <tr>
             <th>Date et heure</th>
-            <td class="container text-center" colspan="3" th:text="${partie.dateTime != null ? #temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm') : 'Non spécifié'}"></td>
+            <td class="container text-center" colspan="3"
+                th:text="${partie.dateTime != null ? #temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm') : 'Non spécifié'}"></td>
         </tr>
         <tr>
             <th>Arbitre</th>
-            <td class="container text-center" colspan="3" th:text="${partie.arbitre_principal != null ? partie.arbitre_principal : 'Non spécifié'}"></td>
+            <td class="container text-center" colspan="3"
+                th:text="${partie.arbitre_principal != null ? partie.arbitre_principal : 'Non spécifié'}"></td>
         </tr>
         <tr>
             <th>Durée totale</th>
-            <td class="container text-center" colspan="3" th:text="${partie.totalTime != null ? partie.totalTime + ' minutes' : 'Non spécifié'}"></td>
+            <td class="container text-center" colspan="3"
+                th:text="${partie.totalTime != null ? partie.totalTime + ' minutes' : 'Non spécifié'}"></td>
         </tr>
         <tr>
             <th>Prix</th>
-            <td class="container text-center" colspan="3" th:text="${partie.prix != null ? partie.prix + ' €' : 'Non spécifié'}"></td>
+            <td class="container text-center" colspan="3"
+                th:text="${partie.prix != null ? partie.prix + ' €' : 'Non spécifié'}"></td>
         </tr>
         <tr>
             <td colspan="4" align="center">
-                <a th:href="@{'/partie/edit/' + ${partie.idPartie}}" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="btn btn-primary btn-details">Modifier</a>
-                <a th:href="@{'/selectPlace/' + ${partie.idPartie}}" th:if="${#authorization.expression('isAuthenticated()')}" class="btn btn-success btn-details">Réservation</a>
-                <a th:href="@{'/login?redirect=/selectPlace/' + ${partie.idPartie}}" th:if="${!#authorization.expression('isAuthenticated()')}" class="btn btn-success btn-details">Réservations</a>
-                <a th:href="@{'/editResult/' + ${partie.idPartie}}" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="btn btn-primary btn-details">Ajouter des résultats</a>
-                <form method="post" th:action="@{'/delete/' + ${partie.idPartie}}" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-                    <input name="_method" type="hidden" value="delete" />
-                    <button onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')" type="submit" class="btn btn-danger btn-details">Supprimer</button>
+                <a th:href="@{'/partie/edit/' + ${partie.idPartie}}"
+                   th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') and ( partie.arbitre_principal == null and partie.stade == null)}"
+                   class="btn btn-primary btn-details">Modifier</a>
+
+
+                <a th:href="@{'/selectPlace/' + ${partie.idPartie}}"
+                   th:if="${#authorization.expression('isAuthenticated()')}" class="btn btn-success btn-details">Réservation</a>
+
+                <a th:href="@{'/login?redirect=/selectPlace/' + ${partie.idPartie}}"
+                   th:if="${!#authorization.expression('isAuthenticated()')}" class="btn btn-success btn-details">Réservations</a>
+
+                <a th:href="@{'/editResult/' + ${partie.idPartie}}"
+                   th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') and (partie.scoreEq1 == null and partie.scoreEq2 == null)}"
+                   class="btn btn-primary btn-details">
+                    Ajouter les résultats
+                </a>
+
+                <form method="post" th:action="@{'/delete/' + ${partie.idPartie}}"
+                      th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                    <input name="_method" type="hidden" value="delete"/>
+                    <button onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')" type="submit"
+                            class="btn btn-danger btn-details">Supprimer
+                    </button>
                 </form>
             </td>
         </tr>

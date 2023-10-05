@@ -33,11 +33,6 @@ public class Reservation {
   @JoinColumn(name = "partie_id_partie")
   private Partie partie;
 
-  /*
-  @OneToMany(mappedBy = "reservation")
-  private List <Ticket> ticket = new ArrayList<>();
-
-   */
 
   public Long getCodeReservation() {
     return codeReservation;

@@ -20,7 +20,7 @@
 <div class="container">
     <div layout:fragment="content">
         <form action="# " class="form" method="post"
-              th:action="@{'/editResult/'+ ${partie.idPartie}}" th:object="${partie}"> <!-- th:object ci serve per fare collegamento con il model -->
+              th:action="@{'/editResult/'+ ${partie.idPartie}}" th:object="${partie}">
 
 
             <div class="form-group">
@@ -65,14 +65,11 @@
             </div>
 
 
-            <!-- th:errorclass="error" serve per indicare lo style del errore, il colore che ho definito sopra -->
             <br/>
 
             <input class="btn btn-primary" type="submit" value="Submit"/><br/><br/>
-            <!-- class="btn btn-primary" serve per il design del bottone -->
 
 
-            <!-- <div><a th:href="@{/artists/{id}}">annuler</a></div> -->
             <nav><a th:href="@{/}">Annuler</a></nav>
 
         </form>

@@ -1,8 +1,9 @@
-.navbar{
-    z-index:9;
+.navbar {
+    z-index: 9;
 }
-#fullCarousel{
-    position:absolute;
-    width:100%;
-    top:0;
+
+#fullCarousel {
+    position: absolute;
+    width: 100%;
+    top: 0;
 }

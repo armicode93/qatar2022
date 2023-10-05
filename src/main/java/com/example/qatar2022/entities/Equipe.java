@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+
+import com.example.qatar2022.entities.personne.Staff;
 import lombok.*;
 
 @Data
@@ -22,12 +24,14 @@ public class Equipe implements Serializable {
 
   private String pays;
 
-
-@Column(nullable = true, length = 64)
-   private String drapeau;
+  @Column(nullable = true, length = 64)
+  private String drapeau;
 
   @OneToMany(mappedBy = "equipe")
   private List<Joueur> joueur = new ArrayList<>();
+
+  @OneToMany(mappedBy = "equipe")
+  private List<Staff> staff = new ArrayList<>();
 
   public Equipe(String pays) {
     this.pays = pays;
@@ -38,6 +42,13 @@ public class Equipe implements Serializable {
     this.drapeau = drapeau;
   }
 
+  public List<Staff> getStaff() {
+    return staff;
+  }
+
+  public void setStaff(List<Staff> staff) {
+    this.staff = staff;
+  }
 
   public String getPays() {
     return pays;
@@ -46,9 +57,6 @@ public class Equipe implements Serializable {
   public void setPays(String pays) {
     this.pays = pays;
   }
-
-
-
 
   public String getDrapeau() {
     return drapeau;
@@ -67,19 +75,14 @@ public class Equipe implements Serializable {
   }
 
   @Transient
-    public String getPhotosImagePath() {
-    if (drapeau == null || idEquipe == null)
-      return null;
+  public String getPhotosImagePath() {
+    if (drapeau == null || idEquipe == null) return null;
 
     return "/images/equipe/" + idEquipe + "/" + drapeau;
-    }
+  }
 
   @Override
   public String toString() {
-    return "Equipe{" +
-            "pays='" + pays + '\'' +
-            ", drapeau=" + drapeau +
-            '}';
+    return "Equipe{" + "pays='" + pays + '\'' + ", drapeau=" + drapeau + '}';
   }
-
 }

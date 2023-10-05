@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dettagli della Squadra</title>
     <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}">
-    <!-- Altri stili personalizzati -->
+
     <link href="../static/css/equipe/detail.css" rel="stylesheet" th:href="@{/css/details.css}">
 </head>
 <body>
@@ -17,19 +17,21 @@
 
         <div class="row">
 
-            <div class="col-md-8" >
-                <div class="form-group" >
-                    <input type="hidden" th:name="idPartie" th:value="${idPartie}" />
-                    <strong><label >Poste</label></strong>
-                    <!-- th field permette di recuperare il nome selezionato -->
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input type="hidden" th:name="idPartie" th:value="${idPartie}"/>
+                    <strong><label>Poste</label></strong>
+
                     <input class="form-control" id="nomPoste" placeholder="nomPoste" th:field="*{nomPoste}"
                            type="text">
-                    <!-- place holder suggerimento allinterno del box -->
+
                     <div class="alert alert-warning" th:errorclass="error"
                          th:errors="*{nomPoste}" th:if="${#fields.hasErrors('nomPoste')}"></div>
                     <input class="btn btn-primary" type="submit" value="Valider"/><br/><br/>
 
-                </div></div></div>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 </body>

@@ -1,5 +1,6 @@
 package com.example.qatar2022.dto;
 
+import com.example.qatar2022.config.annotation.BirthDate;
 import com.example.qatar2022.config.annotation.UniqueEmail;
 import com.example.qatar2022.config.annotation.UniqueUsername;
 import com.example.qatar2022.entities.personne.Role;
@@ -15,7 +16,6 @@ public class UserRegistrationDto {
       max = 60,
       message = "Le nom doit comporter au moins 3 caractères et au maximum 60 caractères.")
   @Pattern(regexp = "[a-zA-Z\\s]+", message = "Uniquement les caractères alphabétiques")
-
   private String nom;
 
   @Size(
@@ -23,44 +23,35 @@ public class UserRegistrationDto {
       max = 60,
       message = "Le prénom should have at least 3 characters and max 60 characters")
   @Pattern(regexp = "[a-zA-Z\\s]+", message = "Uniquement les caractères alphabétiques")
-
   private String prenom;
 
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+  @BirthDate(message = "La date de naissance doit être supérieure ou égale à 18 ans")
   private LocalDate dateNaiss;
 
+  @UniqueEmail(message = "Email existe déjà")
+  @Email(message = "Insérer un e-mail ")
+  private String email;
 
-    @UniqueEmail(message = "Email existe déjà")
-    @Email(message = "Insérer un e-mail ")
-    private String email;
-
-    @NumberFormat
-    private Long gsm;
-
+  @NumberFormat private Long gsm;
 
   @UniqueUsername(message = "Le nom d'utilisateur existe déjà")
   @Size(
       min = 4,
       max = 60,
-      message = "Le nom d'utilisateur doit comporter au moins 3 caractères et au maximum 60 caractères")
-
+      message =
+          "Le nom d'utilisateur doit comporter au moins 3 caractères et au maximum 60 caractères")
   private String username;
-
 
   @Size(
       min = 4,
       max = 15,
       message = "Le mot de passe doit comporter au moins 4 caractères et au maximum 15 caractères.")
-
   @Pattern(
-          regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$",
-          message =
-                  "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule et un chiffre.")
+      regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$",
+      message =
+          "Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule et un chiffre.")
   private String password;
-
-
-
-
 
   private Role role;
 
@@ -76,26 +67,32 @@ public class UserRegistrationDto {
     this.nom = nom;
     this.prenom = prenom;
     this.dateNaiss = dateNaiss;
-      this.email = email;
-      this.gsm = gsm;
+    this.email = email;
+    this.gsm = gsm;
     this.username = username;
     this.password = password;
-
 
     this.role = role;
   }
 
-    public UserRegistrationDto(String nom, String prenom, LocalDate dateNaiss, String email, Long gsm, String username, String password) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.dateNaiss = dateNaiss;
-        this.email = email;
-        this.gsm = gsm;
-        this.username = username;
-        this.password = password;
-    }
+  public UserRegistrationDto(
+      String nom,
+      String prenom,
+      LocalDate dateNaiss,
+      String email,
+      Long gsm,
+      String username,
+      String password) {
+    this.nom = nom;
+    this.prenom = prenom;
+    this.dateNaiss = dateNaiss;
+    this.email = email;
+    this.gsm = gsm;
+    this.username = username;
+    this.password = password;
+  }
 
-    public UserRegistrationDto() {}
+  public UserRegistrationDto() {}
 
   public String getNom() {
     return nom;

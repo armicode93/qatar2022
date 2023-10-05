@@ -36,39 +36,44 @@
                     <tr>
                         <th></th>
                         <td>
-                            <b class="result-cell"  th:if="${partie.scoreEq1 != null}" th:text="${partie.scoreEq1}"></b>
-                            <img height="32px" class="team-logo2" th:src="@{${partie.getPhotosImagePathEquipe1()}}" />
+                            <b class="result-cell" th:if="${partie.scoreEq1 != null}" th:text="${partie.scoreEq1}"></b>
+                            <img height="32px" class="team-logo2" th:src="@{${partie.getPhotosImagePathEquipe1()}}"/>
                         </td>
                         <td></td>
 
                         <td>
-                            <b class="result-cell"  th:if="${partie.scoreEq2 != null}" th:text="${partie.scoreEq2}"></b>
-                            <img height="32px" class="team-logo2" th:src="@{${partie.getPhotosImagePathEquipe2()}}" />
+                            <b class="result-cell" th:if="${partie.scoreEq2 != null}" th:text="${partie.scoreEq2}"></b>
+                            <img height="32px" class="team-logo2" th:src="@{${partie.getPhotosImagePathEquipe2()}}"/>
                         </td>
                         <th></th>
                     </tr>
                     <tr>
                         <th>Stade</th>
-                        <td  class="container text-center"colspan="3" th:text="${partie.stade != null ? partie.stade.nomStade : 'Non spécifié'}"></td>
+                        <td class="container text-center" colspan="3"
+                            th:text="${partie.stade != null ? partie.stade.nomStade : 'Non spécifié'}"></td>
                     </tr>
                     <tr>
                         <th>Date et heure</th>
-                        <td class="container text-center" colspan="3" th:text="${partie.dateTime != null ? #temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm') : 'Non spécifié'}"></td>
+                        <td class="container text-center" colspan="3"
+                            th:text="${partie.dateTime != null ? #temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm') : 'Non spécifié'}"></td>
                     </tr>
                     <tr>
                         <th>Arbitre</th>
-                        <td class="container text-center" colspan="3" th:text="${partie.arbitre_principal != null ? partie.arbitre_principal : 'Non spécifié'}"></td>
+                        <td class="container text-center" colspan="3"
+                            th:text="${partie.arbitre_principal != null ? partie.arbitre_principal : 'Non spécifié'}"></td>
                     </tr>
 
                     <tr>
                         <th>Prix</th>
-                        <td class="container text-center" colspan="3" th:text="${partie.prix != null ? partie.prix + ' €' : 'Non spécifié'}"></td>
+                        <td class="container text-center" colspan="3"
+                            th:text="${partie.prix != null ? partie.prix + ' €' : 'Non spécifié'}"></td>
                     </tr>
                     <tr>
                         <td>
                             <div class="form-group">
                                 <label for="nbr_places"><strong>Nombre de places</strong></label>
-                                <select class="custom-select" id="nbr_places" name="nbr_places" th:value="${nbr_places}">
+                                <select class="custom-select" id="nbr_places" name="nbr_places"
+                                        th:value="${nbr_places}">
                                     <option value="0">-- Sélectionnez le nombre de places --</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -78,23 +83,21 @@
                             </div>
                         </td>
                     </tr>
-                <tr>
+                    <tr>
 
 
-                    <!-- altri campi del form -->
-
-                    <td>
-                        <input class="btn btn-primary" type="submit" value="Valider"/><br/><br/>
-                    </td>
-                </tr>
+                        <td>
+                            <input class="btn btn-primary" type="submit" value="Valider"/><br/><br/>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
-                    <nav><a th:href="@{${'/partie/'+ partie.idPartie}}">Annuler</a></nav>
+                            <nav><a th:href="@{${'/partie/'+ partie.idPartie}}">Annuler</a></nav>
                         </td>
                     </tr>
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
         </form>
     </div>
 </div>

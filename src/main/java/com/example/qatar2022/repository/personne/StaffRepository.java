@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StaffRepository extends JpaRepository<Staff, Long> {
-  List<Staff> findByEquipe(Equipe equipe);
+
+  List<Staff> findAllByEquipe_IdEquipe(Long idEquipe);
 }

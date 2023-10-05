@@ -44,7 +44,6 @@ public class PaypalController {
   @Autowired PaypalService service;
   @Autowired ReservationService reservationService;
 
-  // where do you want to generate the QR code
   @Autowired TicketService ticketService;
   @Autowired private JavaMailSender emailSender;
   @Autowired private StadeService stadeService;
@@ -60,6 +59,7 @@ public class PaypalController {
   @PostMapping("/pay/{idReservation}")
   public String payment(
       @PathVariable("idReservation") Long idReservation, @ModelAttribute("order") Order order) {
+
     try {
       // create payment object
       Payment payment =
@@ -78,19 +78,20 @@ public class PaypalController {
           return "redirect:" + link.getHref(); // paypal payment procissing API
         }
       }
+
       // Payment is not approved
       Reservation reservation = reservationService.getReservationById(idReservation);
       // setta il valore paye a false
       reservation.setPaye(false);
       reservationService.updateReservation(reservation);
+
       return "reservation/error";
 
     } catch (PayPalRESTException e) {
 
-      e
-          .printStackTrace(); // ho giusto modificato sopra e ora dovre rinizializzare e provare se
-                              // funzionare
+      e.printStackTrace();
     }
+
     return "redirect:/";
   }
 
@@ -107,12 +108,15 @@ public class PaypalController {
       Model model) {
 
     try {
+
       Payment payment = service.executePayment(paymentId, payerId);
       System.out.println(payment.toJSON());
+
       if (payment.getState().equals("approved")) {
+
         Reservation reservation = reservationService.getReservationById(idReservation);
 
-        // setta il valore paye a true
+        // set aye on true
         reservation.setPaye(true);
         reservationService.updateReservation(reservation);
 
@@ -133,8 +137,7 @@ public class PaypalController {
 
         // to add the codeTicket into the qrcode
         for (Ticket ticket : tickets) {
-          // Genera il dettaglio del biglietto utilizzando il codice del biglietto e altre
-          // informazioni
+
           String ticketDetails =
               "Code Ticket: "
                   + ticket.getCodeTicket()
@@ -176,10 +179,6 @@ public class PaypalController {
         stade.setCapacite(currentCapacity);
         stadeService.updateStade(stade.getIdStade(), stade);
 
-        // Generated QRcode
-
-        // MethodUtils.generateImageQRCode(partie.getEq1().getPays(),250,250,imagePath);
-
         model.addAttribute("tickets", tickets);
         model.addAttribute("stade", stade);
         model.addAttribute("reservation", reservation);
@@ -204,11 +203,12 @@ public class PaypalController {
 
   @PostMapping("/sendTicket/{codeReservation}")
   public String sendTicket(@PathVariable Long codeReservation) {
-    // Ticket ticket = ticketService.getTicketById(codeTicket);
+
     Reservation reservation = reservationService.getReservationById(codeReservation);
     List<Ticket> tickets = ticketService.getTicketsByReservation(reservation);
     try {
-      // Creazione del PDF
+
+      // Creation PDF
       PDDocument document = new PDDocument();
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -226,7 +226,6 @@ public class PaypalController {
         contentStream.newLineAtOffset(0, -20);
         contentStream.showText("LastName: " + t.getReservation().getUser().getPrenom());
         contentStream.newLineAtOffset(0, -20);
-        // contentStream.showText("Payment number: " + ticket.getPaymentNumber());
 
         contentStream.showText("Ticket number: " + t.getCodeTicket());
         contentStream.newLineAtOffset(0, -20);
@@ -249,12 +248,6 @@ public class PaypalController {
 
         byte[] qrCodeBytes = t.getBarCode(); // Assuming the QR code bytes are in PNG format
 
-        // here i will create a new object pdimagexobject , this object will rapresent the qrcode
-        // image into the pdf document
-        // i use this object because he is the one in charge of the insertionof a pictures into a
-        // pdf
-        // i use the method createFromByteArray  with this method i can create an object  from a
-        // byte array
         PDImageXObject qrCodeImage =
             PDImageXObject.createFromByteArray(document, qrCodeBytes, "png");
 
@@ -263,15 +256,11 @@ public class PaypalController {
 
         contentStream.close();
 
-        // Generazione e inserimento del codice QR nel PDF
-
-        document.save(baos); // i use baos to save the document
+        document.save(baos);
       }
 
       document.close();
-      // Generate a QR code image for each ticket
 
-      // Invio della mail con il PDF come allegato
       MimeMessage message = emailSender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(message, true);
       helper.setTo(reservation.getUser().getEmail());

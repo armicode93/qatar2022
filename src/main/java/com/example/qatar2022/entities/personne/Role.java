@@ -10,7 +10,6 @@ import lombok.ToString;
 @Entity
 @Table(name = "roles")
 @ToString
-
 public class Role {
 
   @Id

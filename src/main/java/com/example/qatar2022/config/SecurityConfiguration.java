@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -53,7 +52,7 @@ public class SecurityConfiguration
   protected void configure(HttpSecurity http) throws Exception { // we have a config method
 
 
-    //http.csrf().disable(); // disable csrf
+
     http.authorizeRequests()
         .antMatchers(
             "/registration",
@@ -85,24 +84,37 @@ public class SecurityConfiguration
     http.authorizeRequests().antMatchers("/profile/**").authenticated();
     http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/equipe/edit/**").hasRole("ADMIN");
-    //http.authorizeRequests().antMatchers("/equipe").hasRole("ADMIN");
+
     http.authorizeRequests().antMatchers("/partie").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/partie/edit/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/editResult/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/delete/**").hasRole("ADMIN");
+
     http.authorizeRequests().antMatchers("/addJoueur/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/addPosteEq1/**").hasRole("ADMIN");
+    http.authorizeRequests().antMatchers("/addJoueur/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/addPosteEq2/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/deletePosteEq1/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/deletePosteEq2/**").hasRole("ADMIN");
-    http.authorizeRequests().antMatchers("/deletePosteEq1/**").hasRole("ADMIN");
+
+    http.authorizeRequests().antMatchers("/createParties").hasRole("ADMIN");
+    http.authorizeRequests().antMatchers("/createNextParties").hasRole("ADMIN");
+    http.authorizeRequests().antMatchers("/roles/**").hasRole("ADMIN");
+    http.authorizeRequests().antMatchers("/equipe/add").hasRole("ADMIN");
+    http.authorizeRequests().antMatchers("/equipe").permitAll();
+    http.authorizeRequests().antMatchers("/equipeDelete/**").hasRole("ADMIN");
+    http.authorizeRequests().antMatchers("/pay/**").authenticated();
+    http.authorizeRequests().antMatchers("/sendTicket/**").authenticated();
+    http.authorizeRequests().antMatchers("/qrCode/**").authenticated();
 
 
-    http.authorizeRequests().antMatchers("/reservation/**").hasAnyRole("USER", "ADMIN");
-    http.authorizeRequests().antMatchers("/selectPlace/**").hasAnyRole("USER", "ADMIN");
-    http.authorizeRequests().antMatchers("/reservationPartie/**").hasAnyRole("USER", "ADMIN");
 
-    http.authorizeRequests().antMatchers("/ticket/**").hasAnyRole("USER", "ADMIN");
+
+    http.authorizeRequests().antMatchers("/reservation/**").authenticated();
+    http.authorizeRequests().antMatchers("/selectPlace/**").authenticated();
+    http.authorizeRequests().antMatchers("/reservationPartie/**").authenticated();
+
+    http.authorizeRequests().antMatchers("/ticket/**").authenticated();
 
     http.authorizeRequests().antMatchers("/edit").hasRole("ADMIN");
 
@@ -110,7 +122,7 @@ public class SecurityConfiguration
 
     http.exceptionHandling()
         .accessDeniedPage(
-            "/403"); // redirection quando non possiamo accedere ad una pagina offlimits,
+            "/403");
   }
 
 

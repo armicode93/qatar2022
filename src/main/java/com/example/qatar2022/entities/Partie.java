@@ -4,12 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import com.example.qatar2022.entities.personne.Joueur;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.lang.Nullable;
 
@@ -22,33 +18,19 @@ public class Partie implements Serializable {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long idPartie;
 
-  // @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-  @ManyToOne(cascade = CascadeType.PERSIST) // (cascade = {CascadeType.ALL})
+  @ManyToOne(cascade = CascadeType.PERSIST)
   private Equipe eq1;
 
-  // @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-  @ManyToOne(cascade = CascadeType.PERSIST) // (cascade = {CascadeType.ALL})
+  @ManyToOne(cascade = CascadeType.PERSIST)
   private Equipe eq2;
 
-
-  // @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   @ManyToOne(cascade = CascadeType.PERSIST)
-
   @JoinColumn(name = "stade_id_stade")
   private Stade stade;
 
-  // @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
   @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "tour_id_tour")
   private Tour tour;
-
-  //mappedby si riferisce a il campo in joueur quello fatto co nset
-  /*
-  @OneToMany(mappedBy = "partie")
-  private Set <Poste> postes;
-
-   */
-
 
   @Nullable private Integer scoreEq1;
 
@@ -58,18 +40,20 @@ public class Partie implements Serializable {
   private LocalDateTime dateTime;
 
   @Size(min = 2, max = 20, message = " Mettez un nom valide ")
-  @Pattern(regexp = "^[a-zA-Z]+$", message = "Mettez un nom valide contenant uniquement des lettres")
+  @Pattern(
+      regexp = "^[a-zA-Z]+$",
+      message = "Mettez un nom valide contenant uniquement des lettres")
   private String arbitre_principal;
 
-  @Pattern(regexp = "^\\d{1,3}:\\d{2}$", message = "La durée totale doit être indiquée au format HH:MM")
+  @Pattern(
+      regexp = "^\\d{1,3}:\\d{2}$",
+      message = "La durée totale doit être indiquée au format HH:MM")
   private String totalTime;
 
   @Size(min = 2, max = 3, message = "La prolongation ne peut avoir que deux valeurs : YES ou NO")
   private String prolongation;
 
-
   private BigDecimal prix;
-
 
   public Partie(
       Equipe eq1,
@@ -244,20 +228,17 @@ public class Partie implements Serializable {
 
   @Transient
   public String getPhotosImagePathEquipe1() {
-    if (eq1 == null || eq1.getDrapeau() == null || eq1.getIdEquipe() == null)
-      return null;
+    if (eq1 == null || eq1.getDrapeau() == null || eq1.getIdEquipe() == null) return null;
 
     return "/images/equipe/" + eq1.getIdEquipe() + "/" + eq1.getDrapeau();
   }
 
   @Transient
   public String getPhotosImagePathEquipe2() {
-    if (eq2 == null || eq2.getDrapeau() == null || eq2.getIdEquipe() == null)
-      return null;
+    if (eq2 == null || eq2.getDrapeau() == null || eq2.getIdEquipe() == null) return null;
 
     return "/images/equipe/" + eq2.getIdEquipe() + "/" + eq2.getDrapeau();
   }
-
 
   @Override
   public String toString() {
@@ -268,7 +249,6 @@ public class Partie implements Serializable {
         + eq2
         + ", stade="
         + stade
-
         + ", scoreEq1="
         + scoreEq1
         + ", scoreEq2="

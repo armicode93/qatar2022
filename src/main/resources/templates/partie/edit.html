@@ -14,7 +14,7 @@
     <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
     <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/index/index.css}"/>
     <title>Fiche d'un artiste</title>
-    <!--colore errore messaggi-->
+
     <style>
         .error {
             color: red;
@@ -28,7 +28,7 @@
 <div class="container">
     <div layout:fragment="content">
         <form action="#" class="form" method="post" th:action="@{'/partie/edit/'+ ${idPartie}}"
-              th:object="${partie}"> <!-- th:object ci serve per fare collegamento con il model -->
+              th:object="${partie}">
 
             <div class="form-group">
                 <strong><label for="dateTime">Date Time</label></strong>
@@ -54,11 +54,11 @@
 
             <div class="form-group">
                 <strong><label for="stade">Stade</label></strong>
-                <select class="form-control" id="stade" th:unless="${#lists.isEmpty(stades)} "  th:field="*{stade}">
+                <select class="form-control" id="stade" th:unless="${#lists.isEmpty(stades)} " th:field="*{stade}">
                     <option value="0">--- Please choose stadium ---</option>
-                    <option  th:each="stade: ${stades}"
-                             th:text="${stade.nomStade}"
-                             th:value="${stade.idStade}"></option>
+                    <option th:each="stade: ${stades}"
+                            th:text="${stade.nomStade}"
+                            th:value="${stade.idStade}"></option>
                 </select>
                 <div class="alert alert-warning" th:errorclass="error"
                      th:errors="*{stade}" th:if="${#fields.hasErrors('stade')}"></div>

@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +58,7 @@ public class PartieService {
 
     partieRepository.save(partie);
   }
-  // give us False if we dont have reservation, true if we  reservation
+
   public boolean hasReservationsForPartie(Long idPartie) {
     Partie partie = partieRepository.findPartieByIdPartie(idPartie);
     List<Reservation> reservations = reservationRepository.findByPartie(partie);
@@ -96,22 +95,19 @@ public class PartieService {
 
     partie.setPrix(prix);
     partieRepository.save(partie);
-    }
+  }
 
-  public List<Partie> getPartieByTour(Long idTour)
-  {
+  public List<Partie> getPartieByTour(Long idTour) {
     Tour tour = tourRepository.findById(idTour).orElse(null);
 
-
-      return partieRepository.findByTour(tour);
-
+    return partieRepository.findByTour(tour);
   }
-  public List<Partie> getPartiesByDate(LocalDate date)
-  {
+
+  public List<Partie> getPartiesByDate(LocalDate date) {
     return partieRepository.findPartieByDateTime(date);
   }
 
-  @Transactional //one note see
+  @Transactional // one note see
   public void createInitialKnockoutMatches(List<Equipe> equipes) {
 
     BigDecimal defaultPrix = new BigDecimal("50.00");
@@ -130,18 +126,13 @@ public class PartieService {
       partieRepository.save(match);
     }
   }
-//
+  //
   @Transactional
   public void createQuarts(List<Equipe> currentTourWinners) {
-
-   // List<Equipe> quarterFinalWinners = calculateGroupWinners(parties,"HUITIEME_DE_FINALE");
 
     Tour tour = new Tour("QUARTS_DE_FINALE");
     BigDecimal defaultPrix = new BigDecimal("50.00");
     LocalDateTime currentDateTime = LocalDateTime.now().plusDays(2);
-
-
-
 
     for (int i = 0; i < 4; i++) {
 
@@ -156,16 +147,12 @@ public class PartieService {
     }
   }
 
-
   @Transactional
   public void createDemiFinal(List<Equipe> currentTourWinners) {
-
-   // List<Equipe> demiFinalWinners = calculateGroupWinners(parties,"QUARTS_DE_FINALE");
 
     Tour tour = new Tour("DEMI_FINAL");
     BigDecimal defaultPrix = new BigDecimal("50.00");
     LocalDateTime currentDateTime = LocalDateTime.now().plusDays(2);
-
 
     for (int i = 0; i < 2; i++) {
       Partie match = new Partie();
@@ -182,12 +169,9 @@ public class PartieService {
   @Transactional
   public void createFinal(List<Equipe> currentTourWinners) {
 
-   // List<Equipe> finalWinners = calculateGroupWinners(parties,"DEMI_FINAL");
-
     Tour tour = new Tour("FINAL");
     BigDecimal defaultPrix = new BigDecimal("50.00");
     LocalDateTime currentDateTime = LocalDateTime.now().plusDays(2);
-
 
     Partie finaleMatch = new Partie();
     finaleMatch.setEq1(currentTourWinners.get(0));
@@ -197,24 +181,21 @@ public class PartieService {
     finaleMatch.setTour(tour);
 
     partieRepository.save(finaleMatch);
-
   }
+
   public List<Equipe> calculateGroupWinners(List<Partie> parties, String prochainTourName) {
     Tour currentTour = null;
     List<Equipe> groupWinners = new ArrayList<>();
 
-    if(prochainTourName.equals("QUARTS_DE_FINALE"))
-    {
+    if (prochainTourName.equals("QUARTS_DE_FINALE")) {
       currentTour = tourRepository.findByNomTour("HUITIEME_DE_FINALE");
     } else if (prochainTourName.equals("DEMI_FINAL")) {
 
       currentTour = tourRepository.findByNomTour("QUARTS_DE_FINALE");
-    }
-    else if (prochainTourName.equals("FINAL")) {
+    } else if (prochainTourName.equals("FINAL")) {
 
       currentTour = tourRepository.findByNomTour("DEMI_FINAL");
     }
-
 
     List<Partie> currentTourParties = partieRepository.findByTour(currentTour);
 
@@ -230,17 +211,17 @@ public class PartieService {
       }
     }
 
-
     return groupWinners;
   }
+
   public Equipe getWinner(Partie partie) {
 
     Integer scoreEq1 = partie.getScoreEq1();
     Integer scoreEq2 = partie.getScoreEq2();
 
     if (scoreEq1 == null || scoreEq2 == null) {
-    return null;
-      }
+      return null;
+    }
 
     if (scoreEq1 > scoreEq2) {
       return partie.getEq1();
@@ -248,10 +229,7 @@ public class PartieService {
       return partie.getEq2();
     }
 
-
     return null;
-
-
   }
 
   public LocalDateTime convertStringToLocalDateTime(String dateTime) {

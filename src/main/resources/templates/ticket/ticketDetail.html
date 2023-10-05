@@ -135,14 +135,14 @@
     -->
 </div>
 <div>
-<form action="#" class="form" method="post" th:action="@{'/sendTicket/' + ${reservation.codeReservation}}"
-      th:object="${reservation}">
-    <div class="ticket-footer">
-        <button class="btn btn-primary" type="submit">Envoyer le billet par e-mail</button>
-        <a class="btn btn-secondary" href="/">Home Page</a>
-    </div>
-    <div>
-</form>
+    <form action="#" class="form" method="post" th:action="@{'/sendTicket/' + ${reservation.codeReservation}}"
+          th:object="${reservation}">
+        <div class="ticket-footer">
+            <button class="btn btn-primary" type="submit">Envoyer le billet par e-mail</button>
+            <a class="btn btn-secondary" href="/">Home Page</a>
+        </div>
+        <div>
+    </form>
 </div>
 
 </div>

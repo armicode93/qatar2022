@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HomeController {
 
-
   @GetMapping("/login")
   public String login(@RequestParam(name = "redirect", required = false) String redirect) {
     if (redirect != null && !redirect.isEmpty()) {

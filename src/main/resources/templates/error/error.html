@@ -1,12 +1,31 @@
-<!--<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
 <head>
-    <meta charset="UTF-8">
-    <title>Error</title>
-</head>
+
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link href="../static/js/bootstrap.js" rel="stylesheet" th:href="@{/js/bootstrap.js}" type="text/javascript"/>
+    <link href="../static/css/index/index/index.css" rel="stylesheet" th:href="@{/css/partie/matchPlayed.css}"/>
+
+
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Erreur 404 - Page non trouvée</title>
+        <style>
+
+        </style>
+    </head>
 <body>
-<h1>Error</h1>
-<p th:text="${errorMessage}"></p>
+<div class="error-container">
+    <h1>Erreur 404 - Page non trouvée</h1>
+    <p>La page que vous cherchez n'a pas été trouvée.</p>
+    <a class="btn btn-info" th:href="@{/}">Home Page</a></span>
+
+</div>
 </body>
 </html>
--->

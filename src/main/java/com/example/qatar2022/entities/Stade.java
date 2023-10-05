@@ -4,7 +4,6 @@ import com.sun.istack.NotNull;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-
 import lombok.*;
 
 @Entity
@@ -20,14 +19,10 @@ public class Stade implements Serializable {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long idStade;
 
-  /*
-
-  @OneToMany(mappedBy="stade")
-
-  private List<Partie> partie = new ArrayList<>();
-
-   */
-  @Size(min = 3, max = 60, message = "Le prénom doit comporter au moins 3 caractères et au maximum 60 caractères.")
+  @Size(
+      min = 3,
+      max = 60,
+      message = "Le prénom doit comporter au moins 3 caractères et au maximum 60 caractères.")
   private String nomStade;
 
   @NotNull private Long capacite;

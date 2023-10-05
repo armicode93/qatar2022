@@ -15,7 +15,8 @@
                 <img alt="" height="50" src="/images/logo/fifaLogo.png" width="120">
             </a>
 
-            <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+            <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                    class="navbar-toggler"
                     data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -31,11 +32,11 @@
                            th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">Profile</a>
                     </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-center matchs-link" th:href="@{/partie/index}">
-                                <i class="fas fa-futbol"></i> Matchs
-                            </a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-center matchs-link" th:href="@{/partie/index}">
+                            <i class="fas fa-futbol"></i> Matchs
+                        </a>
+                    </li>
 
                     <!-- Success message in header -->
                     <li>

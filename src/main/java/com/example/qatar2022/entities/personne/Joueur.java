@@ -2,20 +2,10 @@ package com.example.qatar2022.entities.personne;
 
 import com.example.qatar2022.entities.Equipe;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import com.example.qatar2022.entities.Partie;
-import com.example.qatar2022.entities.Poste;
-import com.example.qatar2022.entities.Ticket;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Entity
@@ -25,27 +15,25 @@ import lombok.*;
 @NoArgsConstructor
 public class Joueur implements Serializable {
 
-
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long idJoueur;
 
   @Size(
-          min = 2,
-          max = 60,
-          message = "Le prénom doit comporter au moins 3 caractères et au maximum 60 caractères.")
+      min = 2,
+      max = 60,
+      message = "Le prénom doit comporter au moins 3 caractères et au maximum 60 caractères.")
   @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s'-]+$", message = "Uniquement les caractères alphabétiques")
   @NotEmpty(message = "Nom obligatoire et ne peut être vide")
   public String nom;
 
   @Size(
-          min = 2,
-          max = 60,
-          message = "Le prénom doit comporter au moins 3 caractères et au maximum 60 caractères.")
+      min = 2,
+      max = 60,
+      message = "Le prénom doit comporter au moins 3 caractères et au maximum 60 caractères.")
   @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s'-]+$", message = "Uniquement les caractères alphabétiques")
   @NotEmpty(message = "Prenom obligatoire et ne peut être vide")
   public String prenom;
-
 
   public Boolean blessure;
 
@@ -53,24 +41,12 @@ public class Joueur implements Serializable {
   @JoinColumn(name = "equipe_id_equipe")
   private Equipe equipe;
 
-/*
-  @OneToMany(mappedBy = "joueur")
-  private Set <Poste> postes;
-
- */
-
-
-
-
-
-
 
   public Joueur(String nom, String prenom, Boolean blessure) {
     this.nom = nom;
     this.prenom = prenom;
     this.blessure = blessure;
   }
-
 
   public Long getIdJoueur() {
     return idJoueur;
@@ -111,8 +87,6 @@ public class Joueur implements Serializable {
   public void setEquipe(Equipe equipe) {
     this.equipe = equipe;
   }
-
-
 
   @Override
   public String toString() {

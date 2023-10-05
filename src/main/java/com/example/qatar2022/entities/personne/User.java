@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.Nullable;
 
 @Entity
 @Data
@@ -41,27 +40,29 @@ public class User implements Serializable {
   @Column(nullable = false)
   private Long gsm;
 
-
-  @Column(name="reset_password_token")
+  @Column(name = "reset_password_token")
   private String resetPasswordToken;
-  
 
   @ManyToOne
   @JoinColumn(name = "role_id")
   private Role role;
 
-
-     public User(String username, String password, String nom, String prenom, String email, LocalDate dateNaiss, Long gsm) {
-         this.username = username;
-         this.password = password;
-         this.nom = nom;
-         this.prenom = prenom;
-         this.email = email;
-         this.dateNaiss = dateNaiss;
-         this.gsm = gsm;
-     }
-
-
+  public User(
+      String username,
+      String password,
+      String nom,
+      String prenom,
+      String email,
+      LocalDate dateNaiss,
+      Long gsm) {
+    this.username = username;
+    this.password = password;
+    this.nom = nom;
+    this.prenom = prenom;
+    this.email = email;
+    this.dateNaiss = dateNaiss;
+    this.gsm = gsm;
+  }
 
   public User(
       String username,
@@ -83,7 +84,16 @@ public class User implements Serializable {
     this.role = role;
   }
 
-  public User(String username, String password, String nom, String prenom, String email, LocalDate dateNaiss, Long gsm, String resetPasswordToken, Role role) {
+  public User(
+      String username,
+      String password,
+      String nom,
+      String prenom,
+      String email,
+      LocalDate dateNaiss,
+      Long gsm,
+      String resetPasswordToken,
+      Role role) {
     this.username = username;
     this.password = password;
     this.nom = nom;
@@ -101,7 +111,6 @@ public class User implements Serializable {
     this.username = username;
     this.password = password;
   }
-
 
   public Long getIdUser() {
     return id;

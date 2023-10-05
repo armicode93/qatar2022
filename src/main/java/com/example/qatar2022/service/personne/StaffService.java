@@ -5,6 +5,8 @@ import com.example.qatar2022.entities.personne.Staff;
 import com.example.qatar2022.repository.personne.StaffRepository;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.qatar2022.service.EquipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,11 @@ public class StaffService {
 
   private final StaffRepository staffRepository;
 
+
   @Autowired
   public StaffService(StaffRepository staffRepository) {
     this.staffRepository = staffRepository;
+
   }
 
   public List<Staff> getAllStaff() {
@@ -30,9 +34,11 @@ public class StaffService {
     return staffRepository.findById(idStaff).orElse(null);
   }
 
-  public List<Staff> getStaffByEquipe(Equipe equipe) {
-    return staffRepository.findByEquipe(equipe);
+  public List<Staff> getStaffByEquipe(Long idEquipe) {
+
+    return staffRepository.findAllByEquipe_IdEquipe(idEquipe);
   }
+
 
   public void addStaff(Staff staff) {
     staffRepository.save(staff);

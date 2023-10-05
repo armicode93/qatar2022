@@ -49,56 +49,66 @@
         <input type="date" id="date" name="date" class="form-control mr-2">
         <button type="submit" class="btn btn-primary">Filtrer</button>
     </form>
+
     <!-- Boucle à travers les tours -->
     <div th:each="tour : ${tours}">
         <div class="tour">
-        <h2 class="text-center tour-title" th:text="${tour.nomTour}"></h2>
-        <!-- Boucle à travers les matchs de ce tour -->
-        <div th:each="partie: ${parties}" th:if="${partie.tour.idTour == tour.idTour}" class="mb-4 border rounded p-3">
-            <div class="row">
-                <!-- Équipe 1 -->
-                <div class="col-md-4 text-center">
+            <h2 class="text-center tour-title" th:text="${tour.nomTour}"></h2>
 
-                    <img height="32px" th:src="@{${partie.eq1.getPhotosImagePath()}}" alt="Logo Équipe">
-                    <p class="match-details" th:text="${partie.eq1.pays}"></p>
-                </div>
-                <!-- Résultats ou message "Match à jouer" -->
-                <div class="col-md-4 text-center ">
-                    <div th:if="${partie.scoreEq1} != null">
-                        <p class="match-details" th:text="${partie.scoreEq1 + ' : ' + partie.scoreEq2}"></p>
+            <!-- Boucle à travers les matchs de ce tour -->
+            <div th:each="partie: ${parties}" th:if="${partie.tour.idTour == tour.idTour}"
+                 class="mb-4 border rounded p-3">
+                <div class="row">
+
+                    <!-- Équipe 1 -->
+                    <div class="col-md-4 text-center">
+
+                        <img height="32px" th:src="@{${partie.eq1.getPhotosImagePath()}}" alt="Logo Équipe">
+                        <p class="match-details" th:text="${partie.eq1.pays}"></p>
                     </div>
-                    <div th:unless="${partie.scoreEq1} != null">
-                        <p class="match-details" >Match à jouer</p>
+
+                    <!-- Résultats ou message "Match à jouer" -->
+                    <div class="col-md-4 text-center ">
+                        <div th:if="${partie.scoreEq1} != null">
+                            <p class="match-details" th:text="${partie.scoreEq1 + ' : ' + partie.scoreEq2}"></p>
+                        </div>
+
+                        <div th:unless="${partie.scoreEq1} != null">
+                            <p class="match-details">Match à jouer</p>
+                        </div>
                     </div>
-                </div>
-                <!-- Équipe 2 -->
-                <div class="col-md-4 text-center ">
-                    <img height="32px" th:src="@{${partie.eq2.getPhotosImagePath()}}" alt="Logo Équipe">
-                    <p class="match-details" th:text="${partie.eq2.pays}"></p>
+
+                    <!-- Équipe 2 -->
+                    <div class="col-md-4 text-center ">
+                        <img height="32px" th:src="@{${partie.eq2.getPhotosImagePath()}}" alt="Logo Équipe">
+                        <p class="match-details" th:text="${partie.eq2.pays}"></p>
+                    </div>
+
                 </div>
 
+                <!-- Stade -->
+                <div class="text-center mt-3" th:if="${partie.stade != null}">
+                    <p class="match-details" th:text="${partie.stade.nomStade}"></p>
+                </div>
+                <div class="text-center mt-3 match-details" th:if="${partie.stade == null}">
+                    <p class="match-details">À définir</p>
+                </div>
+
+                <!-- Date -->
+                <div class="text-center mt-3 " th:if="${partie.dateTime != null}">
+                    <p class="match-details" th:text="${#temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm')}"></p>
+                </div>
+                <div class="text-center mt-3 " th:if="${partie.dateTime == null}">
+                    <p class="match-details">À définir</p>
+                </div>
+
+                <!-- Détails -->
+                <div class="text-center mt-3 ">
+                    <a class="btn btn-primary" th:href="@{${'/partie/'+ partie.idPartie}}">Détails</a>
+                </div>
             </div>
-            <!-- Stade -->
-            <div class="text-center mt-3" th:if="${partie.stade != null}">
-                <p class="match-details" th:text="${partie.stade.nomStade}"></p>
-            </div>
-            <div class="text-center mt-3 match-details" th:if="${partie.stade == null}">
-                <p class="match-details" >À définir</p>
-            </div>
-            <!-- Date -->
-            <div class="text-center mt-3 " th:if="${partie.dateTime != null}">
-                <p class="match-details" th:text="${#temporals.format(partie.dateTime, 'dd/MM/yyyy HH:mm')}"></p>
-            </div>
-            <div class="text-center mt-3 " th:if="${partie.dateTime == null}">
-                <p class="match-details" >À définir</p>
-            </div>
-            <!-- Détails -->
-            <div class="text-center mt-3 ">
-                <a class="btn btn-primary" th:href="@{${'/partie/'+ partie.idPartie}}">Détails</a>
-            </div>
+
         </div>
-        <!-- Diviseur entre les tours, sauf le dernier -->
-</div>
-</div>
+    </div>
 </body>
 </html>
