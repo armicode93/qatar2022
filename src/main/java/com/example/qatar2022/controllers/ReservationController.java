@@ -24,6 +24,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @CrossOrigin(origins = "*")
 public class ReservationController {
@@ -98,6 +100,7 @@ public class ReservationController {
       @ModelAttribute("stade") Stade stade) {
     Partie partie = partieService.getPartieByIdPartie(idPartie);
 
+
     // I have to check if match has already been played
     LocalDateTime currentDateTime = LocalDateTime.now();
     if (partie.getDateTime().isBefore(currentDateTime)) {
@@ -113,10 +116,13 @@ public class ReservationController {
       model.addAttribute("title", "Match sold out");
       return "reservation/MatchSoldOut";
     }
+
+
+
     model.addAttribute("partie", partie);
     model.addAttribute("user", user);
 
-    model.addAttribute("reservation", new Reservation());
+
     model.addAttribute("title", "");
     return "reservation/indexReservPartie";
   }
@@ -127,9 +133,10 @@ public class ReservationController {
       @ModelAttribute("stade") Stade stade,
       @RequestParam("nbr_places") int nbr_places,
       BindingResult result,
-      @PathVariable("idPartie") String idPartie,
+      @PathVariable("idPartie") String idPartie, HttpSession session,
       Model model) {
     Partie partie = partieService.getPartieByIdPartie(idPartie);
+
 
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -162,6 +169,8 @@ public class ReservationController {
     // Date purchased
     Date date_achat = new Date();
     reservation.setDateAchat(date_achat);
+    reservation.setPaye(false);
+
 
     reservationService.addReservation(reservation);
     model.addAttribute("partieId", idPartie);
@@ -172,7 +181,7 @@ public class ReservationController {
     model.addAttribute("prix_total", prix_total);
     model.addAttribute("date_achat", date_achat);
 
-    model.addAttribute("reservation", reservation);
+    session.setAttribute("reservation", reservation);
     return "reservation/formPrixPayement";
   }
 }

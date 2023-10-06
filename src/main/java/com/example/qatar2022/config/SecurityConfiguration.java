@@ -89,6 +89,8 @@ public class SecurityConfiguration
     http.authorizeRequests().antMatchers("/partie/edit/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/editResult/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/delete/**").hasRole("ADMIN");
+ 
+    http.authorizeRequests().antMatchers("/joueurDelete/**").hasRole("ADMIN");
 
     http.authorizeRequests().antMatchers("/addJoueur/**").hasRole("ADMIN");
     http.authorizeRequests().antMatchers("/addPosteEq1/**").hasRole("ADMIN");

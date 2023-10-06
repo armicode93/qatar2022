@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface JoueurRepository extends JpaRepository<Joueur, Long> {
 
   List<Joueur> findAllByEquipe_IdEquipe(Long idEquipe);
+
+  void deleteByIdJoueur(Long idJoueur);
 }

@@ -27,10 +27,11 @@ public class Equipe implements Serializable {
   @Column(nullable = true, length = 64)
   private String drapeau;
 
-  @OneToMany(mappedBy = "equipe")
+  @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Joueur> joueur = new ArrayList<>();
 
-  @OneToMany(mappedBy = "equipe")
+  //to remove en cascade tut le chose associee
+  @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Staff> staff = new ArrayList<>();
 
   public Equipe(String pays) {

@@ -58,18 +58,23 @@ public class JoueurController {
       @PathVariable(name = "idEquipe") Long idEquipe,
       HttpSession session,
 
-
       ModelMap model) {
 
     if (result.hasErrors()) {
       return "joueur/add";
     }
-    Equipe equipee = equipeService.getEquipeById(idEquipe);
+    Equipe equipe = equipeService.getEquipeById(idEquipe);
+    List<Joueur> joueurEquipe = joueurService.getAllJoueurByEquipe(idEquipe);
+
+    if (joueurEquipe.size() >= 15) {
+
+      return "joueur/error";
+    }
 
     joueur.setNom(joueur.getNom());
     joueur.setPrenom(joueur.getPrenom());
     joueur.setBlessure(joueur.getBlessure());
-    joueur.setEquipe(equipee);
+    joueur.setEquipe(equipe);
 
     joueurService.addJoueur(joueur);
 
@@ -316,4 +321,5 @@ public class JoueurController {
 
     return "joueur/formationEq2";
   }
+
 }

@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
+
+
 @Service
 public class JoueurService {
 
@@ -43,13 +46,15 @@ public class JoueurService {
     return joueur;
   }
 
-  public void deleteJoueur(Long cin) {
+  @Transactional
+  public void deleteJoueur(Long idJoueur) {
 
-    boolean exists = joueurRepository.existsById(cin);
+    boolean exists = joueurRepository.existsById(idJoueur);
 
     if (!exists) {
       throw new IllegalStateException("Not exists");
     }
-    joueurRepository.deleteById(cin);
+
+    joueurRepository.deleteByIdJoueur(idJoueur);
   }
 }

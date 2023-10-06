@@ -22,6 +22,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -58,7 +60,7 @@ public class PaypalController {
 
   @PostMapping("/pay/{idReservation}")
   public String payment(
-      @PathVariable("idReservation") Long idReservation, @ModelAttribute("order") Order order) {
+      @PathVariable("idReservation") Long idReservation, @ModelAttribute("order") Order order, HttpSession session) {
 
     try {
       // create payment object
@@ -91,7 +93,7 @@ public class PaypalController {
 
       e.printStackTrace();
     }
-
+    session.removeAttribute("reservation");
     return "redirect:/";
   }
 
