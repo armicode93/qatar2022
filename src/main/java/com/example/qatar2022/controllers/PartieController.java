@@ -1,5 +1,6 @@
 package com.example.qatar2022.controllers;
 
+import com.example.qatar2022.config.annotation.ExcludeDateTimeValidation;
 import com.example.qatar2022.entities.*;
 import com.example.qatar2022.service.*;
 import com.example.qatar2022.service.personne.JoueurService;
@@ -9,11 +10,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import javax.validation.Valid;
+import javax.validation.groups.Default;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -119,7 +123,8 @@ public class PartieController {
 
   @PostMapping("/editResult/{idPartie}")
   public String editResultSubmit(
-      @Valid @ModelAttribute("partie") Partie partie,
+          @Validated({Default.class, ExcludeDateTimeValidation.class})
+          @ModelAttribute("partie") Partie partie,
       BindingResult result,
       @RequestParam("scoreEq1") int scoreEq1,
       @RequestParam("scoreEq2") int scoreEq2,
@@ -130,6 +135,9 @@ public class PartieController {
 
     if (result.hasErrors()) {
       return "partie/editResultForm";
+    }
+    if (scoreEq1 == scoreEq2) {
+      return "partie/scoreEgal";
     }
     Partie existing = partieService.getPartieById(idPartie);
 
@@ -146,7 +154,7 @@ public class PartieController {
     Stade stade = existing.getStade();
 
     // updating stade, and set initial capacity value
-    stade.setCapacite(4L);
+    stade.setCapacite(3L);
 
     stadeService.updateStade(stade.getIdStade(), stade);
 
@@ -159,12 +167,16 @@ public class PartieController {
   public String edit(Model model, @PathVariable(name = "idPartie") String idPartie) {
 
     Partie partie = partieService.getPartieByIdPartie(idPartie);
+
+
+
     List<Stade> stades = stadeService.getAllStade();
     List<Tour> tours = tourService.getallTour();
     List<Equipe> equipes = equipeService.getAllEquipe();
 
     model.addAttribute("partie", partie);
     model.addAttribute("stades", stades);
+
     model.addAttribute("tours", tours);
     model.addAttribute("equipes", equipes);
     model.addAttribute("title", "");

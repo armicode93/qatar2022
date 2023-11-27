@@ -47,7 +47,7 @@
 
             <div class="form-group">
                 <strong><label for="prix">Prix</label></strong>
-                <input class="form-control" id="prix" required th:field="*{prix}" type="number">
+                <input class="form-control" id="prix" required th:field="*{prix}" type="number" step="0.01">
                 <div class="alert alert-warning" th:errorclass="error" th:errors="*{prix}"
                      th:if="${#fields.hasErrors('prix')}"></div>
             </div>

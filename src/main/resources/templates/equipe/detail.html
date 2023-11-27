@@ -68,6 +68,8 @@
 
             <a class="btn btn-primary mt-3" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
                th:href="@{${'/addJoueur/'+ equipe.idEquipe}}">Ajouter joueurs</a>
+            <a class="btn btn-primary mt-3" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+               th:href="@{${'/addStaff/'+ equipe.idEquipe}}">Ajouter Staff</a>
         </div>
         <div align="left">
             <a class="home-link" th:href="@{/}">Page d'accueil</a>

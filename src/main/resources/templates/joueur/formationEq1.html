@@ -46,7 +46,7 @@
                        th:href="@{'/changerStatutEq1/' + ${joueurAndPostes.joueur.idJoueur}}" class="btn btn-warning btn-sm float-right">Retirer Blessure</a>
 
                     <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') and !joueurAndPostes.joueur.blessure }"
-                       th:href="@{'/changerStatutEq1/' + ${joueurAndPostes.joueur.idJoueur}}" class="btn btn-ligh float-right">Définir comme Blessé</a>
+                       th:href="@{'/changerStatutEq1/' + ${joueurAndPostes.joueur.idJoueur}}" class="btn btn-outline-warning float-right">Définir comme Blessé</a>
 
 
 

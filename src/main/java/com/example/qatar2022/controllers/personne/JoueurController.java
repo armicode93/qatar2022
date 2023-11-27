@@ -196,7 +196,7 @@ public class JoueurController {
       ModelMap model) {
 
     if (result.hasErrors()) {
-      return "addPosteEq2";
+      return "joueur/addPosteEq1";
     }
 
     Joueur joueur = joueurService.getJoueurById(idJoueur);
@@ -267,6 +267,7 @@ public class JoueurController {
       @PathVariable("idJoueur") Long idJoueur, HttpSession session, Model model) {
 
     Long idPartie = (Long) session.getAttribute("idPartie");
+
 
     Equipe equipe = partieService.getEq1ByPartieId(idPartie);
     List<JoueurPostes> joueursAndPostes = posteService.getJoueursAndPostesByPartieEq1(idPartie);

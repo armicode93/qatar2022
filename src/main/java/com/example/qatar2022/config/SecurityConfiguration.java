@@ -109,12 +109,22 @@ public class SecurityConfiguration
     http.authorizeRequests().antMatchers("/sendTicket/**").authenticated();
     http.authorizeRequests().antMatchers("/qrCode/**").authenticated();
 
+    http.authorizeRequests().antMatchers("/changerStatutEq1/**").hasRole("ADMIN");
+    http.authorizeRequests().antMatchers("/changerStatutEq2/**").hasRole("ADMIN");
+    http.authorizeRequests().antMatchers("/addPosteEq1/**").hasRole("ADMIN");
+    http.authorizeRequests().antMatchers("/addPosteEq2/**").hasRole("ADMIN");
+
+
 
 
 
     http.authorizeRequests().antMatchers("/reservation/**").authenticated();
     http.authorizeRequests().antMatchers("/selectPlace/**").authenticated();
     http.authorizeRequests().antMatchers("/reservationPartie/**").authenticated();
+    http.authorizeRequests().antMatchers("/pay/**").authenticated();
+    http.authorizeRequests().antMatchers("/sendTicket/**").authenticated();
+    http.authorizeRequests().antMatchers("/qrCode/**").authenticated();
+
 
     http.authorizeRequests().antMatchers("/ticket/**").authenticated();
 

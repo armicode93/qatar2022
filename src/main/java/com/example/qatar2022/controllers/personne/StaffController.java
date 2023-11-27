@@ -1,74 +1,80 @@
 package com.example.qatar2022.controllers.personne;
 
+import com.example.qatar2022.entities.Equipe;
+import com.example.qatar2022.entities.Poste;
+import com.example.qatar2022.entities.personne.Joueur;
 import com.example.qatar2022.entities.personne.Staff;
+import com.example.qatar2022.service.EquipeService;
 import com.example.qatar2022.service.personne.StaffService;
-import java.util.Optional;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/staff")
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
+@Controller
+
 @CrossOrigin(origins = "*")
 public class StaffController {
 
   private final StaffService staffService;
+  private final EquipeService equipeService;
 
-  public StaffController(StaffService staffService) {
+  public StaffController(StaffService staffService, EquipeService equipeService) {
     this.staffService = staffService;
+    this.equipeService = equipeService;
   }
 
-  @GetMapping("/")
-  public ResponseEntity findAll() {
-    return ResponseEntity.ok(staffService.getAllStaff());
+
+
+  @GetMapping("/addStaff/{idEquipe}")
+  public String StaffFormAdd(Model model, @PathVariable("idEquipe") Long idEquipe) {
+
+    Equipe equipe = equipeService.getEquipeById(idEquipe);
+
+
+
+    model.addAttribute("equipe", equipe);
+    model.addAttribute("staff", new Staff());
+
+
+    return "staff/add";
   }
 
-  @GetMapping("/{idStaff}")
-  public ResponseEntity findStaffById(@PathVariable(name = "idStaff") Long idStaff) {
-    if (idStaff == null) {
-      return ResponseEntity.badRequest().body("Empty paramentre");
+  @PostMapping("/addStaff/{idEquipe}")
+  public String StaffSubmitAdd(
+          @Valid @ModelAttribute("staff") Staff staff,
+          BindingResult result,
+          @PathVariable(name = "idEquipe") Long idEquipe,
+
+
+          ModelMap model) {
+
+    if (result.hasErrors()) {
+      return "staff/add";
     }
+    Equipe equipe = equipeService.getEquipeById(idEquipe);
 
-    Optional<Staff> staff = Optional.ofNullable(staffService.getStaffById(idStaff));
 
-    if (staff.isPresent()) {
-      return ResponseEntity.ok(staff);
-    } else {
-      return ResponseEntity.notFound().build();
-    }
-  }
+    staff.setNom(staff.getNom());
+    staff.setPrenom(staff.getPrenom());
+    staff.setFonction(staff.getFonction());
+    staff.setEquipe(equipe);
 
-  @PostMapping("/")
-  public ResponseEntity createStaff(@RequestBody Staff staffBody) {
-    if (staffBody == null) {
-      return ResponseEntity.badRequest().body("Empty Request Body");
-    }
-    Optional<Staff> staff = Optional.ofNullable(staffService.getStaffById(staffBody.getIdStaff()));
+    staffService.addStaff(staff);
 
-    if (!staff.isPresent()) {
-      staffService.addStaff(staffBody);
-      return ResponseEntity.ok(staffBody);
-    }
 
-    return ResponseEntity.badRequest().body("Staff exist");
-  }
 
-  @DeleteMapping(path = "{idStaff}")
-  public void deleteStaff(@PathVariable("idStaff") Long idStaff) {
-    staffService.deleteStaff(idStaff);
-  }
+    model.addAttribute("staff", staff);
+    model.addAttribute("idEquipe", idEquipe);
 
-  @PutMapping(path = "/")
-  public ResponseEntity updateStaff(@RequestBody Staff staffBody) {
-    if (staffBody == null) {
-      return ResponseEntity.badRequest().body("Empty Request Body");
-    }
-
-    Optional<Staff> staff = Optional.ofNullable(staffService.getStaffById(staffBody.getIdStaff()));
-
-    if (staff.isPresent()) {
-      Staff createStaff = staffService.updateStaff(staffBody.getIdStaff(), staffBody);
-      return ResponseEntity.ok(staffBody);
-    }
-    return ResponseEntity.notFound().build();
+    return "redirect:/";
   }
 }

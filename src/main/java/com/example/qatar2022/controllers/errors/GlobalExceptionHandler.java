@@ -1,4 +1,4 @@
-/*package com.example.qatar2022.controllers.errors;
+package com.example.qatar2022.controllers.errors;
 
 
 import org.slf4j.Logger;
@@ -60,5 +60,4 @@ public class GlobalExceptionHandler {
     }
 }
 
- */
 

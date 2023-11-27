@@ -79,18 +79,14 @@
                    th:if="${!#authorization.expression('isAuthenticated()')}" class="btn btn-success btn-details">Réservations</a>
 
                 <a th:href="@{'/editResult/' + ${partie.idPartie}}"
-                   th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') and (partie.scoreEq1 == null and partie.scoreEq2 == null)}"
+                   th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') and partie.scoreEq1 == null and partie.scoreEq2 == null and partie.dateTime.isBefore(T(java.time.LocalDateTime).now())}"
                    class="btn btn-primary btn-details">
                     Ajouter les résultats
                 </a>
 
-                <form method="post" th:action="@{'/delete/' + ${partie.idPartie}}"
-                      th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-                    <input name="_method" type="hidden" value="delete"/>
-                    <button onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')" type="submit"
-                            class="btn btn-danger btn-details">Supprimer
-                    </button>
-                </form>
+
+
+
             </td>
         </tr>
         </tbody>

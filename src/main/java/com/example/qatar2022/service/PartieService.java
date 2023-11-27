@@ -72,6 +72,9 @@ public class PartieService {
 
   public void updatePartie(
       long idPartie, int scoreEq1, int scoreEq2, String prolongation, String totalTime) {
+
+
+
     Partie partie = getPartieById(idPartie);
     partie.setScoreEq1(scoreEq1);
     partie.setScoreEq2(scoreEq2);

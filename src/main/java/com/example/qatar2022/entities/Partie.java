@@ -6,7 +6,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import com.example.qatar2022.config.annotation.ExcludeDateTimeValidation;
 import lombok.Data;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.lang.Nullable;
 
 @Entity
@@ -36,22 +39,24 @@ public class Partie implements Serializable {
 
   @Nullable private Integer scoreEq2;
 
-  @FutureOrPresent(message = "DateTime ne peut être inférieure à la date du jour")
+  @FutureOrPresent(groups = ExcludeDateTimeValidation.class, message = "DateTime ne peut être inférieure à la date du jour")
   private LocalDateTime dateTime;
 
   @Size(min = 2, max = 20, message = " Mettez un nom valide ")
   @Pattern(
-      regexp = "^[a-zA-Z]+$",
+          regexp = "^[a-zA-Z]+( [a-zA-Z]+)?$",
       message = "Mettez un nom valide contenant uniquement des lettres")
   private String arbitre_principal;
 
   @Pattern(
       regexp = "^\\d{1,3}:\\d{2}$",
-      message = "La durée totale doit être indiquée au format HH:MM")
+      message = "La durée totale doit être indiquée au format MM:SS")
   private String totalTime;
 
   @Size(min = 2, max = 3, message = "La prolongation ne peut avoir que deux valeurs : YES ou NO")
   private String prolongation;
+
+
 
   private BigDecimal prix;
 
